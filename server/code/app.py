@@ -2,6 +2,9 @@
 
 ## imports from python
 from flask import Flask
+from dotenv import load_dotenv
+load_dotenv()
+import os
 
 ## imports from project
 
@@ -10,6 +13,9 @@ from flask import Flask
 
 # initialize app
 app = Flask(__name__)
+
+# connect db
+DB_URI = os.getenv('DB_URI')
 
 
 #### ENDPOINT CONFIG
