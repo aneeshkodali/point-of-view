@@ -12,5 +12,6 @@ class PlayerModel(db.Document):
     hand = db.StringField(min_length=1, max_length=1, default='U')
     backhand = db.IntField(max_value=2, default=0)
     country = db.StringField(min_length=3, max_length=3, default='XXX')
+    photo = db.StringField()
 
     meta = {'collection': 'players'}
