@@ -3,7 +3,7 @@ from db import db
 
 class PlayerModel(db.Document):
 
-    link = db.URLField(unique=True, required=True)
+    link = db.URLField()
     gender = db.StringField(min_length=1, max_length=1, default='U')
     full_name = db.StringField()
     last_name = db.StringField()
