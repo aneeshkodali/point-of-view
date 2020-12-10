@@ -7,3 +7,5 @@ class TournamentModel(db.Document):
     surface = db.StringField(choices=['Hard', 'Clay', 'Grass', 'Carpet', 'None'], default='None')
     gender = db.StringField(min_length=1, max_length=1, default='U')
     sets = db.IntField(max_value=5, default=0)
+
+    meta = {'collection': 'tournaments'}
