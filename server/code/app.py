@@ -7,7 +7,7 @@ load_dotenv()
 import os
 
 ## imports from project
-
+from db import db
 
 #### APP SETUP
 
@@ -16,6 +16,8 @@ app = Flask(__name__)
 
 # connect db
 DB_URI = os.getenv('DB_URI')
+app.config['MONGODB_HOST'] = DB_URI
+db.init_app(app)
 
 
 #### ENDPOINT CONFIG
