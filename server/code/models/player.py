@@ -5,13 +5,13 @@ class PlayerModel(db.Document):
 
     link = db.URLField(unique=True, required=True)
     gender = db.StringField(min_length=1, max_length=1, default='U')
-    fullname = db.StringField()
-    lastname = db.StringField()
-    dob = db.DateTimeField(default=datetime.datetime(1900, 1, 1))
-    ht = db.IntField(default=0)
+    full_name = db.StringField()
+    last_name = db.StringField()
+    date_of_birth = db.DateTimeField(default=datetime.datetime(1900, 1, 1))
+    height = db.IntField(default=0)
     hand = db.StringField(min_length=1, max_length=1, default='U')
     backhand = db.IntField(max_value=2, default=0)
     country = db.StringField(min_length=3, max_length=3, default='XXX')
-    photo = db.StringField()
+    image_url = db.StringField()
 
     meta = {'collection': 'players'}
