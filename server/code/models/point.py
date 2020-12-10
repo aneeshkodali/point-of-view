@@ -1,5 +1,6 @@
 from db import db
 from player import PlayerModel
+from shot import ShotModel
 
 class PointModel(db.EmbeddedDocument):
 
@@ -23,3 +24,4 @@ class PointModel(db.EmbeddedDocument):
     result = db.StringField()
     winner = db.ReferenceField(PlayerModel)
     loser = db.ReferenceField(PlayerModel)
+    shots = db.EmbeddedDocumentListField(ShotModel)
