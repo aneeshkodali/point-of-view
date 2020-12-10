@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import ast
+import datetime
 
 def getPlayerData(link):
 
@@ -27,7 +28,6 @@ def getPlayerData(link):
     column_variables = [
                         {'column_name': 'full_name', 'variable_name': 'fullname'},
                         {'column_name': 'last_name', 'variable_name': 'lastname'},
-                        {'column_name': 'date_of_birth', 'variable_name': 'dob'},
                         {'column_name': 'height', 'variable_name': 'ht'},
                         {'column_name': 'hand', 'variable_name': 'hand'},
                         {'column_name': 'backhand', 'variable_name': 'backhand'},
@@ -47,7 +47,18 @@ def getPlayerData(link):
         except:
             pass
 
-    # get image_url
+    # date of birth
+    try:
+        date_of_birth = extractData(text, 'dob')
+        if date_of_birth:
+            year = int(date_of_birth[:4])
+            month = int(date_of_birth[4:6])
+            day = int(date_of_birth[6:8])
+            player_dict['date_of_birth'] = datetime.datetime(year, month, day)
+    except:
+        pass
+
+    # image url
     # this is outside of loop because it's special: have to check if full_name in dictionary
     try:
         photog = extractData(text, 'photog')
