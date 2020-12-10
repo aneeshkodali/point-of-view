@@ -2,6 +2,7 @@ import datetime
 from db import db
 from tournament import TournamentModel
 from player import PlayerModel
+from point import PointModel
 
 class MatchModel(db.Document):
 
@@ -17,6 +18,6 @@ class MatchModel(db.Document):
     loser = db.ReferenceField(PlayerModel, default='None')
     score = db.StringField(default='None')
     sets = db.IntField(max_value=5, default=0)
-    points = db.ListField(db.DictField(), default=[])
+    points = db.EmbeddedDocumentListField(PointModel, default=[])
 
     meta = {'collection': 'matches'}
