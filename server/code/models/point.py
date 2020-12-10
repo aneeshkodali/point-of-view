@@ -1,9 +1,10 @@
 from db import db
+from player import PlayerModel
 
 class PointModel(db.EmbeddedDocument):
 
-    server = db.StringField()
-    receiver = db.StringField()
+    server = db.ReferenceField(PlayerModel)
+    receiver = db.ReferenceField(PlayerModel)
     set_score = db.StringField()
     set_score_server = db.IntField()
     set_score_receiver = db.IntField()
@@ -17,3 +18,8 @@ class PointModel(db.EmbeddedDocument):
     point_score_receiver = db.IntField()
     point_in_game = db.IntField()
     side = db.StringField()
+    rally_length = db.IntField()
+    rally_length_w_serve = db.IntField()
+    result = db.StringField()
+    winner = db.ReferenceField(PlayerModel)
+    loser = db.ReferenceField(PlayerModel)
