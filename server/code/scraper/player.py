@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+import ast
 
 def getPlayerData(link):
 
@@ -64,22 +65,77 @@ def extractData(text, variable):
     Takes in a blob of text and splits accordingly to return a text value
     '''
     # text is in the format: `.....var [variable] = [data to extract];......`
-    # so have to split on `var [variable] = ` and then on ';'
+    # so have to split on 'var [variable] = ' and then on ';'
     # also remove quotes
     variable_str = f"var {variable} = "
     return text.split(variable_str)[1].split(';')[0].replace("'","")
 
-serena_williams = 'http://www.tennisabstract.com/cgi-bin/wplayer.cgi?p=SerenaWilliams'
-john_isner = 'http://www.tennisabstract.com/cgi-bin/player.cgi?p=JohnIsner'
-noah_rubin = 'http://www.tennisabstract.com/cgi-bin/player.cgi?p=NoahRubin'
-peng_shuai = 'http://www.tennisabstract.com/cgi-bin/wplayer.cgi?p=PengShuai'
-amandine_hesse = 'http://www.tennisabstract.com/cgi-bin/wplayer.cgi?p=AmandineHesse'
-edoardo_salvati = 'http://www.tennisabstract.com/cgi-bin/player.cgi?p=EdoardoSalvati'
-lorna_greville_collins = 'http://www.tennisabstract.com/cgi-bin/wplayer.cgi?p=LornaGrevilleCollins'
 
-players = [serena_williams, john_isner, noah_rubin, amandine_hesse, edoardo_salvati, lorna_greville_collins]
-for player in players:
+def getPlayerList(link='http://www.minorleaguesplits.com/tennisabstract/cgi-bin/jsplayers/mwplayerlist.js'):
+
+    '''
+    Returns array of player names from site
+    Each element is of the form `(<gender> <full name>)`
+    '''
+
+    # get BeautifulSoup object
+    page = requests.get(link)
+    soup = BeautifulSoup(page.content, 'lxml')
+
+    # get list-like string
+    # string is of format: `var playerlist=[list];`
+    # so split on `playerlist=` and `;`
+    player_list_str = soup.text.split('playerlist=')[1].split(';')[0]
+
+    # evaluate as list
+    player_list = ast.literal_eval(player_list_str)
+
+    return player_list
+
+def getPlayerLinks():
+
+    '''
+    Takes list of players, where each element contains gender and fullname
+    Return list of player links that contain player data
+    '''
+
+    # get player list from function
+    # elements are of the form `(<gender>) <full name>``
+    player_list = getPlayerList()
+
+    # initialize list
+    player_links = []
+
+    # loop through list
+    for player in player_list:
+        # extract gender
+        gender = player.split('(')[1].split(')')[0]
+        #extract name
+        name = player.split(') ')[1]
+        # construct link
+        link = f"http://www.tennisabstract.com/cgi-bin/{'w' if gender=='W' else ''}player.cgi?p={name.replace(' ', '')}"
+        # append to list
+        player_links.append(link)
+    
+    return player_links
+
+player_links = getPlayerLinks()[:20]
+for player_link in player_links:
     print('\n')
-    player_dict = getPlayerData(player)
-    #print(player_dict['full_name'])
-    print(player_dict)
+    print(getPlayerData(player_link))
+
+
+#serena_williams = 'http://www.tennisabstract.com/cgi-bin/wplayer.cgi?p=SerenaWilliams'
+#john_isner = 'http://www.tennisabstract.com/cgi-bin/player.cgi?p=JohnIsner'
+#noah_rubin = 'http://www.tennisabstract.com/cgi-bin/player.cgi?p=NoahRubin'
+#peng_shuai = 'http://www.tennisabstract.com/cgi-bin/wplayer.cgi?p=PengShuai'
+#amandine_hesse = 'http://www.tennisabstract.com/cgi-bin/wplayer.cgi?p=AmandineHesse'
+#edoardo_salvati = 'http://www.tennisabstract.com/cgi-bin/player.cgi?p=EdoardoSalvati'
+#lorna_greville_collins = 'http://www.tennisabstract.com/cgi-bin/wplayer.cgi?p=LornaGrevilleCollins'
+
+#players = [serena_williams, john_isner, noah_rubin, amandine_hesse, edoardo_salvati, lorna_greville_collins]
+#for player in players:
+#    print('\n')
+#    player_dict = getPlayerData(player)
+#    #print(player_dict['full_name'])
+#    print(player_dict)
