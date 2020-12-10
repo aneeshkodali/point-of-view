@@ -118,24 +118,3 @@ def getPlayerLinks():
         player_links.append(link)
     
     return player_links
-
-player_links = getPlayerLinks()[:20]
-for player_link in player_links:
-    print('\n')
-    print(getPlayerData(player_link))
-
-
-#serena_williams = 'http://www.tennisabstract.com/cgi-bin/wplayer.cgi?p=SerenaWilliams'
-#john_isner = 'http://www.tennisabstract.com/cgi-bin/player.cgi?p=JohnIsner'
-#noah_rubin = 'http://www.tennisabstract.com/cgi-bin/player.cgi?p=NoahRubin'
-#peng_shuai = 'http://www.tennisabstract.com/cgi-bin/wplayer.cgi?p=PengShuai'
-#amandine_hesse = 'http://www.tennisabstract.com/cgi-bin/wplayer.cgi?p=AmandineHesse'
-#edoardo_salvati = 'http://www.tennisabstract.com/cgi-bin/player.cgi?p=EdoardoSalvati'
-#lorna_greville_collins = 'http://www.tennisabstract.com/cgi-bin/wplayer.cgi?p=LornaGrevilleCollins'
-
-#players = [serena_williams, john_isner, noah_rubin, amandine_hesse, edoardo_salvati, lorna_greville_collins]
-#for player in players:
-#    print('\n')
-#    player_dict = getPlayerData(player)
-#    #print(player_dict['full_name'])
-#    print(player_dict)
