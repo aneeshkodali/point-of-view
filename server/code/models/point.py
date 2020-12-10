@@ -24,4 +24,4 @@ class PointModel(db.EmbeddedDocument):
     result = db.StringField()
     winner = db.ReferenceField(PlayerModel)
     loser = db.ReferenceField(PlayerModel)
-    shots = db.EmbeddedDocumentListField(ShotModel)
+    shots = db.EmbeddedDocumentListField(ShotModel, default=[])
