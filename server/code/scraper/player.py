@@ -3,6 +3,8 @@ from bs4 import BeautifulSoup
 import ast
 import datetime
 
+from helper import extractVariableFromText
+
 def getPlayerData(link):
 
     '''
@@ -40,7 +42,7 @@ def getPlayerData(link):
 
         # if value exists AND value not equal to empty string, add it to dictionary
         try:
-            column_value = extractData(text, variable)
+            column_value = extractVariableFromText(text, variable)
             if column_value:
                 player_dict[column] = column_value
 
@@ -49,7 +51,7 @@ def getPlayerData(link):
 
     # date of birth
     try:
-        date_of_birth = extractData(text, 'dob')
+        date_of_birth = extractVariableFromText(text, 'dob')
         if date_of_birth:
             year = int(date_of_birth[:4])
             month = int(date_of_birth[4:6])
@@ -61,7 +63,7 @@ def getPlayerData(link):
     # image url
     # this is outside of loop because it's special: have to check if full_name in dictionary
     try:
-        photog = extractData(text, 'photog')
+        photog = extractVariableFromText(text, 'photog')
         full_name = player_dict['full_name']
         if photog and full_name:
             player_dict['image_url'] = f"http://www.tennisabstract.com/photos/{full_name.lower().replace(' ', '_')}-{photog}.jpg"
@@ -70,16 +72,6 @@ def getPlayerData(link):
     
 
     return player_dict
-
-def extractData(text, variable):
-    '''
-    Takes in a blob of text and splits accordingly to return a text value
-    '''
-    # text is in the format: `.....var [variable] = [data to extract];......`
-    # so have to split on 'var [variable] = ' and then on ';'
-    # also remove quotes
-    variable_str = f"var {variable} = "
-    return text.split(variable_str)[1].split(';')[0].replace("'","")
 
 
 def getPlayerList(link='http://www.minorleaguesplits.com/tennisabstract/cgi-bin/jsplayers/mwplayerlist.js'):
@@ -129,3 +121,7 @@ def getPlayerLinks():
         player_links.append(link)
     
     return player_links
+
+player_link = 'http://www.tennisabstract.com/cgi-bin/wplayer.cgi?p=SerenaWilliams'
+player_data = getPlayerData(player_link)
+print(player_data)
