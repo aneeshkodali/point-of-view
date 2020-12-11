@@ -121,7 +121,3 @@ def getPlayerLinks():
         player_links.append(link)
     
     return player_links
-
-player_link = 'http://www.tennisabstract.com/cgi-bin/wplayer.cgi?p=SerenaWilliams'
-player_data = getPlayerData(player_link)
-print(player_data)
