@@ -122,5 +122,21 @@ def getMatchData(link):
 
     return match_dict
 
-link = 'http://www.tennisabstract.com/charting/20001118-M-Paris_Masters-SF-Juan_Carlos_Ferrero-Marat_Safin.html'
-print(getMatchData(link))
+def getMatchLinks(link='http://www.tennisabstract.com/charting/'):
+    '''
+    Returns list of match links
+    '''
+
+    # get BeautifulSoup object
+    page = requests.get(link)
+    soup = BeautifulSoup(page.content, 'lxml')
+
+    # match links are in 'p' -> 'a' tags (starting with 3rd)
+    match_links = soup.select('p a')[2:]
+    match_links = [f"{link}{match_link['href']}" for match_link in match_links]
+
+    return match_links
+
+
+#link = 'http://www.tennisabstract.com/charting/20001118-M-Paris_Masters-SF-Juan_Carlos_Ferrero-Marat_Safin.html'
+#print(getMatchData(link))
