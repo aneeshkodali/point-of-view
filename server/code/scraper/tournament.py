@@ -55,3 +55,20 @@ def getTournamentData(link):
         pass
 
     return tournament_dict
+
+
+def getTournamentLinks(link='http://www.minorleaguesplits.com/tennisabstract/cgi-bin/jstourneys/'):
+    '''
+    Returns array of tournament links
+    '''
+
+    # get BeautifulSoup object
+    page = requests.get(link)
+    soup = BeautifulSoup(page.content, 'lxml')
+
+    # tournament links are 'a' tags that end in '.js'
+    tournament_links = soup.select('a')
+    tournament_links = [f"{link}{tournament.text}" for tournament in tournament_links if tournament.text.endswith('.js')]
+
+    return tournament_links
+
