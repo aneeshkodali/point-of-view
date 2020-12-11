@@ -3,7 +3,8 @@ from player import PlayerModel
 from shot import ShotModel
 
 class PointModel(db.EmbeddedDocument):
-
+    
+    point_number = db.IntField()
     server = db.ReferenceField(PlayerModel)
     receiver = db.ReferenceField(PlayerModel)
     set_score = db.StringField()
