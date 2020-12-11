@@ -6,4 +6,4 @@ def extractVariableFromText(text, variable):
     # so have to split on 'var [variable] = ' and then on ';'
     # also remove quotes
     variable_str = f"var {variable} = "
-    return text.split(variable_str)[1].split(';')[0].replace("'","")
+    return text.split(variable_str)[1].split(';')[0].replace("'","").replace('"', '')
