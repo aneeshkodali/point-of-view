@@ -2,6 +2,8 @@ import requests
 from bs4 import BeautifulSoup
 from unidecode import unidecode
 
+from shot import getShotData
+
 
 def getPointTable(link_soup):
 
@@ -221,8 +223,12 @@ def getPointData(point_table, player_list):
             pass
 
         # shots
-        shots = []
-        point_dict['shots'] = shots
+        try:
+            shots = getShotData(rally_split, player_list)
+            if shots:
+                point_dict['shots'] = shots
+        except:
+            pass
     
         points.append(point_dict)
         point_number += 1
