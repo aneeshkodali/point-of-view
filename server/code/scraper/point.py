@@ -1,5 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
+from unidecode import unidecode
+
 
 def getPointTable(link_soup):
 
@@ -158,7 +160,65 @@ def getPointData(point_table, player_list):
                 point_dict['side'] = side
         except:
             pass
-      
+
+        # num_shots
+        try:
+            rally = unidecode(point_td[4]).text
+            rally_split = rally.split('; ')
+            num_shots = len(rally_split)
+            if num_shots:
+                point_dict['num_shots'] = num_shots
+        except:
+            pass
+
+        # result
+        try:
+            result = unidecode(point_td[4].select('b')[0].text.strip())
+            if result:
+                point_dict['result'] = result
+        except:
+            pass
+
+        results_win = ['ace', 'service winner', 'winner']
+        results_lose = ['double fault', 'forced error', 'unforced error']
+
+        # rally_length
+        try:
+            if result in results_win:
+                rally_length = num_shots
+            elif result in results_lose:
+                rally_length = num_shots - 1
+
+            if rally_length:
+                point_dict['rally_length'] = rally_length
+        except:
+            pass
+
+        # winner - number of shots is odd and result is in results_win then server
+        try:
+            if num_shots % 2 != 0:
+                if result in results_win:
+                    winner = server
+                elif result in results_lose:
+                    winner = receiver
+            else:
+                if result in results_win:
+                    winner = receiver
+                elif result in results_lose:
+                    winner = server
+
+            if winner:
+                point_dict['winner'] = winner
+        except:
+            pass
+
+        # loser
+        try:
+            loser = list(filter(lambda player: player != winner, player_list))[0]
+            if loser:
+                point_dict['loser'] = loser
+        except:
+            pass
 
         # shots
         shots = []

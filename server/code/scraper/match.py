@@ -1,7 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 import datetime
-from unidecode import unidecode
 
 from point import getPointTable, getPointData
 
