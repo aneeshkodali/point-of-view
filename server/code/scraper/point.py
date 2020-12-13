@@ -224,7 +224,7 @@ def getPointData(point_table, player_list):
 
         # shots
         try:
-            shots = getShotData(rally_split, player_list)
+            shots = getShotData(rally_split, [server, receiver])
             if shots:
                 point_dict['shots'] = shots
         except:
