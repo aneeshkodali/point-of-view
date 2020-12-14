@@ -1,5 +1,6 @@
 import datetime
 from db import db
+import json
 from tournament import TournamentModel
 from player import PlayerModel
 from point import PointModel
@@ -21,3 +22,10 @@ class MatchModel(db.Document):
     points = db.EmbeddedDocumentListField(PointModel, default=[])
 
     meta = {'collection': 'matches'}
+
+    def json(self):
+            return json.loads(self.to_json())
+
+    @classmethod
+    def find_by_link(cls, link):
+        return MatchModel.objects(link=link).first()
