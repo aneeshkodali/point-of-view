@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import ast
 
-from helper import extractVariableFromText
+from scraper.helper import extractVariableFromText
 
 tournament_base_url = 'http://www.minorleaguesplits.com/tennisabstract/cgi-bin/jstourneys/'
 
