@@ -1,6 +1,6 @@
 from db import db
-from player import PlayerModel
-from shot import ShotModel
+from models.player import PlayerModel
+from models.shot import ShotModel
 
 class PointModel(db.EmbeddedDocument):
     

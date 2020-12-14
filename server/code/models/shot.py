@@ -1,5 +1,5 @@
 from db import db
-from player import PlayerModel
+from models.player import PlayerModel
 
 class ShotModel(db.EmbeddedDocument):
 

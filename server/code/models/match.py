@@ -1,9 +1,9 @@
 import datetime
 from db import db
 import json
-from tournament import TournamentModel
-from player import PlayerModel
-from point import PointModel
+from models.tournament import TournamentModel
+from models.player import PlayerModel
+from models.point import PointModel
 
 class MatchModel(db.Document):
 
