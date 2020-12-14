@@ -35,8 +35,7 @@ class Match(Resource):
 
         # get player data
         players = match_data['players']
-        players = [constructPlayerLink(name=player_name, gender=gender) for player_name in players]
-        players = [getPlayerData(player_link) for player_link in players]
+        players = [getPlayerData(constructPlayerLink(name=player_name, gender=gender)) for player_name in players]
 
         return {'tournament': tournament_data, 'players': players, 'match': match_data}
 
