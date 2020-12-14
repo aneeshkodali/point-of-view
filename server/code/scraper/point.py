@@ -33,15 +33,21 @@ def getPointData(point_table, player_list):
     points_tr = point_table.select('table tr')[1:]
 
     # loop through points_tr
-    for point_tr in points_tr[1:3]:
+    for point_tr in points_tr[10:11]:
         
         # initialize point dictionary
         point_dict = {}
-        point_dict['point_number'] = point_number
 
         # point data are in 'td' tags
         point_td = point_tr.select('td')
-       
+
+        # if empty row, skip
+        if [x.text for x in point_td][1:] == ['','','','']:
+            continue
+
+        # point_number
+        point_dict['point_number'] = point_number
+
         # server
         try:
             server = unidecode(point_td[0].text).strip()
