@@ -33,7 +33,7 @@ def getPointData(point_table, player_list):
     points_tr = point_table.select('table tr')[1:]
 
     # loop through points_tr
-    for point_tr in points_tr[10:11]:
+    for point_tr in points_tr:
         
         # initialize point dictionary
         point_dict = {}

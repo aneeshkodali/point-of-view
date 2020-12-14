@@ -147,7 +147,3 @@ def getMatchLinks(link='http://www.tennisabstract.com/charting/'):
     match_links = [f"{link}{match_link['href']}" for match_link in match_links]
 
     return match_links
-
-
-link = 'http://www.tennisabstract.com/charting/20001118-M-Paris_Masters-SF-Juan_Carlos_Ferrero-Marat_Safin.html'
-print(getMatchData(link))
