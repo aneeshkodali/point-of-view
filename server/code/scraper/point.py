@@ -33,7 +33,7 @@ def getPointData(point_table, player_list):
     points_tr = point_table.select('table tr')[1:]
 
     # loop through points_tr
-    for point_tr in points_tr[9:13]:
+    for point_tr in points_tr[3:4]:
         
         # initialize point dictionary
         point_dict = {}
@@ -224,7 +224,7 @@ def getPointData(point_table, player_list):
 
         # shots
         try:
-            shots = getShotData(rally_split, [server, receiver])
+            shots = getShotData(rally_split, [server, receiver], result)
             if shots:
                 point_dict['shots'] = shots
         except:
