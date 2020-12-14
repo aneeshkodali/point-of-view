@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import datetime
 
-from point import getPointTable, getPointData
+from scraper.point import getPointTable, getPointData
 
 
 
@@ -27,7 +27,7 @@ def getMatchData(link):
             year = int(match_date[:4])
             month = int(match_date[4:6])
             day = int(match_date[6:])
-            match_dict['match_date'] = datetime.datetime(year, month, day)
+            match_dict['match_date'] = datetime.datetime(year, month, day).isoformat()
     except:
         pass
     
@@ -130,7 +130,7 @@ def getMatchData(link):
     except:
         pass
 
-    return match_dict['points']
+    return match_dict
 
 
 def getMatchLinks(link='http://www.tennisabstract.com/charting/'):

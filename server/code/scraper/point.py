@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from unidecode import unidecode
 
-from shot import getShotData
+from scraper.shot import getShotData
 
 
 def getPointTable(link_soup):
