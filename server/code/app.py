@@ -10,6 +10,7 @@ import os
 ## imports from project
 from db import db
 from resources.player import Players
+from resources.match import Matches
 
 #### APP SETUP
 
@@ -31,6 +32,7 @@ def index():
     return 'Hello World'
 
 api.add_resource(Players, '/server/players')
+api.add_resource(Matches, '/server/matches')
 
 
 #### RUN APP
