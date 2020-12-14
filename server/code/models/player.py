@@ -20,3 +20,11 @@ class PlayerModel(db.Document):
     def json(self):
         return json.loads(self.to_json())
 
+    @classmethod
+    def find_by_name(cls, full_name):
+        return PlayerModel.objects(full_name=full_name).first()
+    
+    @classmethod
+    def find_by_link(cls, link):
+        return PlayerModel.objects(link=link).first()
+
