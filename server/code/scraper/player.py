@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import ast
 import datetime
 
-from helper import extractVariableFromText
+from scraper.helper import extractVariableFromText
 
 def getPlayerData(link):
 
