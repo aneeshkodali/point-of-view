@@ -12,18 +12,55 @@ def getShotData(rally_list, player_list, result):
     server = player_list[0]
     receiver = player_list[1]
 
+    # split first element into 1st serve/2nd serve (if exists)
+    serve_element = rally_list[0]
+    if '2nd serve' in serve_element:
+        # remove 1st serve from 1st element (if exists)
+        serve_split = serve_element.split('.')
+        first_serve = serve_split[0].strip()
+        second_serve = serve_split[1].strip()
+        rally_list[0] = second_serve
+
+        # create/append 1st serve dictionary
+        first_serve_dict = {}
+        
+        # shot_number
+        first_serve_dict['shot_number'] = 1
+
+        # shot_number_w_serve
+        first_serve_dict['shot_number_w_serve'] = 1
+
+        # shot_by
+        first_serve_dict['shot_by'] = server
+
+        # shot_location
+        for location in location_list:
+            if location in first_serve:
+                first_serve_dict['location'] = location
+                break
+
+        # shot
+        first_serve_dict['shot'] = '1st serve'
+
+        # result
+        first_serve_dict['result'] = 'fault'
+
+        # append to list
+        shots.append(first_serve_dict)
+
+
     # loop through shots
     for i, shot in enumerate(rally_list):
 
         # initialize shot_dict
         shot_dict = {}
 
-        # shot_num
+        # shot_number
         shot_num = i+1
-        shot_dict['shot_num'] = shot_num
+        shot_dict['shot_number'] = shot_num
 
-        # shot_num_w_serve
-        shot_dict['shot_num_w_serve'] = shot_num
+        # shot_number_w_serve
+        shot_dict['shot_number_w_serve'] = len(shots)+1
 
         # shot_by
         shot_by = server if shot_num % 2 != 0 else receiver
