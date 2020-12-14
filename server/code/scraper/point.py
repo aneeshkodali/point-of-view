@@ -33,7 +33,7 @@ def getPointData(point_table, player_list):
     points_tr = point_table.select('table tr')[1:]
 
     # loop through points_tr
-    for point_tr in points_tr[3:4]:
+    for point_tr in points_tr[1:3]:
         
         # initialize point dictionary
         point_dict = {}
@@ -150,7 +150,11 @@ def getPointData(point_table, player_list):
 
         # point_in_game
         try:
-            point_in_game = 'DO THIS'
+            if point_number == 1:
+                point_in_game = 1
+            else:            
+                point_num_min = [x for x in points if (x['set_score'] == set_score) and (x['game_score'] == game_score)][0]['point_number']
+                point_in_game = point_number - point_num_min + 1
             point_dict['point_in_game'] = point_in_game
         except:
             pass
