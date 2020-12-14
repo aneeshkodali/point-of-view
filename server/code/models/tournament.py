@@ -9,3 +9,11 @@ class TournamentModel(db.Document):
     sets = db.IntField(max_value=5, default=0)
 
     meta = {'collection': 'tournaments'}
+
+    def json(self):
+            return json.loads(self.to_json())
+
+    @classmethod
+    def find_by_name_and_gender(self, name, gender):
+        return TournamentModel.objects(name=name & gender=gender)
+
