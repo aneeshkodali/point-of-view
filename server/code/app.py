@@ -3,6 +3,7 @@
 ## imports from python
 from flask import Flask
 from flask_restful import Api
+from flask_cors import CORS
 from dotenv import load_dotenv
 load_dotenv()
 import os
@@ -17,6 +18,9 @@ from resources.tournament import Tournaments, Tournament
 
 # initialize app
 app = Flask(__name__)
+
+# enable cross resource sharing
+CORS(app)
 
 # connect db
 DB_URI = os.getenv('DB_URI')
