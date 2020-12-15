@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import server from '../../api/server';
 
 import MatchHeader from './MatchHeader';
+import PointTable from './Data/PointTable';
 
 const Match = (props) => {
 
@@ -22,6 +23,8 @@ const Match = (props) => {
 
     const { title, result, points } = matchData;
 
+    const pointTableRendered = points ? <PointTable points={points} /> : <div>No Points</div>;
+
 
    return (
        <div>
@@ -29,6 +32,8 @@ const Match = (props) => {
            <h2 className="ui header">{result}</h2>
 
            <MatchHeader />
+
+           {pointTableRendered}
         </div>
    );
 }
