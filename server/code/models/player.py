@@ -1,4 +1,5 @@
 import datetime
+import json
 from db import db
 
 class PlayerModel(db.Document):
@@ -15,3 +16,19 @@ class PlayerModel(db.Document):
     image_url = db.StringField()
 
     meta = {'collection': 'players'}
+
+    def json(self):
+        return json.loads(self.to_json())
+
+    @classmethod
+    def find_by_name(cls, full_name):
+        return PlayerModel.objects(full_name=full_name).first()
+    
+    @classmethod
+    def find_by_link(cls, link):
+        return PlayerModel.objects(link=link).first()
+
+    @classmethod
+    def find_by_id(cls, id):
+        return PlayerModel.objects(id=id).first()
+

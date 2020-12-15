@@ -2,7 +2,11 @@ import requests
 from bs4 import BeautifulSoup
 import datetime
 
-from point import getPointTable, getPointData
+from models.tournament import TournamentModel
+from models.player import PlayerModel
+from scraper.tournament import constructTournamentLink, getTournamentData
+from scraper.player import constructPlayerLink, getPlayerData
+from scraper.point import getPointTable, getPointData
 
 
 
@@ -43,7 +47,15 @@ def getMatchData(link):
     try:
         tournament = suffix[2].replace('_', ' ')
         if tournament:
-            match_dict['tournament'] = tournament
+            tournament_db = TournamentModel.find_by_name_and_gender(tournament, gender)
+            if tournament_db:
+                match_dict['tournament'] = tournament_db
+            else:
+                tournament_link = constructTournamentLink(year=year, name=tournament, gender=gender)
+                tournament_data = getTournamentData(tournament_link) 
+                tournament_model = TournamentModel(**tournament_data)
+                tournament_model.save()
+                match_dict['tournament'] = tournament_model
     except:
         pass
 
@@ -59,9 +71,23 @@ def getMatchData(link):
     try:
         player_one = suffix[4].replace('_', ' ')
         player_two = suffix[5].replace('_', ' ').replace('.html','')
-        players = [player_one, player_two]
-        if players:
-            match_dict['players'] = players
+        player_names = [player_one, player_two]
+        if player_names:
+                players = []
+                player_models = []
+                for player_name in player_names:
+                    player_link = constructPlayerLink(name=player_name, gender=gender)
+                    player_db = PlayerModel.find_by_link(player_link)
+                    if player_db:
+                        players.append(player_db)
+                        player_models.append({'player_name': player_name, 'player_model': player_db})
+                    else:
+                        player_data = getPlayerData(player_link)
+                        player_model = PlayerModel(**player_data)
+                        player_model.save()
+                        players.append(player_model)
+                        player_models.append({'player_name': player_name, 'player_model': player_model})
+                match_dict['players'] = players
     except:
         pass
 
@@ -90,23 +116,25 @@ def getMatchData(link):
 
     # winner
     try:
-        winner = result.split(' d.')[0]
-        if winner:
+        winner_name = result.split(' d.')[0]
+        if winner_name:
+            winner = players[0] if winner_name == player_names[0] else players[1]
             match_dict['winner'] = winner
     except:
         pass
 
     # loser
     try:
-        loser = list(filter(lambda player: player != winner, players))[0]
-        if loser:
+        loser_name = list(filter(lambda player: player != winner, player_names))[0]
+        if loser_name:
+            loser = players[1] if winner_name == player_names[0] else players[0]
             match_dict['loser'] = loser
     except:
         pass
 
     # score
     try:
-        score = result.split(f"{loser} ")[1]
+        score = result.split(f"{loser_name} ")[1]
         if score:
             match_dict['score'] = score
     except:
@@ -125,12 +153,12 @@ def getMatchData(link):
     try:
         point_table = getPointTable(soup)
         if point_table:
-            points_data = getPointData(point_table, players)
+            points_data = getPointData(point_table, player_models)
             match_dict['points'] = points_data
     except:
         pass
 
-    return match_dict['points']
+    return match_dict
 
 
 def getMatchLinks(link='http://www.tennisabstract.com/charting/'):

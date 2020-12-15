@@ -2,8 +2,9 @@ import requests
 from bs4 import BeautifulSoup
 import ast
 
-from helper import extractVariableFromText
+from scraper.helper import extractVariableFromText
 
+tournament_base_url = 'http://www.minorleaguesplits.com/tennisabstract/cgi-bin/jstourneys/'
 
 def getTournamentData(link):
     '''
@@ -57,7 +58,7 @@ def getTournamentData(link):
     return tournament_dict
 
 
-def getTournamentLinks(link='http://www.minorleaguesplits.com/tennisabstract/cgi-bin/jstourneys/'):
+def getTournamentLinks(link=tournament_base_url):
     '''
     Returns array of tournament links
     '''
@@ -72,3 +73,11 @@ def getTournamentLinks(link='http://www.minorleaguesplits.com/tennisabstract/cgi
 
     return tournament_links
 
+
+def constructTournamentLink(year, name, gender, url_stem=tournament_base_url):
+    '''
+    Creates a url for a tournament based on the args provided
+    url is of form: <url_stem><W_ if women tournament><year><name>.js
+    '''
+
+    return f"{url_stem}{'W_' if gender == 'W' else ''}{year}{name.replace(' ', '_')}.js"

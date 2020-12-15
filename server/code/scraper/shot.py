@@ -8,7 +8,7 @@ def getShotData(rally_list, player_list, result):
     # initialize shots
     shots = []
     
-    location_list = ['crosscourt', 'down the line', 'down the middle', 'down the T', 'inside-in', 'inside-out', 'to body' 'wide']
+    location_list = ['crosscourt', 'down the line', 'down the middle', 'down the T', 'inside-in', 'inside-out', 'to body', 'wide']
     server = player_list[0]
     receiver = player_list[1]
 

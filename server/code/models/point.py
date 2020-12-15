@@ -1,6 +1,6 @@
 from db import db
-from player import PlayerModel
-from shot import ShotModel
+from models.player import PlayerModel
+from models.shot import ShotModel
 
 class PointModel(db.EmbeddedDocument):
     
@@ -16,8 +16,8 @@ class PointModel(db.EmbeddedDocument):
     game_score_receiver = db.IntField()
     game_in_set = db.IntField()
     point_score = db.StringField()
-    point_score_server = db.IntField()
-    point_score_receiver = db.IntField()
+    point_score_server = db.StringField()
+    point_score_receiver = db.StringField()
     point_in_game = db.IntField()
     side = db.StringField()
     num_shots = db.IntField()

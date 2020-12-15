@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import ast
 import datetime
 
-from helper import extractVariableFromText
+from scraper.helper import extractVariableFromText
 
 def getPlayerData(link):
 
@@ -116,8 +116,17 @@ def getPlayerLinks():
         #extract name
         name = player.split(') ')[1]
         # construct link
-        link = f"http://www.tennisabstract.com/cgi-bin/{'w' if gender=='W' else ''}player.cgi?p={name.replace(' ', '')}"
+        link = constructPlayerLink(name, gender)
         # append to list
         player_links.append(link)
     
     return player_links
+
+
+def constructPlayerLink(name, gender, url_stem='http://www.tennisabstract.com/cgi-bin/'):
+    '''
+    Creates a url for a player based on the args provided
+    url is of form: <url_stem><w if women>player.cgi?p=<name>
+    '''
+
+    return f"{url_stem}{'w' if gender=='W' else ''}player.cgi?p={name.replace(' ', '')}"
