@@ -31,3 +31,7 @@ class MatchModel(db.Document):
     @classmethod
     def find_by_link(cls, link):
         return MatchModel.objects(link=link).first()
+
+    @classmethod
+    def find_by_id(cls, id):
+        return MatchModel.objects(id=id).first()

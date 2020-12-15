@@ -19,3 +19,7 @@ class TournamentModel(db.Document):
     def find_by_name_and_gender(cls, name, gender):
         return TournamentModel.objects(Q(name=name) & Q(gender=gender)).first()
 
+    @classmethod
+    def find_by_id(cls, id):
+        return TournamentModel.objects(id=id).first()
+
