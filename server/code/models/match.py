@@ -12,14 +12,18 @@ class MatchModel(db.Document):
     gender = db.StringField(min_length=1, max_length=1, default='U')
     tournament = db.ReferenceField(TournamentModel)
     match_round = db.StringField(default='NONE')
-    players = db.ListField(db.ReferenceField(PlayerModel))
+    #players = db.ListField(db.ReferenceField(PlayerModel))
+    players = db.ListField()
     title = db.StringField(default='None')
     result = db.StringField(default='None')
-    winner = db.ReferenceField(PlayerModel, default='None')
-    loser = db.ReferenceField(PlayerModel, default='None')
+    #winner = db.ReferenceField(PlayerModel, default='None')
+    #loser = db.ReferenceField(PlayerModel, default='None')
+    winner = db.StringField()
+    loser = db.StringField()
     score = db.StringField(default='None')
     sets = db.IntField(max_value=5, default=0)
-    points = db.EmbeddedDocumentListField(PointModel, default=[])
+    #points = db.EmbeddedDocumentListField(PointModel, default=[])
+    point = db.ListField(default=[])
 
     meta = {'collection': 'matches'}
 

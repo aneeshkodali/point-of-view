@@ -1,8 +1,6 @@
 from flask_restful import Resource, reqparse
 from models.match import MatchModel
 from scraper.match import getMatchData
-from scraper.tournament import constructTournamentLink, getTournamentData
-from scraper.player import constructPlayerLink, getPlayerData
 
 class Match(Resource):
 
@@ -21,23 +19,21 @@ class Match(Resource):
         data = Match.parser.parse_args()
         link = data['link']
 
-        # get match_data
+        # insert match data
         match_data = getMatchData(link)
+        match_model = MatchModel(**match_data)
+        # insert into db, return 'server' error
+        try:
+            match_model.save()
+        except Exception as e:
+            return {
+                    'message': 'An error occurred inserting the match',
+                    'error': str(e)
+                    }, 500
+        
+        return match_model.json(), 201
 
-        gender = match_data['gender']
 
-        # get tournament data
-        tournament_name = match_data['tournament']
-        tournament_year = match_data['match_date'][:4]
-        tournament_gender = gender
-        tournament_link = constructTournamentLink(year=tournament_year, name=tournament_name, gender=tournament_gender)
-        tournament_data = getTournamentData(tournament_link)
-
-        # get player data
-        players = match_data['players']
-        players = [getPlayerData(constructPlayerLink(name=player_name, gender=gender)) for player_name in players]
-
-        return {'tournament': tournament_data, 'players': players, 'match': match_data}
 
 class Matches(Resource):
 
