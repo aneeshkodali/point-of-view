@@ -74,16 +74,19 @@ def getMatchData(link):
         player_names = [player_one, player_two]
         if player_names:
                 players = []
+                player_models = []
                 for player_name in player_names:
                     player_link = constructPlayerLink(name=player_name, gender=gender)
                     player_db = PlayerModel.find_by_link(player_link)
                     if player_db:
                         players.append(player_db)
+                        player_models.append({'player_name': player_name, 'player_model': player_db})
                     else:
                         player_data = getPlayerData(player_link)
                         player_model = PlayerModel(**player_data)
                         player_model.save()
                         players.append(player_model)
+                        player_models.append({'player_name': player_name, 'player_model': player_model})
                 match_dict['players'] = players
     except:
         pass
@@ -147,13 +150,13 @@ def getMatchData(link):
 
    
     # points
-    #try:
-    #    point_table = getPointTable(soup)
-    #    if point_table:
-    #        points_data = getPointData(point_table, players)
-    #        match_dict['points'] = points_data
-    #except:
-    #    pass
+    try:
+        point_table = getPointTable(soup)
+        if point_table:
+            points_data = getPointData(point_table, player_models)
+            match_dict['points'] = points_data
+    except:
+        pass
 
     return match_dict
 

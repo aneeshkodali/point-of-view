@@ -50,17 +50,20 @@ def getPointData(point_table, player_list):
 
         # server
         try:
-            server = unidecode(point_td[0].text).strip()
-            if server:
+            server_name = unidecode(point_td[0].text).strip()
+            if server_name:
+                server = list(filter(lambda player: player['player_name'] == server_name, player_list))[0]['player_model']
                 point_dict['server'] = server
         except:
             pass
             
         # receiver
         try:
-            receiver = list(filter(lambda player: player != server, player_list))[0]
-            if receiver:
-                point_dict['receiver']
+            receiver_obj = list(filter(lambda player: player['player_name'] != server_name, player_list))[0]
+            receiver_name = receiver_obj['player_name']
+            if receiver_name:
+                receiver = receiver_obj['player_model']
+                point_dict['receiver'] = receiver
         except:
             pass
 
@@ -226,7 +229,7 @@ def getPointData(point_table, player_list):
 
         # loser
         try:
-            loser = list(filter(lambda player: player != winner, player_list))[0]
+            loser = server if winner == receiver else receiver
             if loser:
                 point_dict['loser'] = loser
         except:
