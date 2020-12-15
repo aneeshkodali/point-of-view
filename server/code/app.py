@@ -11,7 +11,7 @@ import os
 from db import db
 from resources.player import Players
 from resources.match import Matches, Match
-from resources.tournament import Tournaments
+from resources.tournament import Tournaments, Tournament
 
 #### APP SETUP
 
@@ -36,6 +36,7 @@ api.add_resource(Players, '/server/players')
 api.add_resource(Matches, '/server/matches')
 api.add_resource(Match, '/server/match')
 api.add_resource(Tournaments, '/server/tournaments')
+api.add_resource(Tournament, '/server/tournament')
 
 
 #### RUN APP
