@@ -1,4 +1,5 @@
 from mongoengine.queryset.visitor import Q
+import json
 from db import db
 
 class TournamentModel(db.Document):
@@ -15,6 +16,6 @@ class TournamentModel(db.Document):
             return json.loads(self.to_json())
 
     @classmethod
-    def find_by_name_and_gender(self, name, gender):
+    def find_by_name_and_gender(cls, name, gender):
         return TournamentModel.objects(Q(name=name) & Q(gender=gender)).first()
 
