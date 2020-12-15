@@ -71,8 +71,11 @@ class Tournament(Resource):
         # insert into db, return 'server' error
         try:
             tournament_model.save()
-        except:
-            return {'message': 'An error occurred inserting the tournament'}, 500
+        except Exception as e:
+            return {
+                    'message': 'An error occurred inserting the tournament',
+                    'error': str(e)
+                    }, 500
         
         return tournament_model.json(), 201
 
