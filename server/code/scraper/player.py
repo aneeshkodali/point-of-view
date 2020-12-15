@@ -56,7 +56,7 @@ def getPlayerData(link):
             year = int(date_of_birth[:4])
             month = int(date_of_birth[4:6])
             day = int(date_of_birth[6:8])
-            player_dict['date_of_birth'] = datetime.datetime(year, month, day).isoformat()
+            player_dict['date_of_birth'] = datetime.datetime(year, month, day)
     except:
         pass
 
