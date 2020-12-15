@@ -35,6 +35,14 @@ class Match(Resource):
         return match_model.json(), 201
 
 
+class MatchID(Resource):
+
+    # GET method
+    def get(self, id):
+        match = MatchModel.find_by_id(id)
+        if match:
+            return match.json()
+        return {'message': 'Item not found'}, 404
 
 class Matches(Resource):
 
