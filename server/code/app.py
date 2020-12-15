@@ -9,7 +9,7 @@ import os
 
 ## imports from project
 from db import db
-from resources.player import Players
+from resources.player import Players, Player
 from resources.match import Matches, Match
 from resources.tournament import Tournaments, Tournament
 
@@ -33,6 +33,7 @@ def index():
     return 'Hello World'
 
 api.add_resource(Players, '/server/players')
+api.add_resource(Player, '/server/player')
 api.add_resource(Matches, '/server/matches')
 api.add_resource(Match, '/server/match')
 api.add_resource(Tournaments, '/server/tournaments')
