@@ -28,3 +28,7 @@ class PlayerModel(db.Document):
     def find_by_link(cls, link):
         return PlayerModel.objects(link=link).first()
 
+    @classmethod
+    def find_by_id(cls, id):
+        return PlayerModel.objects(id=id).first()
+
