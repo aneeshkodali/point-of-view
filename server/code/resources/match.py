@@ -1,4 +1,5 @@
 from flask_restful import Resource, reqparse
+import json
 from models.match import MatchModel
 from scraper.match import getMatchData
 
@@ -39,4 +40,4 @@ class Matches(Resource):
 
     # GET method
     def get(self):
-        return {'matches': [match.json() for match in MatchModel.objects()]}
+        return {'matches': json.loads(MatchModel.objects().fields(title=1).to_json())}
