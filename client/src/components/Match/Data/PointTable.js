@@ -5,5 +5,7 @@ const PointTable = () => {
         <div>
             POINT TABLE
         </div>
-    )
+    );
 }
+
+export default PointTable;
