@@ -2,6 +2,8 @@ import requests
 from bs4 import BeautifulSoup
 import datetime
 
+from models.tournament import TournamentModel
+from scraper.tournament import constructTournamentLink, getTournamentData
 from scraper.point import getPointTable, getPointData
 
 
@@ -27,7 +29,7 @@ def getMatchData(link):
             year = int(match_date[:4])
             month = int(match_date[4:6])
             day = int(match_date[6:])
-            match_dict['match_date'] = datetime.datetime(year, month, day).isoformat()
+            match_dict['match_date'] = datetime.datetime(year, month, day)
     except:
         pass
     
@@ -43,7 +45,15 @@ def getMatchData(link):
     try:
         tournament = suffix[2].replace('_', ' ')
         if tournament:
-            match_dict['tournament'] = tournament
+            tournament_db = TournamentModel.find_by_name_and_gender(tournament, gender)
+            if tournament_db:
+                match_dict['tournament'] = tournament_db
+            else:
+                tournament_link = constructTournamentLink(year=year, name=tournament, gender=gender)
+                tournament_data = getTournamentData(tournament_link) 
+                tournament_model = TournamentModel(**tournament_data)
+                tournament_model.save()
+                match_dict['tournament'] = tournament_model
     except:
         pass
 
