@@ -19,7 +19,9 @@ const Match = (props) => {
     }
     useEffect(() => {
         getMatchData(id)
-    }, [])
+    }, []);
+
+    const { title, points } = matchData
 
     // state for tabs
     const tabs = ['Summary', 'Data'];
@@ -48,7 +50,7 @@ const Match = (props) => {
                 );
             case 'Data':
                 return (
-                    <PointTable points={matchData['points']} />
+                    <PointTable points={points} />
                 );
             default:
                 return null;
@@ -57,7 +59,7 @@ const Match = (props) => {
 
    return (
        <div>
-           <h1 className="ui header">{matchData['title']}</h1>
+           <h1 className="ui header">{title}</h1>
 
            <div className="ui top attached tabular menu">
                 {tabsRendered}
