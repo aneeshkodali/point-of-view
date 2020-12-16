@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import server from '../../api/server';
 
+import Summary from './Summary';
+
 const Match = (props) => {
 
     // state for match data
@@ -26,7 +28,7 @@ const Match = (props) => {
            <h1 className="ui header">{title}</h1>
            <h2 className="ui header">{result}</h2>
 
-         
+         <Summary matchData={matchData} />
         </div>
    );
 }
