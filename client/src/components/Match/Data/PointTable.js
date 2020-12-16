@@ -54,7 +54,7 @@ const PointTable = ({ points }) => {
 
     return (
         <div className="ui grid">
-            <div>
+            <div className="eight wide column" style={{'height': '500px', 'overflowY': 'scroll'}}>
                 Point # Selected: {pointSelected.point_number}
                 <table className="ui celled table">
                     <thead>
@@ -75,7 +75,7 @@ const PointTable = ({ points }) => {
                     </tbody>
                 </table>
             </div>
-            <div>
+            <div className="eight wide column">
                 Shot Table
                 <table className="ui celled table">
                     <thead>
