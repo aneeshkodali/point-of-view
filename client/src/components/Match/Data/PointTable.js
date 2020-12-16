@@ -30,7 +30,7 @@ const PointTable = ({ points }) => {
                 <td>{game_score}</td>
                 <td>{point_score}</td>
                 <td>{side}</td>
-                {/*<td>{server}</td>*/}
+                <td>{server['$oid']}</td>
                 <td>{rally_length}</td>
                 <td>{result}</td>
             </tr>
@@ -38,17 +38,22 @@ const PointTable = ({ points }) => {
     });
 
     // display shots
-    const shotsRendered = shotsSelected.map(shot => {
-        const { shot_number, shot_number_w_serve } = shot
+    const shotsRendered = shotsSelected.map(shot_elem => {
+        const { shot_number, shot_number_w_serve, shot_by, shot, location, result } = shot_elem
         return (
             <tr key={shot_number_w_serve}>
+                <td>{shot_number}</td>
                 <td>{shot_number_w_serve}</td>
+                <td>{shot_by['$oid']}</td>
+                <td>{shot}</td>
+                <td>{location}</td>
+                <td>{result}</td>
             </tr>
         );
     })
 
     return (
-        <div>
+        <div className="ui grid">
             <div>
                 Point # Selected: {pointSelected.point_number}
                 <table className="ui celled table">
@@ -59,7 +64,7 @@ const PointTable = ({ points }) => {
                             <th>Game Score</th>
                             <th>Point Score</th>
                             <th>Side</th>
-                            {/*<th>Server</th>*/}
+                            <th>Server</th>
                             <th>Rally Length</th>
                             <th>Result</th>
                         </tr>
@@ -71,10 +76,16 @@ const PointTable = ({ points }) => {
                 </table>
             </div>
             <div>
+                Shot Table
                 <table className="ui celled table">
                     <thead>
                         <tr>
+                            <th>Shot Number</th>
                             <th>Shot Number w/Serve</th>
+                            <th>Shot By</th>
+                            <th>Shot</th>
+                            <th>Location</th>
+                            <th>Result</th>
                         </tr>
                     </thead>
                     <tbody>
