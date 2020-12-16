@@ -1,11 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const PointTable = ({ points }) => {
+
+    // state for currently selected point
+    const [pointSelected, setPointSelected] = useState({})
+
+    // function to select point
+    const selectPoint = point => {
+        // if point is already selected point, deleselect it
+        // otherwise select it
+        if (point.point_number === pointSelected.point_number) {
+            setPointSelected({})
+        } else {
+            setPointSelected(point)
+        }
+    }
 
     const pointsRendered = points.map(point => {
         const { point_number, set_score, game_score, point_score, side, server, rally_length, result, shots } = point
         return (
-            <tr key={point_number}>
+            <tr key={point_number} onClick={() => selectPoint(point)}>
                 <td>{point_number}</td>
                 <td>{set_score}</td>
                 <td>{game_score}</td>
@@ -19,6 +33,7 @@ const PointTable = ({ points }) => {
     })
     return (
         <div>
+            Point # Selected: {pointSelected.point_number}
             <table className="ui table">
                 <thead>
                     <tr>
