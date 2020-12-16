@@ -19,30 +19,19 @@ const PointTable = ({ points }) => {
     })
     return (
         <div>
-            <table className="ui striped table">
+            <table className="ui table">
                 <thead>
                     <tr>
                         <th>Point Number</th>
-                    </tr>
-                    <tr>
                         <th>Set Score</th>
-                    </tr>
-                    <tr>
                         <th>Game Score</th>
-                    </tr>
-                    <tr>
                         <th>Point Score</th>
-                    </tr>
-                    <tr>
                         <th>Side</th>
-                    </tr>
-                    {/*<tr>Server</tr>*/}
-                    <tr>
+                        {/*<th>Server</th>*/}
                         <th>Rally Length</th>
-                    </tr>
-                    <tr>
                         <th>Result</th>
                     </tr>
+                  
                 </thead>
                 <tbody>
                     {pointsRendered}
