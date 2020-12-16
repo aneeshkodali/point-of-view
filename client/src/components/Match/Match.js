@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import server from '../../api/server';
 
-import Summary from './Summary';
+import About from './About';
 import PointTable from './Data/PointTable';
 
 const Match = (props) => {
@@ -24,7 +24,7 @@ const Match = (props) => {
     const { title, points } = matchData
 
     // state for tabs
-    const tabs = ['Summary', 'Data'];
+    const tabs = ['About', 'Data'];
     const [tabSelected, setTabSelected] = useState(tabs[0]);
 
     // render tabs
@@ -44,9 +44,9 @@ const Match = (props) => {
     // conditionally render tab
     const tabComponentRendered = (tab) => {
         switch (tab) {
-            case 'Summary':
+            case 'About':
                 return (
-                    <Summary matchData={matchData} />  
+                    <About matchData={matchData} />  
                 );
             case 'Data':
                 return (

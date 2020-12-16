@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Summary = ({ matchData }) => {
+const About = ({ matchData }) => {
 
     const { match_date, winner, loser, score, result } = matchData;
 
@@ -11,4 +11,4 @@ const Summary = ({ matchData }) => {
     );
 }
 
-export default Summary;
+export default About;
