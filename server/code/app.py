@@ -12,7 +12,7 @@ import os
 from db import db
 from resources.player import Players, Player
 from resources.match import Matches, Match, MatchID
-from resources.tournament import Tournaments, Tournament
+from resources.tournament import Tournaments, Tournament, TournamentID
 
 #### APP SETUP
 
@@ -43,6 +43,7 @@ api.add_resource(Match, '/server/match')
 api.add_resource(MatchID, '/server/match/<id>')
 api.add_resource(Tournaments, '/server/tournaments')
 api.add_resource(Tournament, '/server/tournament')
+api.add_resource(TournamentID, '/server/tournament/<id>')
 
 
 #### RUN APP
