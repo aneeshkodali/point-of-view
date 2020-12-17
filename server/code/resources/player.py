@@ -48,4 +48,4 @@ class Players(Resource):
 
     # GET method
     def get(self):
-        return {'players': [player.json() for player in PlayerModel.objects()]}
+        return {'players': json.loads(PlayerModel.objects().fields(title=1).to_json())}

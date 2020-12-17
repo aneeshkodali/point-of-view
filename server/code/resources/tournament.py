@@ -79,9 +79,17 @@ class Tournament(Resource):
         
         return tournament_model.json(), 201
 
+class TournamentID(Resource):
+
+    # GET method
+    def get(self, id):
+        tournament = TournamentModel.find_by_id(id)
+        if tournament:
+            return tournament.json()
+        return {'message': 'Tournament not found'}, 404
 
 class Tournaments(Resource):
 
     # GET method
     def get(self):
-        return {'tournaments': [tournament.json() for tournament in TournamentModel.objects()]}
+        return {'tournaments': json.loads(TournamentModel.objects().fields(title=1).to_json())}
