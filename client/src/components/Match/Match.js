@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import server from '../../api/server';
 
 import About from './About';
-import PointTable from './Data/PointTable';
+import Table from './Data/Table';
 
 const Match = (props) => {
 
@@ -50,7 +50,7 @@ const Match = (props) => {
                 );
             case 'Data':
                 return (
-                    <PointTable points={points} />
+                    <Table points={points} />
                 );
             default:
                 return null;
