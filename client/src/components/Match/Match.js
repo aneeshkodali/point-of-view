@@ -14,8 +14,15 @@ const Match = (props) => {
 
     // load match data
     const getMatchData = async id => {
-        const response = await server.get(`/server/match/${id}`)
-        setMatchData(response.data)
+        const match_response = await server.get(`/server/match/${id}`);
+        const match_data = match_response.data;
+        
+        // get tournament data
+        const tournament_id = match_data['tournament']['$oid'];
+        const tournament_response = await server.get(`/server/tournament/${tournament_id}`);
+        match_data['tournament'] = tournament_response.data;
+
+        setMatchData(match_data)
     }
     useEffect(() => {
         getMatchData(id)

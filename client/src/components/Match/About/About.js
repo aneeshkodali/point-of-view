@@ -25,13 +25,13 @@ const About = ({ matchData }) => {
             <h1 className="ui header">{title}</h1>
             <div>Date: {match_date_string} VERIFY THIS</div>
             <div>Gender: {gender}</div>
-            <div>Tournament: {tournament['$oid']}</div>
+            <div>Tournament: {tournament.name}</div>
             <div>Round: {match_round}</div>
             <div>Result: {result}</div>
             <div>Winner: {winner['$oid']}</div>
             <div>Loser: {loser['$oid']}</div>
             <div>Score: {score}</div>
-            <div>:Sets: {sets}</div>
+            <div>Sets: {sets}</div>
 
             <ScoreTable players={[winner['$oid'], loser['$oid']]} score={score} />
         </div>
