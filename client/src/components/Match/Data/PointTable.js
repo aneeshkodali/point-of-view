@@ -22,7 +22,6 @@ const PointTable = ({ points, pointSelected, selectPoint }) => {
 
     return (
         <div>
-            Click on a point (row) and see details about that point's rally.
             <h1 className="ui header">Point Table</h1>
             Point # Selected: <b>{pointSelected.point_number}</b>
             <table className="ui celled table">
