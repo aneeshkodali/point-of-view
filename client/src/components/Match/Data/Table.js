@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import PointTable from './PointTable';
+import ShotTable from './ShotTable';
 
 const Table = ({ points }) => {
 
@@ -23,14 +24,17 @@ const Table = ({ points }) => {
     }
 
     return (
+        <div>
+            Click on a point (row) and see details about that point's rally.
             <div className="ui grid">
                 <div className="eight wide column">
                     <PointTable points={points} pointSelected={pointSelected} selectPoint={selectPoint} />
                 </div>
                 <div className="eight wide column">
-                    SHOT TABLE
+                    <ShotTable shots={shotsSelected} />
                 </div>
             </div>
+        </div>
     );
 }
 
