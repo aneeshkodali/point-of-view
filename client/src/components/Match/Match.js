@@ -57,12 +57,14 @@ const Match = (props) => {
         }
     }
 
+    const componentRendered = matchData ? tabComponentRendered(tabSelected) : <div>Loading match data...</div>;
+
    return (
        <div>
            <div className="ui top attached tabular menu">
                 {tabsRendered}
             </div>
-            {tabComponentRendered(tabSelected)}
+            {componentRendered}
         </div>
    );
 }
