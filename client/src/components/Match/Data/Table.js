@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import PointTable from './PointTable';
+
 const Table = ({ points }) => {
 
     // state for currently selected point
@@ -8,7 +10,7 @@ const Table = ({ points }) => {
     const [shotsSelected, setShotsSelected] = useState([])
 
     // function to select point and shots 
-    const selectPoint = point => {
+    const selectPoint = (point, pointSelected) => {
         // if point is already selected point, deleselect it
         // otherwise select it
         if (point.point_number === pointSelected.point_number) {
@@ -20,85 +22,15 @@ const Table = ({ points }) => {
         }
     }
 
-    // display points
-    const pointsRendered = points.map(point => {
-        const { point_number, set_score, game_score, point_score, side, server, rally_length, result, shots } = point
-        return (
-            <tr key={point_number} onClick={() => selectPoint(point)}>
-                <td>{point_number}</td>
-                <td>{set_score}</td>
-                <td>{game_score}</td>
-                <td>{point_score}</td>
-                <td>{side}</td>
-                <td>{server['$oid']}</td>
-                <td>{rally_length}</td>
-                <td>{result}</td>
-            </tr>
-        );
-    });
-
-    // display shots
-    const shotsRendered = shotsSelected.map(shot_elem => {
-        const { shot_number, shot_number_w_serve, shot_by, shot, location, result } = shot_elem
-        return (
-            <tr key={shot_number_w_serve}>
-                <td>{shot_number}</td>
-                <td>{shot_number_w_serve}</td>
-                <td>{shot_by['$oid']}</td>
-                <td>{shot}</td>
-                <td>{location}</td>
-                <td>{result}</td>
-            </tr>
-        );
-    })
-
     return (
-        <div>
-            Click on a point (row) and see details about that point's rally.
             <div className="ui grid">
                 <div className="eight wide column">
-                    <h1 className="ui header">Point Table</h1>
-                    Point # Selected: <b>{pointSelected.point_number}</b>
-                    <table className="ui celled table">
-                        <thead>
-                            <tr>
-                                <th>Point Number</th>
-                                <th>Set Score</th>
-                                <th>Game Score</th>
-                                <th>Point Score</th>
-                                <th>Side</th>
-                                <th>Server</th>
-                                <th>Rally Length</th>
-                                <th>Result</th>
-                            </tr>
-                        
-                        </thead>
-                        <tbody>
-                            {pointsRendered}
-                        </tbody>
-                    </table>
+                    <PointTable points={points} pointSelected={pointSelected} selectPoint={selectPoint} />
                 </div>
                 <div className="eight wide column">
-                    <h1 className="ui header">Shot Table</h1>
-                    <br></br>
-                    <table className="ui celled table">
-                        <thead>
-                            <tr>
-                                <th>Shot Number</th>
-                                <th>Shot Number w/Serve</th>
-                                <th>Shot By</th>
-                                <th>Shot</th>
-                                <th>Location</th>
-                                <th>Result</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {shotsRendered}
-                        </tbody>
-                    </table>
+                    SHOT TABLE
                 </div>
             </div>
-        </div>
     );
 }
 
