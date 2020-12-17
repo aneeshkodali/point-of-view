@@ -53,45 +53,50 @@ const PointTable = ({ points }) => {
     })
 
     return (
-        <div className="ui grid">
-            <div className="eight wide column" style={{'height': '500px', 'overflowY': 'scroll'}}>
-                Point # Selected: {pointSelected.point_number}
-                <table className="ui celled table">
-                    <thead>
-                        <tr>
-                            <th>Point Number</th>
-                            <th>Set Score</th>
-                            <th>Game Score</th>
-                            <th>Point Score</th>
-                            <th>Side</th>
-                            <th>Server</th>
-                            <th>Rally Length</th>
-                            <th>Result</th>
-                        </tr>
-                    
-                    </thead>
-                    <tbody>
-                        {pointsRendered}
-                    </tbody>
-                </table>
-            </div>
-            <div className="eight wide column">
-                Shot Table
-                <table className="ui celled table">
-                    <thead>
-                        <tr>
-                            <th>Shot Number</th>
-                            <th>Shot Number w/Serve</th>
-                            <th>Shot By</th>
-                            <th>Shot</th>
-                            <th>Location</th>
-                            <th>Result</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {shotsRendered}
-                    </tbody>
-                </table>
+        <div>
+            Click on a point (row) and see details about that point's rally.
+            <div className="ui grid">
+                <div className="eight wide column">
+                    <h1 className="ui header">Point Table</h1>
+                    Point # Selected: <b>{pointSelected.point_number}</b>
+                    <table className="ui celled table">
+                        <thead>
+                            <tr>
+                                <th>Point Number</th>
+                                <th>Set Score</th>
+                                <th>Game Score</th>
+                                <th>Point Score</th>
+                                <th>Side</th>
+                                <th>Server</th>
+                                <th>Rally Length</th>
+                                <th>Result</th>
+                            </tr>
+                        
+                        </thead>
+                        <tbody>
+                            {pointsRendered}
+                        </tbody>
+                    </table>
+                </div>
+                <div className="eight wide column">
+                    <h1 className="ui header">Shot Table</h1>
+                    <br></br>
+                    <table className="ui celled table">
+                        <thead>
+                            <tr>
+                                <th>Shot Number</th>
+                                <th>Shot Number w/Serve</th>
+                                <th>Shot By</th>
+                                <th>Shot</th>
+                                <th>Location</th>
+                                <th>Result</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {shotsRendered}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     );
