@@ -33,7 +33,7 @@ const About = ({ matchData }) => {
             <div>Score: {score}</div>
             <div>:Sets: {sets}</div>
 
-            <ScoreTable />
+            <ScoreTable players={[winner['$oid'], loser['$oid']]} score={score} />
         </div>
     );
 }
