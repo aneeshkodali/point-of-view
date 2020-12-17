@@ -21,6 +21,7 @@ const Match = (props) => {
         getMatchData(id)
     }, []);
 
+    // get points data to send to components
     const { points } = matchData
 
     // state for tabs
@@ -57,7 +58,16 @@ const Match = (props) => {
         }
     }
 
-    const componentRendered = matchData ? tabComponentRendered(tabSelected) : <div>Loading match data...</div>;
+    // create loader component
+    const loader = (
+        <div className="ui segment">
+            <div className="ui active inverted inline dimmer">
+                <div className="ui text loader">Loading Match Data...</div>
+            </div>
+        </div>
+    );
+
+    const componentRendered = points ? tabComponentRendered(tabSelected) : loader;
 
    return (
        <div>
