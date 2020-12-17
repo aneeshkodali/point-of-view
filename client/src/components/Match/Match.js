@@ -21,7 +21,7 @@ const Match = (props) => {
         getMatchData(id)
     }, []);
 
-    const { title, points } = matchData
+    const { points } = matchData
 
     // state for tabs
     const tabs = ['About', 'Data'];
@@ -59,8 +59,6 @@ const Match = (props) => {
 
    return (
        <div>
-           <h1 className="ui header">{title}</h1>
-
            <div className="ui top attached tabular menu">
                 {tabsRendered}
             </div>
