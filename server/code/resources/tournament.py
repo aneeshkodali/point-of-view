@@ -84,4 +84,4 @@ class Tournaments(Resource):
 
     # GET method
     def get(self):
-        return {'tournaments': [tournament.json() for tournament in TournamentModel.objects()]}
+        return {'tournaments': json.loads(TournamentModel.objects().fields(title=1).to_json())}
