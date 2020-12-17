@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import server from '../../api/server';
 
-import About from './About';
+import About from './About/About';
 import Table from './Data/Table';
 
 const Match = (props) => {
