@@ -3,6 +3,7 @@ import server from '../../api/server';
 
 import About from './About/About';
 import Table from './Data/Table';
+import Loader from '../Loader';
 
 const Match = (props) => {
 
@@ -14,22 +15,37 @@ const Match = (props) => {
 
     // load match data
     const getMatchData = async id => {
+
+        // get match data
         const match_response = await server.get(`/server/match/${id}`);
         const match_data = match_response.data;
         
         // get tournament data
         const tournament_id = match_data['tournament']['$oid'];
         const tournament_response = await server.get(`/server/tournament/${tournament_id}`);
-        match_data['tournament'] = tournament_response.data;
+        const tournament_data = tournament_response.data;
 
-        setMatchData(match_data)
+        // get player data
+        const players_data = {}
+        match_data['players'].forEach(async player => {
+            const id = player['$oid'];
+            const player_response = await server.get(`/server/player/${id}`);
+            const player_data = player_response.data
+            players_data[id] = player_data
+        });
+
+        // combine all data
+        const matchDataObj = await {
+            'match': match_data,
+            'tournament': tournament_data,
+            'players': players_data
+        }
+        setMatchData(matchDataObj)
     }
     useEffect(() => {
         getMatchData(id)
     }, []);
 
-    // get points data to send to components
-    const { points } = matchData
 
     // state for tabs
     const tabs = ['About', 'Data'];
@@ -55,26 +71,21 @@ const Match = (props) => {
             case 'About':
                 return (
                     <About matchData={matchData} />  
+                    //<div>ABOUTA</div>
                 );
             case 'Data':
                 return (
-                    <Table points={points} />
+                    //<Table points={matchData.match.points} />
+                    <div>DATA</div>
                 );
             default:
                 return null;
         }
     }
-
-    // create loader component
-    const loader = (
-        <div className="ui segment">
-            <div className="ui active inverted inline dimmer">
-                <div className="ui text loader">Loading Match Data...</div>
-            </div>
-        </div>
-    );
-
-    const componentRendered = points ? tabComponentRendered(tabSelected) : loader;
+    
+    // load component if data is loaded else loader
+    const { match, tournament, players } = matchData;
+    const componentRendered = (match && tournament && players) ? tabComponentRendered(tabSelected) : <Loader text={"Loading Match Data..."} />;
 
    return (
        <div>
