@@ -31,7 +31,7 @@ const Matches = () => {
     return (
         <div>
             <h1>Matches Page</h1>
-            <MatchesForm />
+            {/*<MatchesForm />*/}
             <button onClick={getMatches}>Get Matches</button>
             {matchesRendered}
         </div>
