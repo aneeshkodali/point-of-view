@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import server from '../../api/server';
+import MatchesForm from './MatchesForm';
 
 const Matches = () => {
 
@@ -30,6 +31,7 @@ const Matches = () => {
     return (
         <div>
             <h1>Matches Page</h1>
+            <MatchesForm />
             <button onClick={getMatches}>Get Matches</button>
             {matchesRendered}
         </div>
