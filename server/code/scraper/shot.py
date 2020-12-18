@@ -1,3 +1,5 @@
+from models.shot import ShotModel
+
 def getShotData(rally_list, player_list, result):
     '''
     Given a rally list (where each element is of form: <stroke> <location> <result if any>)
@@ -81,6 +83,7 @@ def getShotData(rally_list, player_list, result):
 
 
         # append to list
-        shots.append(shot_dict)
+        shot_model = ShotModel(**shot_dict)
+        shots.append(shot_model)
 
     return shots
