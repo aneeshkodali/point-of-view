@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from unidecode import unidecode
 
+from models.point import PointModel
 from scraper.shot import getShotData
 
 
@@ -242,8 +243,9 @@ def getPointData(point_table, player_list):
                 point_dict['shots'] = shots
         except:
             pass
-    
-        points.append(point_dict)
+        
+        point_model = PointModel(**point_dict)
+        points.append(point_model)
         point_number += 1
 
     return points
