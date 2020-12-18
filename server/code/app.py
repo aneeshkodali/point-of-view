@@ -10,7 +10,7 @@ import os
 
 ## imports from project
 from db import db
-from resources.player import Players, Player
+from resources.player import Players, Player, PlayerID
 from resources.match import Matches, MatchesUniqueFieldValues, Match, MatchID
 from resources.tournament import Tournaments, Tournament, TournamentID
 
@@ -38,6 +38,7 @@ def index():
 
 api.add_resource(Players, '/server/players')
 api.add_resource(Player, '/server/player')
+api.add_resource(PlayerID, '/server/player/<id>')
 api.add_resource(Matches, '/server/matches')
 api.add_resource(MatchesUniqueFieldValues, '/server/matches/unique/<field>')
 api.add_resource(Match, '/server/match')

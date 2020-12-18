@@ -44,6 +44,15 @@ class Player(Resource):
         
         return player_model.json(), 201
 
+class PlayerID(Resource):
+
+    # GET method
+    def get(self, id):
+        player = PlayerModel.find_by_id(id)
+        if player:
+            return player.json()
+        return {'message': 'Player not found'}, 404
+
 class Players(Resource):
 
     # GET method
