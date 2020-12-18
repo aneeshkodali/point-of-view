@@ -8,15 +8,20 @@ const MatchesForm = () => {
     // state for gender dropdown
     const [genderOptions, setGenderOptions] = useState(['All'])
     const [genderOptionSelected, setGenderOptionSelected] = useState(genderOptions[0]);
+
+    const [setOptions, setSetOptions] = useState(['All']);
+    const [setOptionSelected, setSetOptionSelected] = useState(setOptions[0]);
+
     // function to get unique values
-    const getUniqueGenderValues = async () => {
-        const response = await server.get('/server/matches/unique/gender')
+    const getUniqueValues = async (field, stateArray, setStateFunction) => {
+        const response = await server.get(`/server/matches/unique/${field}`)
         const { values } = response.data
-        const new_arr = [...genderOptions, ...values]
-        setGenderOptions(new_arr)
+        const updatedArray = [...stateArray, ...values]
+        setStateFunction(updatedArray)
     }
     useEffect(() => {
-        getUniqueGenderValues() 
+        getUniqueValues('gender', genderOptions, setGenderOptions) 
+        getUniqueValues('sets', setOptions, setSetOptions)
     }, []);
 
     // render options
@@ -27,6 +32,17 @@ const MatchesForm = () => {
                     value={genderOption}
                 >
                     {genderOption}
+                </option>
+                )
+    });
+
+    const setOptionsRendered = setOptions.map(setOption => {
+        return (
+                <option 
+                    key={setOption}
+                    value={setOption}
+                >
+                    {setOption}
                 </option>
                 )
     });
@@ -42,6 +58,15 @@ const MatchesForm = () => {
                         onChange={(e) => setGenderOptionSelected(e.target.value)}
                     >
                         {genderOptionsRendered}
+                    </select>
+                </div>
+                <div>
+                    <select 
+                        className="ui dropdown"
+                        value={setOptionSelected}
+                        onChange={(e) => setSetOptionSelected(e.target.value)}
+                    >
+                        {setOptionsRendered}
                     </select>
                 </div>
             </div>
