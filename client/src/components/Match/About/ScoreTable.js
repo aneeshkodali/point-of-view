@@ -23,12 +23,14 @@ const ScoreTable = ({ players, score }) => {
     // function to apply styling to set score if player won set
     // returns object of css properties
     const applyScoreStyling = (setScorePlayer, setScoreOpponent) => {
+
+        const stylingObj = {};
+
         if (setScorePlayer > setScoreOpponent) {
-            return {
-                'fontWeight': 'bold',
-                'backgroundColor': 'lightgreen'
-            }
+            stylingObj['fontWeight'] = 'bold'
         }
+
+        return stylingObj;
     }
 
     // loop through scores and append data accordingly
@@ -38,13 +40,18 @@ const ScoreTable = ({ players, score }) => {
         const setScoreWinner = set[0];
         const setScoreLoser = set[1];
 
+        const winnerStylingObj = applyScoreStyling(setScoreWinner, setScoreLoser);
+        winnerStylingObj['backgroundColor'] = setScoreWinner > setScoreLoser ? 'lightgreen' : '';
+        const loserStylingObj = applyScoreStyling(setScoreLoser, setScoreWinner);
+
+
         tableHeaders.push(
             <th key={setNum}>Set {setNum}</th>
         );
         winnerData.push(
             <td 
                 key={setNum} 
-                style={applyScoreStyling(setScoreWinner, setScoreLoser)}
+                style={winnerStylingObj}
             >
                 {setScoreWinner}
             </td>
@@ -52,7 +59,7 @@ const ScoreTable = ({ players, score }) => {
         loserData.push(
             <td 
                 key={setNum} 
-                style={applyScoreStyling(setScoreLoser, setScoreWinner)}
+                style={loserStylingObj}
             >
                 {setScoreLoser}
             </td>
