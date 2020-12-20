@@ -14,10 +14,10 @@ const ScoreTable = ({ players, score }) => {
         <th key={'player'}>Player</th>
     ];
     const winnerData = [
-        <td key={'winner'}>{winner}</td>
+        <td key={'winner'}>{winner.full_name} ({winner.country})</td>
     ];
     const loserData = [
-        <td key={'loser'}>{loser}</td>
+        <td key={'loser'}>{loser.full_name} ({loser.country})</td>
     ];
 
     // function to apply styling to set score if player won set
