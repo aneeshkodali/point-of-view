@@ -1,15 +1,12 @@
 import React from 'react';
 
+import { getPlayerData } from '../../../helper/functions';
 import ScoreTable from './ScoreTable';
 
 const About = ({ matchData }) => {
 
     // get variables from match data
     const { title, gender, match_date, match_round, score, tournament, players, winner, loser } = matchData;
-
-    const getPlayerData = (player, playerArr) => {
-        return players.filter(p => p['_id']['$oid'] == player['$oid'])[0];
-    }
 
     // get winner
     const winnerData = getPlayerData(winner, players);

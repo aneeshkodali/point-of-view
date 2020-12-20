@@ -74,8 +74,7 @@ const Match = props => {
                 );
             case 'Data':
                 return (
-                    //<Table points={matchData.match.points} />
-                    <div>DATA</div>
+                    <Table points={matchData.points} />
                 );
             default:
                 return null;
