@@ -1,6 +1,9 @@
 import React from 'react';
 
-const PointTable = ({ points, pointSelected, selectPoint }) => {
+import { getPlayerData } from '../../../helper/functions';
+
+const PointTable = ({ points, pointSelected, selectPoint, players }) => {
+
 
     // display points
     const pointsRendered = points.map(point => {
@@ -12,7 +15,7 @@ const PointTable = ({ points, pointSelected, selectPoint }) => {
                 <td>{game_score}</td>
                 <td>{point_score}</td>
                 <td>{side}</td>
-                <td>{server['$oid']}</td>
+                <td>{getPlayerData(server, players).full_name}</td>
                 <td>{rally_length}</td>
                 <td>{result}</td>
             </tr>

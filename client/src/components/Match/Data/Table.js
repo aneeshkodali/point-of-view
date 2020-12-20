@@ -3,7 +3,9 @@ import React, { useState } from 'react';
 import PointTable from './PointTable';
 import ShotTable from './ShotTable';
 
-const Table = ({ points }) => {
+const Table = ({ matchData }) => {
+
+    const { players, points } = matchData;
 
     // state for currently selected point
     const [pointSelected, setPointSelected] = useState({})
@@ -28,10 +30,10 @@ const Table = ({ points }) => {
             Click on a point (row) and see details about that point's rally.
             <div className="ui grid">
                 <div className="eight wide column">
-                    <PointTable points={points} pointSelected={pointSelected} selectPoint={selectPoint} />
+                    <PointTable points={points} pointSelected={pointSelected} selectPoint={selectPoint} players={players} />
                 </div>
                 <div className="eight wide column">
-                    <ShotTable shots={shotsSelected} />
+                    <ShotTable shots={shotsSelected} players={players} />
                 </div>
             </div>
         </div>

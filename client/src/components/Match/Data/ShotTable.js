@@ -1,6 +1,9 @@
 import React from 'react';
 
-const ShotTable = ({ shots }) => {
+import { getPlayerData } from '../../../helper/functions';
+
+const ShotTable = ({ shots, players }) => {
+
 
     // display shots
     const shotsRendered = shots.map(shot_elem => {
@@ -9,7 +12,7 @@ const ShotTable = ({ shots }) => {
             <tr key={shot_number_w_serve}>
                 <td>{shot_number}</td>
                 <td>{shot_number_w_serve}</td>
-                <td>{shot_by['$oid']}</td>
+                <td>{getPlayerData(shot_by, players).full_name}</td>
                 <td>{shot}</td>
                 <td>{location}</td>
                 <td>{result}</td>

@@ -45,7 +45,7 @@ const Match = props => {
     const [tabSelected, setTabSelected] = useState(tabs[0]);
 
     // display loading icon if match data not found
-    if (!(matchData && matchData['tournament'] && matchData['players'])) {
+    if (!(matchData && matchData['tournament'] && matchData['players'] && matchData['points'])) {
         return (
             <Loader text={'Loading Match Data...'} />
         );
@@ -74,7 +74,7 @@ const Match = props => {
                 );
             case 'Data':
                 return (
-                    <Table points={matchData.points} />
+                    <Table matchData={matchData} />
                 );
             default:
                 return null;
