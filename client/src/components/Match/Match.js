@@ -5,6 +5,7 @@ import { getPlayerData } from '../../helper/functions';
 import About from './About/About';
 import Table from './Data/Table';
 import Loader from '../Loader';
+import PointsWon from './Charts/PointsWon';
 
 const Match = props => {
 
@@ -71,7 +72,7 @@ const Match = props => {
     }, []);
 
     // state for tabs
-    const tabs = ['About', 'Data'];
+    const tabs = ['About', 'Data', 'Points Won'];
     const [tabSelected, setTabSelected] = useState(tabs[0]);
 
     // display loading icon if match data not found
@@ -105,6 +106,10 @@ const Match = props => {
             case 'Data':
                 return (
                     <Table matchData={matchData} />
+                );
+            case 'Points Won':
+                return (
+                    <PointsWon matchData={matchData} />
                 );
             default:
                 return null;
