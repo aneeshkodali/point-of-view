@@ -6,6 +6,7 @@ import About from './About/About';
 import Table from './Data/Table';
 import Loader from '../Loader';
 import PointsWon from './Charts/PointsWon';
+import PointsToMap from './Charts/PointsToMap';
 
 const Match = props => {
 
@@ -72,7 +73,7 @@ const Match = props => {
     }, []);
 
     // state for tabs
-    const tabs = ['About', 'Data', 'Points Won'];
+    const tabs = ['About', 'Data', 'Points Won', 'Points2Map'];
     const [tabSelected, setTabSelected] = useState(tabs[0]);
 
     // display loading icon if match data not found
@@ -110,6 +111,10 @@ const Match = props => {
             case 'Points Won':
                 return (
                     <PointsWon matchData={matchData} />
+                );
+            case 'Points2Map':
+                return (
+                    <PointsToMap matchData={matchData} />
                 );
             default:
                 return null;
