@@ -18,25 +18,28 @@ const PointsWon = ({ matchData }) => {
                 )
     });
 
-
-    // render charts
+    // render charts - loop through each player
     const chartsRendered = players.map(player => {
 
         const playerID = player['_id']['$oid'];
         const pointOutcomes = ['ace', 'double fault', 'forced error', 'service winner', 'unforced error', 'winner'];
         const playerData = [];
+        let playerSum = 0;
+        // for each outcome, count number of points player won and add to data array
         pointOutcomes.forEach(outcome => {
             const outcomeObj = {};
             outcomeObj['x'] = outcome;
             let pointsFiltered = points.filter(point => (point['winner']['_id']['$oid'] === playerID) && (point['result'] === outcome));
-            //if (setNumSelected !== 'All') {
-            //    pointsFiltered = pointsFiltered.filter(point => point['set_in_match'] === setNumSelected);
-            //}
+            if (setNumSelected !== 'All') {
+                pointsFiltered = pointsFiltered.filter(point => point['set_in_match'] === parseInt(setNumSelected, 10));
+            }
             outcomeObj['y'] = pointsFiltered.length;
             playerData.push(outcomeObj);
+            playerSum += pointsFiltered.length;
         });
         return (
             <div className="eight wide column" key={playerID}>
+                <h2 className="ui centered header">{player['full_name']} ({playerSum})</h2>
                 <VictoryPie
                     data={playerData}
                     colorScale={['tomato', 'orange', 'gold', 'cyan', 'navy', 'pink']}
