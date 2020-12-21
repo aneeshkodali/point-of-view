@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { getPlayerData } from '../../../helper/functions';
 
-const PointTable = ({ points, pointSelected, selectPoint, players }) => {
+const PointTable = ({ points, pointSelected, selectPoint }) => {
 
 
     // display points
@@ -15,7 +14,7 @@ const PointTable = ({ points, pointSelected, selectPoint, players }) => {
                 <td>{game_score}</td>
                 <td>{point_score}</td>
                 <td>{side}</td>
-                <td>{getPlayerData(server, players).full_name}</td>
+                <td>{server.full_name}</td>
                 <td>{rally_length}</td>
                 <td>{result}</td>
             </tr>
