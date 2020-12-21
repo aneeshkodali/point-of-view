@@ -73,7 +73,7 @@ const Match = props => {
     }, []);
 
     // state for tabs
-    const tabs = ['About', 'Data', 'Points Won', 'Points2Map'];
+    const tabs = ['About', 'Data', 'Points Won', 'Point Map'];
     const [tabSelected, setTabSelected] = useState(tabs[0]);
 
     // display loading icon if match data not found
@@ -112,7 +112,7 @@ const Match = props => {
                 return (
                     <PointsWon matchData={matchData} />
                 );
-            case 'Points2Map':
+            case 'Point Map':
                 return (
                     <PointMap matchData={matchData} />
                 );
