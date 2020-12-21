@@ -6,7 +6,7 @@ import About from './About/About';
 import Table from './Data/Table';
 import Loader from '../Loader';
 import PointsWon from './Charts/PointsWon';
-import PointsToMap from './Charts/PointsToMap';
+import PointMap from './Charts/PointMap';
 
 const Match = props => {
 
@@ -114,7 +114,7 @@ const Match = props => {
                 );
             case 'Points2Map':
                 return (
-                    <PointsToMap matchData={matchData} />
+                    <PointMap matchData={matchData} />
                 );
             default:
                 return null;
