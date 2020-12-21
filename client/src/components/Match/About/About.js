@@ -1,18 +1,11 @@
 import React from 'react';
 
-import { getPlayerData } from '../../../helper/functions';
 import ScoreTable from './ScoreTable';
 
 const About = ({ matchData }) => {
 
     // get variables from match data
     const { title, gender, match_date, match_round, score, tournament, players, winner, loser } = matchData;
-
-    // get winner
-    const winnerData = getPlayerData(winner, players);
-    const loserData = getPlayerData(loser, players);
-
-
 
     // FORMAT DATE
     //get date object
@@ -33,7 +26,7 @@ const About = ({ matchData }) => {
             <div>Gender: {gender}</div>
             <div>Tournament: {tournament.name}</div>
             <div>Round: {match_round}</div>
-            <ScoreTable players={[winnerData, loserData]} score={score} />
+            <ScoreTable players={[winner, loser]} score={score} />
         </div>
     );
 }
