@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { VictoryPie } from 'victory';
+import { VictoryLabel, VictoryPie } from 'victory';
 
 const PointsWon = ({ matchData }) => {
 
@@ -19,7 +19,7 @@ const PointsWon = ({ matchData }) => {
     });
 
     // render charts - loop through each player
-    const chartsRendered = players.map(player => {
+    const chartsRendered = players.map((player, index) => {
 
         const playerID = player['_id']['$oid'];
         const pointOutcomes = ['ace', 'double fault', 'forced error', 'service winner', 'unforced error', 'winner'];
@@ -44,7 +44,14 @@ const PointsWon = ({ matchData }) => {
                     data={playerData}
                     colorScale={['tomato', 'orange', 'gold', 'cyan', 'navy', 'pink']}
                     labels={({datum}) => `${datum.x}:${datum.y}`}
+                    innerRadius={100}
                     />
+                <VictoryLabel
+                    textAnchor="middle"
+                    style={{ fontSize: 20 }}
+                    x={500} y={100}
+                    text={playerSum}
+                />
             </div>
         );
     })
