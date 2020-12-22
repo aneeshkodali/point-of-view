@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { VictoryBar } from 'victory';
+import { VictoryChart, VictoryBar } from 'victory';
 
 const PointMap = ({ matchData }) => {
 
@@ -18,7 +18,7 @@ const PointMap = ({ matchData }) => {
         return (
             <div key={playerID} className="field">
                 <div className="ui radio checkbox">
-                    <input type="radio" name="player" value={player} checked={checkedValue} onClick={() => setPlayerSelected(player)} />
+                    <input type="radio" name="player" value={player} checked={checkedValue} onChange={() => setPlayerSelected(player)} />
                     <label>{full_name}</label>
                 </div>
             </div>
@@ -35,7 +35,7 @@ const PointMap = ({ matchData }) => {
         return (
                 <div key={setNum} className="field">
                     <div className="ui radio checkbox">
-                        <input type="radio" name="set" value={setNum} checked={checkedValue} onClick={() => setSetNumSelected(setNum)} />
+                        <input type="radio" name="set" value={setNum} checked={checkedValue} onChange={() => setSetNumSelected(setNum)} />
                         <label>{setNum}</label>
                     </div>
                 </div>
@@ -45,40 +45,54 @@ const PointMap = ({ matchData }) => {
     // filter points
     const pointsFiltered = points.filter(point => point['set_in_match'] === parseInt(setNumSelected, 10));
 
-    // color list for bars
-    const colorList=['#FFA04E', '#FFDB3E'];
+    // get chart data ready
+    const playerData = [];
+    const opponentData = [];
 
-    const chartsRendered = players.map((player, index) => {
+    pointsFiltered.forEach(point => {
 
-        const player_data = [];
+        const { point_number, num_shots, server, winner } = point;
 
-        const points_data = pointsFiltered.map(point => {
-            const { point_number, num_shots, server, winner } = point;
+        // create necessary columns
+        //point['serverRallyCount'] = num_shots === 0 ? 1 : Math.ceil((num_shots+1)/2);
+        //point['receiverRallyCount'] = num_shots + 1 - point['serverRallyCount'];
+        const serverRallyCount = Math.ceil((num_shots+1)/2);
+        const receiverRallyCount = num_shots - serverRallyCount;
 
-            // create necessary columns
-            point['serverRallyCount'] = num_shots === 0 ? 1 : Math.ceil((num_shots+1)/2);
-            point['receiverRallyCount'] = num_shots + 1 - point['serverRallyCount'];
+        // create columns dependent on player selected
+        // multiply by -1 if not player selected
+        const playerRallyCount = server['full_name'] === playerSelected['full_name'] ? serverRallyCount : receiverRallyCount;
+        const opponentRallyCount = (server['full_name'] === playerSelected['full_name'] ? receiverRallyCount : serverRallyCount)*-1;
 
-            // create columns dependent on player selected
-            point['playerRallyCount'] = server['full_name'] === playerSelected['full_name'] ? point['serverRallyCount'] : point['receiverRallyCount'];
-            point['opponentRallyCount'] = server['full_name'] === playerSelected['full_name'] ? point['receiverRallyCount'] : point['serverRallyCount']*-1;
+        // color bars
+        const playerWin = winner['full_name'] === playerSelected['full_name'] ? 'green' : 'lightgrey';
+        const opponentWin = winner['full_name'] !== playerSelected['full_name'] ? 'red': 'lightgrey';
 
-            
-            // color bars
-            point['playerWin'] = winner['full_name'] === playerSelected['full_name'] ? colorList[index] : 'lightgrey';
+        // append data
+        playerData.push({ 'x': point_number, 'y': playerRallyCount, 'style': playerWin });
+        opponentData.push({ 'x': point_number, 'y': opponentRallyCount, 'style': opponentWin });
+    });   
 
-            player_data.push({'x': point_number, 'y': point['playerRallyCount']})
-        });
-
-        const chart = (
-            <VictoryBar 
-                data={player_data}
-                //style={points_data.map(point => point['playerWin'])}
+    const chartsRendered =  (
+            <VictoryChart>
+                <VictoryBar
+                data={playerData}
+                style={{
+                    data: {
+                        fill: ({ datum }) => datum.style
+                    }
+                }}
             />
-        );
-        
-        return chart;
-    })
+            <VictoryBar
+                data={opponentData}
+                style={{
+                    data: {
+                        fill: ({ datum }) => datum.style
+                    }
+                }}
+            />
+            </VictoryChart>
+    );
 
     return (
         <div>
