@@ -74,7 +74,7 @@ const Match = props => {
 
     // state for tabs
     const tabs = ['About', 'Data', 'Points Won', 'Point Map'];
-    const [tabSelected, setTabSelected] = useState(tabs[0]);
+    const [tabSelected, setTabSelected] = useState(tabs[3]);
 
     // display loading icon if match data not found
     if (!(matchData && matchData['tournament'] && matchData['players'] && matchData['points'])) {

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { VictoryBar } from 'victory';
 
 const PointMap = ({ matchData }) => {
 
-    const { sets } = matchData;
+    const { sets, points } = matchData;
+
 
     // state for players selected
     const players = matchData['players'].sort();
@@ -40,6 +42,44 @@ const PointMap = ({ matchData }) => {
             );
     });
 
+    // filter points
+    const pointsFiltered = points.filter(point => point['set_in_match'] === parseInt(setNumSelected, 10));
+
+    // color list for bars
+    const colorList=['#FFA04E', '#FFDB3E'];
+
+    const chartsRendered = players.map((player, index) => {
+
+        const player_data = [];
+
+        const points_data = pointsFiltered.map(point => {
+            const { point_number, num_shots, server, winner } = point;
+
+            // create necessary columns
+            point['serverRallyCount'] = num_shots === 0 ? 1 : Math.ceil((num_shots+1)/2);
+            point['receiverRallyCount'] = num_shots + 1 - point['serverRallyCount'];
+
+            // create columns dependent on player selected
+            point['playerRallyCount'] = server['full_name'] === playerSelected['full_name'] ? point['serverRallyCount'] : point['receiverRallyCount'];
+            point['opponentRallyCount'] = server['full_name'] === playerSelected['full_name'] ? point['receiverRallyCount'] : point['serverRallyCount']*-1;
+
+            
+            // color bars
+            point['playerWin'] = winner['full_name'] === playerSelected['full_name'] ? colorList[index] : 'lightgrey';
+
+            player_data.push({'x': point_number, 'y': point['playerRallyCount']})
+        });
+
+        const chart = (
+            <VictoryBar 
+                data={player_data}
+                //style={points_data.map(point => point['playerWin'])}
+            />
+        );
+        
+        return chart;
+    })
+
     return (
         <div>
             <div className="ui form">
@@ -52,7 +92,7 @@ const PointMap = ({ matchData }) => {
                     {setNumOptions}
                 </div>
                 <div>
-
+                    {chartsRendered}
                 </div>
             </div>
         </div>
