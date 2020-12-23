@@ -32,9 +32,16 @@ const PointsToSet = ({ matchData }) => {
          // initialize running total value
         let runningTotal = 0;
 
+        // initialize array to store running total
+        const runningTotalArray = [];
+
         // create data array
         const playerData = points.filter(point => point['set_in_match'] === setNumSelected).map((point, index) => {
-            const { point_number, winner } = point
+            const { point_number, winner, game_in_set } = point;
+
+            // get last point in current game
+            const lastPointInCurrentGame = Math.max(...points.filter(point => point['game_in_set'] === game_in_set).map(point => point['point_number']));
+            //console.log(point_number, lastPointInCurrentGame);
 
             // check if player won point
             const winPoint = winner.full_name === full_name ? 1 : 0;
