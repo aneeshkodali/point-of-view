@@ -104,29 +104,7 @@ const PointMap = ({ matchData }) => {
                 </div>
             </div>
         </div>
-    )
-
-   
-    //return (
-    //    <div>
-    //        <div>
-    //            Player:
-    //            <select 
-    //                className="ui dropdown"
-    //                value={playerSelected} 
-    //                onChange={(e) => setPlayerSelected(e.target.value)}
-    //            >{playerOptions}
-    //            </select>
-    //            Set:
-    //            <select 
-    //                className="ui dropdown"
-    //                value={setNumSelected} 
-    //                onChange={(e) => setSetNumSelected(e.target.value)}
-    //            >{setNumOptions}
-    //            </select>
-    //        </div>
-    //    </div>
-    //);
+    );
 }
 
 export default PointMap;
