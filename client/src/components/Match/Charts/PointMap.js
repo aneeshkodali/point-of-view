@@ -73,26 +73,18 @@ const PointMap = ({ matchData }) => {
         opponentData.push({ 'x': point_number, 'y': opponentRallyCount, 'style': opponentWin });
     });   
 
-    const chartsRendered =  (
-            <VictoryChart>
-                <VictoryBar
-                data={playerData}
+    const chartsRendered =  [playerData, opponentData].map((data, index) => {
+        return (
+            <VictoryBar key={index}
+                data={data}
                 style={{
                     data: {
                         fill: ({ datum }) => datum.style
                     }
                 }}
             />
-            <VictoryBar
-                data={opponentData}
-                style={{
-                    data: {
-                        fill: ({ datum }) => datum.style
-                    }
-                }}
-            />
-            </VictoryChart>
-    );
+        );
+    });
 
     return (
         <div>
@@ -106,7 +98,9 @@ const PointMap = ({ matchData }) => {
                     {setNumOptions}
                 </div>
                 <div>
-                    {chartsRendered}
+                    <VictoryChart>
+                        {chartsRendered}
+                    </VictoryChart>
                 </div>
             </div>
         </div>
