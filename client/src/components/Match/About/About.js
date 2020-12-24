@@ -1,12 +1,13 @@
 import React from 'react';
 
-import { convertDate } from '../../../helper/functions';
+import { convertDate, convertHeight } from '../../../helper/functions';
 import ScoreTable from './ScoreTable';
 
 const About = ({ matchData }) => {
 
     // get variables from match data
     const { title, gender, match_date, match_round, score, tournament, players, winner, loser } = matchData;
+
 
     // function to create player card
     const createPlayerCard = player => {
@@ -22,7 +23,7 @@ const About = ({ matchData }) => {
                 </div>
                 <div className="content">
                     <div className="description">
-                        <span className="right floated">Height: {height}</span>
+                        <span className="right floated">Height: {convertHeight(height)}</span>
                         Born: {convertDate(date_of_birth)}
                     </div>
                     <div className="description">
