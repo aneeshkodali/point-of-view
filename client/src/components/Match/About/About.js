@@ -37,29 +37,21 @@ const About = ({ matchData }) => {
 
     const matchInfo = (
         <div>
-            <div>Date: {convertDate(match_date)}</div>
-            <div>Gender: {gender}</div>
-            <div>Tournament: {tournament.name}</div>
-            <div>Round: {match_round}</div>
-            <ScoreTable players={[winner, loser]} score={score} />
+            {tournament['name']}, {match_round}
+            , {convertDate(match_date)}
         </div>
     );
    
     return (
         <div>
-            <div className="ui grid">
-                <div className="row">
-                    <div className="five wide column">{createPlayerCard(players[0])}</div>
-                    <div className="six wide column">{matchInfo}</div>
-                    <div className="five wide column">{createPlayerCard(players[1])}</div>
-                </div>
+            <div className="ui equal width grid">
+                    <div className="column">{createPlayerCard(players[0])}</div>
+                    <div className="column">
+                        {matchInfo}
+                        <ScoreTable players={[winner, loser]} score={score} />
+                    </div>
+                    <div className="column">{createPlayerCard(players[1])}</div>
             </div>
-            {/*<h1 className="ui header">{title}</h1>
-            <div>Date: {convertDate(match_date)}</div>
-            <div>Gender: {gender}</div>
-            <div>Tournament: {tournament.name}</div>
-            <div>Round: {match_round}</div>
-            <ScoreTable players={[winner, loser]} score={score} />*/}
         </div>
     );
 }
