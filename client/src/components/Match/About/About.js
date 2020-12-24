@@ -51,7 +51,7 @@ const About = ({ matchData }) => {
                 <div className="row">
                     <div className="five wide column">{createPlayerCard(players[0])}</div>
                     <div className="six wide column">{matchInfo}</div>
-                    <div classname="five wide column">{createPlayerCard(players[1])}</div>
+                    <div className="five wide column">{createPlayerCard(players[1])}</div>
                 </div>
             </div>
             {/*<h1 className="ui header">{title}</h1>

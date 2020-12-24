@@ -1,10 +1,29 @@
 import React from 'react';
 
+import { getCountryName } from '../../../helper/countries';
+
 const ScoreTable = ({ players, score }) => {
 
     // get winner (0) and loser (1)
     const winner = players[0];
     const loser = players[1];
+
+    // function to get flag icon from country 3 digit name
+    const getFlagIcon = country_three => {
+        const countryName = getCountryName(country_three).toLowerCase();
+        return <i className={`${countryName} flag`} />;
+    }
+
+    // function to return name with abbreviated string
+    const returnAbbreviatedName = name => {
+        // split name
+        const nameSplit = name.split(' ');
+        // abbreviate first name
+        nameSplit[0] = `${nameSplit[0][0].toUpperCase()}.`;
+        
+        return nameSplit.join(' ');
+    }
+
 
     // split score - sets separated by ' , scores separated by '-'
     const scoreSplit = score.split(' ').map(set => set.split('-'));
@@ -14,10 +33,17 @@ const ScoreTable = ({ players, score }) => {
         <th key={'player'}>Player</th>
     ];
     const winnerData = [
-        <td key={'winner'}>{winner.full_name} ({winner.country})</td>
+        <td key={'winner'}>
+            {getFlagIcon(winner['country'])}
+            {returnAbbreviatedName(winner['full_name'])}
+            <i className="ui check icon" />
+        </td>
     ];
     const loserData = [
-        <td key={'loser'}>{loser.full_name} ({loser.country})</td>
+        <td key={'loser'}>
+            {getFlagIcon(loser['country'])}
+            {returnAbbreviatedName(loser['full_name'])}
+        </td>
     ];
 
     // function to apply styling to set score if player won set
