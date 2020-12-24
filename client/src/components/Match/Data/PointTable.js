@@ -6,9 +6,13 @@ const PointTable = ({ points, pointSelected, selectPoint }) => {
 
     // display points
     const pointsRendered = points.map(point => {
-        const { point_number, set_score, game_score, point_score, side, server, rally_length, result, shots } = point
+        const { point_number, set_score, game_score, point_score, side, server, rally_length, result, shots } = point;
+
+        // highlight row if point is pointSelected
+        const rowHighlighting = point_number === pointSelected['point_number'] ? 'lightgreen' : '';
+
         return (
-            <tr key={point_number} onClick={() => selectPoint(point, pointSelected)}>
+            <tr key={point_number} onClick={() => selectPoint(point, pointSelected)} style={{'cursor': 'pointer', 'backgroundColor': rowHighlighting}}>
                 <td>{point_number}</td>
                 <td>{set_score}</td>
                 <td>{game_score}</td>
