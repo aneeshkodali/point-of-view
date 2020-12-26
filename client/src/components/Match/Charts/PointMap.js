@@ -109,12 +109,12 @@ const PointMap = ({ matchData }) => {
             {'x': point_number, 'y': yMax}
         ];
         return (
-            <VictoryLine
+            <VictoryLine key={point_number}
                 data={data}
                 style={{
                     data: { stroke: "black", strokeDasharray: [0, 1, 2] },
                   }}
-                labels={label}
+                labels={() => label}
             />
         )
     })
