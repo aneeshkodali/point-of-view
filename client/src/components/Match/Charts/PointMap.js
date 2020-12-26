@@ -78,6 +78,10 @@ const PointMap = ({ matchData }) => {
             <VictoryBar key={index}
                 data={data}
                 alignment="start"
+                animate={{
+                    duration: 500,
+                    onLoad: { duration: 1000 }
+                  }}
                 style={{
                     data: {
                         fill: ({ datum }) => datum.style
