@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { VictoryChart, VictoryBar, VictoryLine } from 'victory';
+import { VictoryChart, VictoryBar, VictoryLine, VictoryLabel } from 'victory';
 
 const PointMap = ({ matchData }) => {
 
@@ -96,8 +96,12 @@ const PointMap = ({ matchData }) => {
     const yMax = Math.ceil( Math.max(...pointsFiltered.map(point => point['num_shots']))/2) + 2;
 
     // create vertical lines for games
-    const newGameLines = pointsFiltered.filter(point => point['point_score'] === '0-0').slice(1,).map(point => {
-        const { point_number } = point;
+    const newGameLines = pointsFiltered.filter(point => point['point_score'] === '0-0').map(point => {
+        const { point_number, server, game_score } = point;
+
+        // create label
+        const serverInitial = server['full_name'].split(' ').map(name => name[0].toUpperCase()).join('');
+        const label = `${serverInitial}\n${game_score}`;
 
         // create data for chart
         const data = [
@@ -110,6 +114,7 @@ const PointMap = ({ matchData }) => {
                 style={{
                     data: { stroke: "black", strokeDasharray: [0, 1, 2] },
                   }}
+                labels={label}
             />
         )
     })
