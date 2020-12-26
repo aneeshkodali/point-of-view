@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { VictoryChart, VictoryBar } from 'victory';
+import { VictoryChart, VictoryBar, VictoryLine } from 'victory';
 
 const PointMap = ({ matchData }) => {
 
@@ -73,6 +73,7 @@ const PointMap = ({ matchData }) => {
         opponentData.push({ 'x': point_number, 'y': opponentRallyCount, 'style': opponentWin });
     });   
 
+    // create charts
     const chartsRendered =  [playerData, opponentData].map((data, index) => {
         return (
             <VictoryBar key={index}
@@ -91,6 +92,28 @@ const PointMap = ({ matchData }) => {
         );
     });
 
+    // upper limit for y axis
+    const yMax = Math.ceil( Math.max(...pointsFiltered.map(point => point['num_shots']))/2) + 2;
+
+    // create vertical lines for games
+    const newGameLines = pointsFiltered.filter(point => point['point_score'] === '0-0').slice(1,).map(point => {
+        const { point_number } = point;
+
+        // create data for chart
+        const data = [
+            {'x': point_number, 'y': yMax*-1},
+            {'x': point_number, 'y': yMax}
+        ];
+        return (
+            <VictoryLine
+                data={data}
+                style={{
+                    data: { stroke: "black", strokeDasharray: [0, 1, 2] },
+                  }}
+            />
+        )
+    })
+
     return (
         <div>
             <div className="ui form">
@@ -105,6 +128,7 @@ const PointMap = ({ matchData }) => {
                 <div>
                     <VictoryChart>
                         {chartsRendered}
+                        {newGameLines}
                     </VictoryChart>
                 </div>
             </div>
