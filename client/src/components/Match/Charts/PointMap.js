@@ -77,6 +77,7 @@ const PointMap = ({ matchData }) => {
         return (
             <VictoryBar key={index}
                 data={data}
+                alignment="start"
                 style={{
                     data: {
                         fill: ({ datum }) => datum.style
