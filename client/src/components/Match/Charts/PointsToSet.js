@@ -32,10 +32,7 @@ const PointsToSet = ({ matchData }) => {
     // get chart data - loop through each player to create line
     const chartsRendered = players.map((player, index) => {
         const { full_name } = player;
-
-         // initialize running total value
-        let runningTotal = 0;
-
+ 
         // initialize array to store running total
         const runningTotalArray = [];
 
@@ -46,12 +43,10 @@ const PointsToSet = ({ matchData }) => {
             // get last point in current game
             const lastPointInCurrentGame = Math.max(...pointsFiltered.filter(point => point['game_in_set'] === game_in_set).map(point => point['point_number']));
             // get index of first point in current game
-            const firstPointInCurrentGameIndex = Math.min(...pointsFiltered.filter(point => point['game_in_set'] === game_in_set).map(point => point['point_number']));
+            const firstPointInCurrentGameIndex = Math.min(...pointsFiltered.filter(point => point['game_in_set'] === game_in_set).map(point => point['point_number']))-1;
 
             // check if player won point
             const winPoint = winner['full_name'] === full_name ? 1 : 0;
-            // add to running total
-            runningTotal += winPoint;
 
             // if player loses point and point is last point in game, revert back to previous end-of-game total
             // otherwise, add to running total as usual
@@ -74,7 +69,7 @@ const PointsToSet = ({ matchData }) => {
     
         // draw chart
         return (
-            <VictoryLine key={full_name}
+            <VictoryLine key={player['_id']['$oid']}
                 data={playerData}
                 style={{
                     data: { stroke: colors[index]}
@@ -84,10 +79,11 @@ const PointsToSet = ({ matchData }) => {
     
     });
 
+ 
+    // create vertical lines for games
     // upper limit for y axis
     const yMax = Math.ceil( Math.max(...pointsFiltered.map((point, index) => index))) + 2;
 
-    // create vertical lines for games
     const newGameLines = pointsFiltered.filter(point => point['point_score'] === '0-0').map((point, index) => {
         const { point_number, server, game_score } = point;
 
