@@ -6,7 +6,7 @@ const PointTable = ({ points, pointSelected, selectPoint }) => {
 
     // display points
     const pointsRendered = points.map(point => {
-        const { point_number, set_score, game_score, point_score, side, server, rally_length, result, shots } = point;
+        const { point_number, set_score, game_score, point_score, side, server, rally_length, result, winner, shots } = point;
 
         // highlight row if point is pointSelected
         const rowHighlighting = point_number === pointSelected['point_number'] ? 'lightgreen' : '';
@@ -21,6 +21,7 @@ const PointTable = ({ points, pointSelected, selectPoint }) => {
                 <td>{server.full_name}</td>
                 <td>{rally_length}</td>
                 <td>{result}</td>
+                <td>{winner['full_name']}</td>
             </tr>
         );
     });
@@ -41,6 +42,7 @@ const PointTable = ({ points, pointSelected, selectPoint }) => {
                         <th>Server</th>
                         <th>Rally Length</th>
                         <th>Result</th>
+                        <th>Winner</th>
                     </tr>
                 
                 </thead>
