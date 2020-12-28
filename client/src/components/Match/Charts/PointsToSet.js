@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { VictoryChart, VictoryLine } from 'victory';
+import { VictoryChart, VictoryLine, VictoryLegend } from 'victory';
 
 const PointsToSet = ({ matchData }) => {
 
@@ -44,22 +44,38 @@ const PointsToSet = ({ matchData }) => {
             const { point_number, winner, game_in_set } = point;
 
             // get last point in current game
-            const lastPointInCurrentGame = Math.max(...points.filter(point => point['game_in_set'] === game_in_set).map(point => point['point_number']));
-            //console.log(point_number, lastPointInCurrentGame);
+            const lastPointInCurrentGame = Math.max(...pointsFiltered.filter(point => point['game_in_set'] === game_in_set).map(point => point['point_number']));
+            // get index of first point in current game
+            const firstPointInCurrentGameIndex = Math.min(...pointsFiltered.filter(point => point['game_in_set'] === game_in_set).map(point => point['point_number']));
 
             // check if player won point
-            const winPoint = winner.full_name === full_name ? 1 : 0;
+            const winPoint = winner['full_name'] === full_name ? 1 : 0;
             // add to running total
             runningTotal += winPoint;
-            runningTotalArray.push(runningTotal);
 
-            return { 'x': point_number, 'y': runningTotal, 'style': colors[index] }
+            // if player loses point and point is last point in game, revert back to previous end-of-game total
+            // otherwise, add to running total as usual
+            if (pointIndex === 0) {
+                runningTotalArray[0] = winPoint;
+            }  else {
+                if (!winPoint && (point_number === lastPointInCurrentGame)) {
+                    if (game_in_set === 1) {
+                        runningTotalArray[pointIndex] = 0;
+                    } else {
+                        runningTotalArray[pointIndex] = runningTotalArray[firstPointInCurrentGameIndex];
+                    }
+                } else {
+                    runningTotalArray[pointIndex] = runningTotalArray[pointIndex-1] + winPoint;
+                }
+            }
+
+            return { 'x': point_number, 'y': runningTotalArray[pointIndex], 'style': colors[index] }
         });
     
         console.log(runningTotalArray);
         // draw chart
         return (
-            <VictoryLine
+            <VictoryLine key={full_name}
                 data={playerData}
                 style={{
                     data: { stroke: colors[index]}
@@ -94,7 +110,17 @@ const PointsToSet = ({ matchData }) => {
                 labels={({ datum }) => datum.y !== 0 ? label : ''}
             />
         )
-    })
+    });
+
+    // legend
+    const legendData = players.map((player, index) => {
+        return { name: player['full_name'], symbol: { fill: colors[index]}}
+    });
+    const chartLegend = (
+        <VictoryLegend
+            data={legendData}
+        />
+    );
 
 
     return (
@@ -110,6 +136,7 @@ const PointsToSet = ({ matchData }) => {
                 <VictoryChart>
                     {chartsRendered}
                     {newGameLines}
+                    {chartLegend}
                 </VictoryChart>
             </div>
         </div>
