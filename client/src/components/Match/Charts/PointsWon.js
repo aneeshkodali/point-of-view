@@ -46,12 +46,12 @@ const PointsWon = ({ matchData }) => {
                     labels={({datum}) => `${datum.x}:${datum.y}`}
                     innerRadius={100}
                     />
-                <VictoryLabel
+                {/*<VictoryLabel
                     textAnchor="middle"
                     style={{ fontSize: 20 }}
                     x={500} y={100}
                     text={playerSum}
-                />
+                />*/}
             </div>
         );
     })
