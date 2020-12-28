@@ -22,6 +22,10 @@ const PointsToSet = ({ matchData }) => {
             );
     });
 
+    // filter points
+    const pointsFiltered = points.filter(point => point['set_in_match'] === parseInt(setNumSelected, 10));
+
+
     // colors for line chart
     const colors = ['blue', 'red'];
 
@@ -36,7 +40,7 @@ const PointsToSet = ({ matchData }) => {
         const runningTotalArray = [];
 
         // create data array
-        const playerData = points.filter(point => point['set_in_match'] === setNumSelected).map((point, index) => {
+        const playerData = pointsFiltered.map((point, pointIndex) => {
             const { point_number, winner, game_in_set } = point;
 
             // get last point in current game
@@ -47,10 +51,12 @@ const PointsToSet = ({ matchData }) => {
             const winPoint = winner.full_name === full_name ? 1 : 0;
             // add to running total
             runningTotal += winPoint;
+            runningTotalArray.push(runningTotal);
 
             return { 'x': point_number, 'y': runningTotal, 'style': colors[index] }
         });
     
+        console.log(runningTotalArray);
         // draw chart
         return (
             <VictoryLine
@@ -62,6 +68,34 @@ const PointsToSet = ({ matchData }) => {
         );
     
     });
+
+    // upper limit for y axis
+    const yMax = Math.ceil( Math.max(...pointsFiltered.map((point, index) => index))) + 2;
+
+    // create vertical lines for games
+    const newGameLines = pointsFiltered.filter(point => point['point_score'] === '0-0').map((point, index) => {
+        const { point_number, server, game_score } = point;
+
+        // create label
+        const serverInitial = server['full_name'].split(' ').map(name => name[0].toUpperCase()).join('');
+        const label = `${serverInitial}\n${game_score}`;
+
+        // create data for chart
+        const data = [
+            {'x': point_number, 'y': 0},
+            {'x': point_number, 'y': yMax}
+        ];
+        return (
+            <VictoryLine key={point_number}
+                data={data}
+                style={{
+                    data: index !== 0 ? { stroke: "black", strokeDasharray: [0, 1, 2] } : {},
+                  }}
+                labels={({ datum }) => datum.y !== 0 ? label : ''}
+            />
+        )
+    })
+
 
     return (
         <div>
@@ -75,6 +109,7 @@ const PointsToSet = ({ matchData }) => {
             <div>
                 <VictoryChart>
                     {chartsRendered}
+                    {newGameLines}
                 </VictoryChart>
             </div>
         </div>
