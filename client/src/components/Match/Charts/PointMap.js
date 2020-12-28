@@ -7,7 +7,7 @@ const PointMap = ({ matchData }) => {
 
 
     // state for players selected
-    const players = matchData['players'].sort();
+    const players = matchData['players'];
     const [playerSelected, setPlayerSelected] = useState(players[0]);
 
     // dropdown options for players
