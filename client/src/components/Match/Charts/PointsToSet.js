@@ -72,7 +72,6 @@ const PointsToSet = ({ matchData }) => {
             return { 'x': point_number, 'y': runningTotalArray[pointIndex], 'style': colors[index] }
         });
     
-        console.log(runningTotalArray);
         // draw chart
         return (
             <VictoryLine key={full_name}
@@ -118,6 +117,7 @@ const PointsToSet = ({ matchData }) => {
     });
     const chartLegend = (
         <VictoryLegend
+            orientation='horizontal'
             data={legendData}
         />
     );
