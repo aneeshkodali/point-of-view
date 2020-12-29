@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 
 const RallyTree = ({ matchData }) => {
 
+    const { sets, points } = matchData;
+
     // state for player
     const players = matchData['players'];
     const [playerSelected, setPlayerSelected] = useState(players[0]);
@@ -21,6 +23,24 @@ const RallyTree = ({ matchData }) => {
         );
     });
 
+    // state for set selected
+    const setNums = ['All'].concat(Array.from({length: sets}, (_, i) => i+1));
+    const [setNumSelected, setSetNumSelected] = useState(setNums[0]);
+
+    // dropdown options for set selected
+    const setNumOptions = setNums.map(setNum => {
+        const checkedValue = setNum === setNumSelected ? 'checked' : ''
+        return (
+                <div key={setNum} className="field">
+                    <div className="ui radio checkbox">
+                        <input type="radio" name="set" value={setNum} checked={checkedValue} onChange={() => setSetNumSelected(setNum)} />
+                        <label>{setNum}</label>
+                    </div>
+                </div>
+            );
+    });
+
+
 
     return (
         <div>
@@ -28,6 +48,10 @@ const RallyTree = ({ matchData }) => {
                 <div className="inline fields">
                     <label>Player</label>
                     {playerOptions}
+                </div>
+                <div className="inline fields">
+                    <label>Set</label>
+                    {setNumOptions}
                 </div>
             </div>
         </div>
