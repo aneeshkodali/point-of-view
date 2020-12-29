@@ -27,7 +27,7 @@ const RallyTree = ({ matchData }) => {
     const setNums = ['All'].concat(Array.from({length: sets}, (_, i) => i+1));
     const [setNumSelected, setSetNumSelected] = useState(setNums[0]);
 
-    // dropdown options for set selected
+    // radio options for set selected
     const setNumOptions = setNums.map(setNum => {
         const checkedValue = setNum === setNumSelected ? 'checked' : ''
         return (
@@ -40,6 +40,22 @@ const RallyTree = ({ matchData }) => {
             );
     });
 
+    // state for side
+    const sides = ['All', 'deuce', 'ad'];
+    const [sideSelected, setSideSelected] = useState(sides[0]);
+
+    // radio options for set selected
+    const sideOptions = sides.map(side => {
+        const checkedValue = side === sideSelected ? 'checked' : ''
+        return (
+                <div key={side} className="field">
+                    <div className="ui radio checkbox">
+                        <input type="radio" name="side" value={side} checked={checkedValue} onChange={() => setSideSelected(side)} />
+                        <label>{side}</label>
+                    </div>
+                </div>
+            );
+    });
 
 
     return (
@@ -52,6 +68,10 @@ const RallyTree = ({ matchData }) => {
                 <div className="inline fields">
                     <label>Set</label>
                     {setNumOptions}
+                </div>
+                <div className="inline fields">
+                    <label>Side</label>
+                    {sideOptions}
                 </div>
             </div>
         </div>
