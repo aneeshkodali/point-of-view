@@ -1,32 +1,18 @@
 import React, { useState } from 'react';
 
 import Side from '../Helper/Side';
+import Player from '../Helper/Player';
 
 const RallyTree = ({ matchData }) => {
 
-    const { sets, points } = matchData;
+    const { sets, points, players } = matchData;
 
-    // get variables from Side component
-    const { sides, sideSelected, setSideSelected, sideOptions } = Side();
+    // get variables from Side helper component
+    const { sideSelected, sideOptions } = Side();
 
-    // state for player
-    const players = matchData['players'];
-    const [playerSelected, setPlayerSelected] = useState(players[0]);
+    // get varibles from Player helper component
+    const { playerSelected, playerOptions } = Player(players)
 
-    // radio options for players
-    const playerOptions = players.map(player => {
-        const playerID = player['_id']['$oid'];
-        const { full_name } = player;
-        const checkedValue = full_name === playerSelected['full_name'] ? 'checked' : ''
-        return (
-            <div key={playerID} className="field">
-                <div className="ui radio checkbox">
-                    <input type="radio" name="player" value={player} checked={checkedValue} onChange={() => setPlayerSelected(player)} />
-                    <label>{full_name}</label>
-                </div>
-            </div>
-        );
-    });
 
     // state for set selected
     const setNums = ['All'].concat(Array.from({length: sets}, (_, i) => i+1));
