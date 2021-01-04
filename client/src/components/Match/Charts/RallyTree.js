@@ -22,6 +22,30 @@ const RallyTree = ({ matchData }) => {
         pointsFiltered = pointsFiltered.filter(({ set_in_match }) => set_in_match === setNumSelected);
     }
 
+
+    // CALCULATE DATA
+    // initialize array
+    const pointsData = [];
+
+    // get max rally length (CHANGE THIS LATER)
+    const maxRallyLength = Math.max(...pointsFiltered.map(({ num_shots }) => num_shots));
+    // loop through each rally length
+    const rallyLengthArr = Array.from({length: maxRallyLength}, (_, i) => i+1);
+    rallyLengthArr.forEach(rallyLength => {
+        // initialize object
+        const rallyObj = {};
+        rallyObj['rallyLength'] = rallyLength;
+        // filter data
+        const pointsRally = pointsFiltered.filter(({ num_shots }) => num_shots === rallyLength);
+        
+        // add to object
+        rallyObj['points'] = pointsRally.length;
+
+        // append to array
+        pointsData.push(rallyObj);
+    });
+
+
     return (
         <div>
             <div className="ui form">
