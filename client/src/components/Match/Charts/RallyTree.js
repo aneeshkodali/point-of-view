@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 
+import Side from '../Helper/Side';
+
 const RallyTree = ({ matchData }) => {
 
     const { sets, points } = matchData;
+
+    // get variables from Side component
+    const { sides, sideSelected, setSideSelected, sideOptions } = Side();
 
     // state for player
     const players = matchData['players'];
@@ -40,23 +45,7 @@ const RallyTree = ({ matchData }) => {
             );
     });
 
-    // state for side
-    const sides = ['All', 'deuce', 'ad'];
-    const [sideSelected, setSideSelected] = useState(sides[0]);
-
-    // radio options for set selected
-    const sideOptions = sides.map(side => {
-        const checkedValue = side === sideSelected ? 'checked' : ''
-        return (
-                <div key={side} className="field">
-                    <div className="ui radio checkbox">
-                        <input type="radio" name="side" value={side} checked={checkedValue} onChange={() => setSideSelected(side)} />
-                        <label>{side}</label>
-                    </div>
-                </div>
-            );
-    });
-
+ 
 
     return (
         <div>
