@@ -13,7 +13,14 @@ const RallyTree = ({ matchData }) => {
     const { playerSelected, playerOptions } = Player(players);
     const { setNumSelected, setNumOptions } = Set(sets);
     
- 
+    // filter points data
+    let pointsFiltered = points;
+    if (sideSelected !== 'All') {
+        pointsFiltered = pointsFiltered.filter(({ side }) => side === sideSelected);
+    }
+    if (setNumSelected !== 'All') {
+        pointsFiltered = pointsFiltered.filter(({ set_in_match }) => set_in_match === setNumSelected);
+    }
 
     return (
         <div>
@@ -30,6 +37,9 @@ const RallyTree = ({ matchData }) => {
                     <label>Side</label>
                     {sideOptions}
                 </div>
+            </div>
+            <div>
+                {pointsFiltered.length}
             </div>
         </div>
     );
