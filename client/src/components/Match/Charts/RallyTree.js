@@ -12,7 +12,7 @@ const RallyTree = ({ matchData }) => {
     // get variables from helper components
     const { sideSelected, sideOptions } = Side();
     const { playerSelected, playerOptions } = Player(players);
-    const { setNumSelected, setNumOptions } = Set(sets);
+    const { setNumSelected, setNumOptions } = Set(sets, true);
     
     // filter points data
     let pointsFiltered = points;
