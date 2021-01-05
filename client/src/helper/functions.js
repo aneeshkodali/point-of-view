@@ -26,3 +26,8 @@ export const convertHeight = heightCM => {
     const remainder = inches % 12;
     return `${feet}'${remainder}"`;
 }
+
+// function to create an array from 1 to N
+export const createArrayOneToN = n => {
+    return Array.from({length: n}, (_, i) => i+1);
+}

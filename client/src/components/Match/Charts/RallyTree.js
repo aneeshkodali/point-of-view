@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { createArrayOneToN } from '../../../helper/functions';
 import Side from '../Helper/Side';
 import Player from '../Helper/Player';
 import Set from '../Helper/Set';
@@ -30,7 +31,7 @@ const RallyTree = ({ matchData }) => {
     // get max rally length (CHANGE THIS LATER)
     const maxRallyLength = Math.max(...pointsFiltered.map(({ num_shots }) => num_shots));
     // loop through each rally length
-    const rallyLengthArr = Array.from({length: maxRallyLength}, (_, i) => i+1);
+    const rallyLengthArr = createArrayOneToN(maxRallyLength);
     rallyLengthArr.forEach(rallyLength => {
         // initialize object
         const rallyObj = {};
