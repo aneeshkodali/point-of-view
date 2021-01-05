@@ -31,3 +31,6 @@ export const convertHeight = heightCM => {
 export const createArrayOneToN = n => {
     return Array.from({length: n}, (_, i) => i+1);
 }
+
+// array of point outcomes
+export const pointOutcomes = ['ace', 'double fault', 'forced error', 'service winner', 'unforced error', 'winner'];
