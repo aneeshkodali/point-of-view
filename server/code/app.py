@@ -10,8 +10,8 @@ import os
 
 ## imports from project
 from db import db
-from resources.player import Players, Player
-from resources.match import Matches, Match, MatchID
+from resources.player import Players, Player, PlayerID
+from resources.match import Matches, MatchesUniqueFieldValues, Match, MatchID
 from resources.tournament import Tournaments, Tournament, TournamentID
 
 #### APP SETUP
@@ -38,12 +38,15 @@ def index():
 
 api.add_resource(Players, '/server/players')
 api.add_resource(Player, '/server/player')
+api.add_resource(PlayerID, '/server/player/<id>')
 api.add_resource(Matches, '/server/matches')
+api.add_resource(MatchesUniqueFieldValues, '/server/matches/unique/<field>')
 api.add_resource(Match, '/server/match')
 api.add_resource(MatchID, '/server/match/<id>')
 api.add_resource(Tournaments, '/server/tournaments')
 api.add_resource(Tournament, '/server/tournament')
 api.add_resource(TournamentID, '/server/tournament/<id>')
+
 
 
 #### RUN APP

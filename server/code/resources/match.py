@@ -44,6 +44,16 @@ class MatchID(Resource):
             return match.json()
         return {'message': 'Item not found'}, 404
 
+
+class MatchesUniqueFieldValues(Resource):
+
+    # GET method
+    def get(self, field):
+        matches = json.loads(MatchModel.objects().only(field).to_json())
+        values = list(set([match[field] for match in matches]))
+        values.sort()
+        return {'values': values}
+
 class Matches(Resource):
 
     # GET method

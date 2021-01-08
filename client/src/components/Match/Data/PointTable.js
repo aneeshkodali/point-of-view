@@ -1,20 +1,27 @@
 import React from 'react';
 
+
 const PointTable = ({ points, pointSelected, selectPoint }) => {
+
 
     // display points
     const pointsRendered = points.map(point => {
-        const { point_number, set_score, game_score, point_score, side, server, rally_length, result, shots } = point
+        const { point_number, set_score, game_score, point_score, side, server, rally_length, result, winner, shots } = point;
+
+        // highlight row if point is pointSelected
+        const rowHighlighting = point_number === pointSelected['point_number'] ? 'lightgreen' : '';
+
         return (
-            <tr key={point_number} onClick={() => selectPoint(point, pointSelected)}>
+            <tr key={point_number} onClick={() => selectPoint(point, pointSelected)} style={{'cursor': 'pointer', 'backgroundColor': rowHighlighting}}>
                 <td>{point_number}</td>
                 <td>{set_score}</td>
                 <td>{game_score}</td>
                 <td>{point_score}</td>
                 <td>{side}</td>
-                <td>{server['$oid']}</td>
+                <td>{server.full_name}</td>
                 <td>{rally_length}</td>
                 <td>{result}</td>
+                <td>{winner['full_name']}</td>
             </tr>
         );
     });
@@ -35,6 +42,7 @@ const PointTable = ({ points, pointSelected, selectPoint }) => {
                         <th>Server</th>
                         <th>Rally Length</th>
                         <th>Result</th>
+                        <th>Winner</th>
                     </tr>
                 
                 </thead>

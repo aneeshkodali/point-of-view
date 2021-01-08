@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from unidecode import unidecode
 
+from models.point import PointModel
 from scraper.shot import getShotData
 
 
@@ -79,7 +80,7 @@ def getPointData(point_table, player_list):
 
         # set_score_server
         try:
-            set_score_server = int(set_score.split('-')[0])
+            set_score_server = set_score.split('-')[0]
             if set_score_server:
                 point_dict['set_score_server'] = set_score_server
         except:
@@ -87,7 +88,7 @@ def getPointData(point_table, player_list):
 
         # set_score_receiver
         try:
-            set_score_receiver = int(set_score_split[1])
+            set_score_receiver = set_score.split('-')[1]
             if set_score_receiver:
                 point_dict['set_score_receiver'] = set_score_receiver
         except:
@@ -95,7 +96,7 @@ def getPointData(point_table, player_list):
 
         # set_in_match
         try:
-            set_in_match = set_score_server + set_score_receiver
+            set_in_match = int(set_score_server) + int(set_score_receiver) + 1
             if set_in_match:
                 point_dict['set_in_match'] = set_in_match
         except:
@@ -111,7 +112,7 @@ def getPointData(point_table, player_list):
 
         # game_score_server
         try:
-            game_score_server = int(game_score.split('-')[0])
+            game_score_server = game_score.split('-')[0]
             if game_score_server:
                 point_dict['game_score_server'] = game_score_server
         except:
@@ -119,7 +120,7 @@ def getPointData(point_table, player_list):
 
         # game_score_receiver
         try:
-            game_score_receiver = int(game_score.split('-')[1])
+            game_score_receiver = game_score.split('-')[1]
             if game_score_receiver:
                 point_dict['game_score_receiver'] = game_score_receiver
         except:
@@ -127,7 +128,7 @@ def getPointData(point_table, player_list):
 
         # game_in_set
         try:
-            game_in_set = game_score_server + game_score_receiver
+            game_in_set = int(game_score_server) + int(game_score_receiver) + 1
             if game_in_set:
                 point_dict['game_in_set'] = game_in_set
         except:
@@ -242,8 +243,9 @@ def getPointData(point_table, player_list):
                 point_dict['shots'] = shots
         except:
             pass
-    
-        points.append(point_dict)
+        
+        point_model = PointModel(**point_dict)
+        points.append(point_model)
         point_number += 1
 
     return points

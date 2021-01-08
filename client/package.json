@@ -11,10 +11,13 @@
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
+    "victory": "^35.4.3",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
     "start": "react-scripts start",
+    "start-backend": "cd ../server/venv/Scripts && flask run",
+    "start-full": "concurrently \"npm start\" \"npm run start-backend\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -36,5 +39,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "concurrently": "^5.3.0"
   }
 }

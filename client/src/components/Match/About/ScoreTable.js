@@ -1,10 +1,29 @@
 import React from 'react';
 
+import { getCountryName } from '../../../helper/countries';
+
 const ScoreTable = ({ players, score }) => {
 
     // get winner (0) and loser (1)
     const winner = players[0];
     const loser = players[1];
+
+    // function to get flag icon from country 3 digit name
+    const getFlagIcon = country_three => {
+        const countryName = getCountryName(country_three).toLowerCase();
+        return <i className={`${countryName} flag`} />;
+    }
+
+    // function to return name with abbreviated string
+    const returnAbbreviatedName = name => {
+        // split name
+        const nameSplit = name.split(' ');
+        // abbreviate first name
+        nameSplit[0] = `${nameSplit[0][0].toUpperCase()}.`;
+        
+        return nameSplit.join(' ');
+    }
+
 
     // split score - sets separated by ' , scores separated by '-'
     const scoreSplit = score.split(' ').map(set => set.split('-'));
@@ -14,21 +33,30 @@ const ScoreTable = ({ players, score }) => {
         <th key={'player'}>Player</th>
     ];
     const winnerData = [
-        <td key={'winner'}>{winner}</td>
+        <td key={'winner'}>
+            {getFlagIcon(winner['country'])}
+            {returnAbbreviatedName(winner['full_name'])}
+            <i className="ui check icon" />
+        </td>
     ];
     const loserData = [
-        <td key={'loser'}>{loser}</td>
+        <td key={'loser'}>
+            {getFlagIcon(loser['country'])}
+            {returnAbbreviatedName(loser['full_name'])}
+        </td>
     ];
 
     // function to apply styling to set score if player won set
     // returns object of css properties
     const applyScoreStyling = (setScorePlayer, setScoreOpponent) => {
+
+        const stylingObj = {};
+
         if (setScorePlayer > setScoreOpponent) {
-            return {
-                'fontWeight': 'bold',
-                'backgroundColor': 'lightgreen'
-            }
+            stylingObj['fontWeight'] = 'bold'
         }
+
+        return stylingObj;
     }
 
     // loop through scores and append data accordingly
@@ -38,13 +66,18 @@ const ScoreTable = ({ players, score }) => {
         const setScoreWinner = set[0];
         const setScoreLoser = set[1];
 
+        const winnerStylingObj = applyScoreStyling(setScoreWinner, setScoreLoser);
+        winnerStylingObj['backgroundColor'] = setScoreWinner > setScoreLoser ? 'lightgreen' : '';
+        const loserStylingObj = applyScoreStyling(setScoreLoser, setScoreWinner);
+
+
         tableHeaders.push(
             <th key={setNum}>Set {setNum}</th>
         );
         winnerData.push(
             <td 
                 key={setNum} 
-                style={applyScoreStyling(setScoreWinner, setScoreLoser)}
+                style={winnerStylingObj}
             >
                 {setScoreWinner}
             </td>
@@ -52,7 +85,7 @@ const ScoreTable = ({ players, score }) => {
         loserData.push(
             <td 
                 key={setNum} 
-                style={applyScoreStyling(setScoreLoser, setScoreWinner)}
+                style={loserStylingObj}
             >
                 {setScoreLoser}
             </td>

@@ -3,7 +3,9 @@ import React, { useState } from 'react';
 import PointTable from './PointTable';
 import ShotTable from './ShotTable';
 
-const Table = ({ points }) => {
+const Table = ({ matchData }) => {
+
+    const {  points } = matchData;
 
     // state for currently selected point
     const [pointSelected, setPointSelected] = useState({})
