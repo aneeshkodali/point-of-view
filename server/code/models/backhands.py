@@ -11,9 +11,6 @@ class BackhandModel(BaseModel):
 
     meta = {'collection': 'backhands'}
 
-    def json(self):
-        return json.loads(self.to_json())
-
     @classmethod
     def find_by_backhand(cls, backhand):
         return HandModel.objects(backhand=backhand).first()
