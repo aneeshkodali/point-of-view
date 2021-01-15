@@ -6,7 +6,7 @@ class SurfaceModel(db.Document):
     Court surfaces
     '''
 
-    surface_id = db.IntField(primary_key=True)
+    surface_id = db.IntField(primary_key=True)            
     surface = db.StringField()
 
     meta = {'collection': 'surfaces'}
