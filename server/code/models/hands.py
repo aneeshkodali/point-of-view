@@ -11,10 +11,7 @@ class HandModel(BaseModel):
     hand = StringField()
 
     meta = {'collection': 'hands'}
-
-    def json(self):
-        return json.loads(self.to_json())
-    
+   
     @classmethod
     def find_by_abbreviation(cls, abbreviation):
         return HandModel.objects(abbreviation=abbreviation).first()
