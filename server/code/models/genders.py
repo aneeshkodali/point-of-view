@@ -1,23 +1,16 @@
-from db import db
-import json
+from mongoengine import IntField, StringField
+from models.base import BaseModel
 
-class GenderModel(db.Document):
+class GenderModel(BaseModel):
     '''
     Genders
     '''
 
-    gender_id = db.IntField(primary_key=True)            
-    abbreviation = db.StringField()
-    gender = db.StringField()
+    gender_id = IntField(primary_key=True)            
+    abbreviation = StringField()
+    gender = StringField()
 
     meta = {'collection': 'genders'}
-
-    def json(self):
-        return json.loads(self.to_json())
-
-    @classmethod
-    def find_by_gender_id(cls, gender_id):
-        return GenderModel.objects(gender_id=gender_id).first()
     
     @classmethod
     def find_by_abbreviation(cls, abbreviation):
