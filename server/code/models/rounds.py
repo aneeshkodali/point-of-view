@@ -14,8 +14,8 @@ class RoundModel(BaseModel):
 
     @classmethod
     def find_by_abbreviation(cls, abbreviation):
-        return HandModel.objects(abbreviation=abbreviation).first()
+        return RoundModel.objects(abbreviation=abbreviation).first()
 
     @classmethod
     def find_by_round(cls, round_name):
-        return HandModel.objects(round_name=round_name).first()
+        return RoundModel.objects(round_name=round_name).first()
