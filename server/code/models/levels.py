@@ -17,5 +17,5 @@ class LevelModel(BaseModel):
         return LevelModel.objects(abbreviation=abbreviation).first()
 
     @classmethod
-    def find_by_round(cls, level):
+    def find_by_level(cls, level):
         return LevelModel.objects(level=level).first()
