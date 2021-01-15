@@ -13,5 +13,9 @@ class RoundModel(BaseModel):
     meta = {'collection': 'rounds'}
 
     @classmethod
+    def find_by_abbreviation(cls, abbreviation):
+        return HandModel.objects(abbreviation=abbreviation).first()
+
+    @classmethod
     def find_by_round(cls, round_name):
         return HandModel.objects(round_name=round_name).first()
