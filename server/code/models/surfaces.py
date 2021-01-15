@@ -20,4 +20,4 @@ class SurfaceModel(db.Document):
     
     @classmethod
     def find_by_surface(cls, surface):
-        return SurfaceModel.objects(surface-surface).first()
+        return SurfaceModel.objects(surface=surface).first()
