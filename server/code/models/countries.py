@@ -7,8 +7,8 @@ class CountryModel(BaseModel):
     '''
 
     country_id = IntField(primary_key=True)
-    country = StringField()
-    code_three = StringField()
+    country = StringField(unique=True, nullable=False)
+    code_three = StringField(unique=True, nullable=False)
 
     meta = {'collection': 'countries'}
 
