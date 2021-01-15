@@ -1,7 +1,7 @@
 from db import db
 import json
 
-class SurfaceModel(db.Model):
+class SurfaceModel(db.Document):
     '''
     Court surfaces
     '''
