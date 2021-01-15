@@ -13,4 +13,4 @@ class BackhandModel(BaseModel):
 
     @classmethod
     def find_by_backhand(cls, backhand):
-        return HandModel.objects(backhand=backhand).first()
+        return BackhandModel.objects(backhand=backhand).first()
