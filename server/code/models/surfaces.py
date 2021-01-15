@@ -1,22 +1,15 @@
-from db import db
-import json
+from mongoengine import IntField, StringField
+from models.base import BaseModel
 
-class SurfaceModel(db.Document):
+class SurfaceModel(BaseModel):
     '''
     Court surfaces
     '''
 
-    surface_id = db.IntField(primary_key=True)            
-    surface = db.StringField()
+    surface_id = IntField(primary_key=True)            
+    surface = StringField()
 
     meta = {'collection': 'surfaces'}
-
-    def json(self):
-        return json.loads(self.to_json())
-
-    @classmethod
-    def find_by_surface_id(cls, surface_id):
-        return SurfaceModel.objects(surface_id=surface_id).first()
     
     @classmethod
     def find_by_surface(cls, surface):
