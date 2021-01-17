@@ -1,10 +1,14 @@
-from db import db
 import json
+
+from db import db
+from uuid import uuid4
 
 class BaseModel(db.Document):
     '''
     Base model used to build other models
     '''
+
+    uid = db.UUIDField(unique=True, nullable=False, default=lambda: uuid4())
 
     # allows for 'inheritance' while allowing other models to be created as separate collections
     meta = {'abstract': True}
