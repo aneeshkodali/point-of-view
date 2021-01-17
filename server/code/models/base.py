@@ -8,7 +8,7 @@ class BaseModel(db.Document):
     Base model used to build other models
     '''
 
-    uid = db.UUIDField(unique=True, nullable=False, default=lambda: uuid4())
+    uid = db.UUIDField(unique=True, nullable=False, default=lambda: uuid4(), binary=False)
 
     # allows for 'inheritance' while allowing other models to be created as separate collections
     meta = {'abstract': True}
