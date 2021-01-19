@@ -10,10 +10,10 @@ class TournamentModel(BaseModel):
     Tournaments - each record is a unique combination of (tournament, gender, year)
     '''
 
-    tournament_id = UUIDField(primary_key=True, default=lambda: uuid4(), binary=False)
-    year = IntField(primary_key=True, default=2300)
-    gender_id = IntField(primary_key=True, default=0)
+    #tournament_id = UUIDField(primary_key=True, default=lambda: uuid4(), binary=False)
     name = StringField()
+    year = IntField(default=2300)
+    gender_id = IntField(default=0)
     date = DateTimeField(default=datetime.datetime(1700, 1, 1))
     size = IntField(default=0)
     points = IntField(default=0)
@@ -25,8 +25,8 @@ class TournamentModel(BaseModel):
     meta = {'collection': 'tournaments'}
 
     @classmethod
-    def find_by_id_and_gender_and_year(cls, id, gender, year):
-        return TournamentModel.objects(Q(id=id) & Q(gender=gender) & Q(year=year)).first()
+    def find_by_id_and_gender_and_year(cls, tournament_id, gender, year):
+        return TournamentModel.objects(Q(tournament_id=tournament_id) & Q(gender=gender) & Q(year=year)).first()
 
 
 
