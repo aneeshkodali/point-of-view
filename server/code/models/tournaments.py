@@ -1,4 +1,4 @@
-from mongoengine import UUIDField, StringField, IntField, DateTimeField
+from mongoengine import UUIDField, StringField, IntField, DateTimeField, URLField
 from mongoengine.queryset.visitor import Q
 import datetime
 from uuid import uuid4
