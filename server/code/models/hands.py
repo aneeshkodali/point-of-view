@@ -1,4 +1,5 @@
 from mongoengine import IntField, StringField
+
 from models.base import BaseModel
 
 class HandModel(BaseModel):

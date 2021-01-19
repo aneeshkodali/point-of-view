@@ -1,7 +1,7 @@
 import json
+from uuid import uuid4
 
 from db import db
-from uuid import uuid4
 
 class BaseModel(db.Document):
     '''
