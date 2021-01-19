@@ -20,7 +20,7 @@ class TournamentModel(BaseModel):
     sets = IntField(default=0)
     surface_id = IntField(default=0)
     level_id = IntField(default=0)
-    link = db.URLField(unique=True, nullable=False)
+    link = URLField(unique=True, nullable=False)
 
     meta = {'collection': 'tournaments'}
 
