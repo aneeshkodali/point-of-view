@@ -1,8 +1,12 @@
 import requests
 from bs4 import BeautifulSoup
 import ast
+import datetime
 
 from scraper.helper import extractVariableFromText
+from models.genders import GenderModel
+from models.levels import LevelModel
+from models.surfaces import SurfaceModel
 
 tournament_base_url = 'http://www.minorleaguesplits.com/tennisabstract/cgi-bin/jstourneys/'
 
@@ -19,12 +23,28 @@ def getTournamentData(link):
     # tournament name is `.../jstourneys/<name>`
     # if tournament starts with W_ then it's W(omen) else M(en)
     tournament_name = link.split('jstourneys/')[1]
-    tournament_dict['gender'] = 'W' if tournament_name.startswith('W_') else 'M'
+
+    # gender_id
+    try:
+        gender_abbreviation = 'W' if tournament_name.startswith('W_') else 'M'
+        if gender_abbreviation:
+            gender_id = GenderModel.find_by_abbreviation(gender_abbreviation).gender_id
+            tournament_dict['gender_id'] = gender_id
+    except:
+        pass
 
     # create BeautifulSoup object
     page = requests.get(link)
     soup = BeautifulSoup(page.content, 'lxml')
     soup_text = soup.text
+
+    # year
+    try:
+        year = extractVariableFromText(soup_text, 'tyear')
+        if year:
+            tournament_dict['year'] = year
+    except:
+        pass
 
     # name
     try:
@@ -34,11 +54,30 @@ def getTournamentData(link):
     except:
         pass
 
-    # surface
+    # date
     try:
-        surface = soup_text.split('var tsurf=')[1].split(';')[0].replace("'","").replace('"', '')
-        if surface:
-            tournament_dict['surface'] = surface
+        date = extractVariableFromText(soup_text, 'tdate')
+        if date:
+            year = int(date[:4])
+            month = int(date[4:6])
+            day = int(date[6:8])
+            tournament_dict['date'] = datetime.datetime(year, month, day)
+    except:
+        pass
+
+    # size
+    try:
+        size = soup_text.split('var tsize=')[1].split(';')[0].replace("'","").replace('"', '')
+        if size:
+            tournament_dict['size'] = size
+    except:
+        pass
+
+    # points
+    try:
+        points = soup_text.split('var tpoints=')[1].split(';')[0].replace("'","").replace('"', '')
+        if points:
+            tournament_dict['points'] = points
     except:
         pass
 
@@ -54,6 +93,25 @@ def getTournamentData(link):
             tournament_dict['sets'] = sets_num
     except:
         pass
+
+    # surface_id
+    try:
+        surface = soup_text.split('var tsurf=')[1].split(';')[0].replace("'","").replace('"', '').lower()
+        if surface:
+            surface_id = SurfaceModel.find_by_surface(surface).surface_id
+            tournament_dict['surface_id'] = surface_id
+    except:
+        pass
+
+    # level_id
+    try:
+        level = soup_text.split('var tlev=')[1].split(';')[0].replace("'","").replace('"', '')
+        if level:
+            level_id = LevelModel.find_by_level(level).level_id
+            tournament_dict['level_id'] = level_id
+    except:
+        pass
+
 
     return tournament_dict
 
