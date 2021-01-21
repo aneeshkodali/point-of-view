@@ -53,12 +53,12 @@ def getTournamentData(link):
         if name:
             tournament_name_model_db = TournamentNameModel.find_by_name(name)
             if tournament_name_model_db:
-                tournament_dict['tournament_id'] = tournament_name_model_db.tournament_id
+                tournament_dict['tournament_name_id'] = tournament_name_model_db.tournament_name_id
             else:
                 tournament_name_dict = {'name': name}
                 tournament_name_model = TournamentNameModel(**tournament_name_dict)
                 tournament_name_model.save()
-                tournament_dict['tournament_id'] = tournament_name_model.tournament_id
+                tournament_dict['tournament_name_id'] = tournament_name_model.tournament_name_id
     except:
         pass
 
