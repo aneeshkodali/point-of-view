@@ -8,7 +8,7 @@ class TournamentNameModel(BaseModel):
     Tournament Names
     '''
 
-    tournament_id = UUIDField(primary_key=True, default=lambda: uuid4(), binary=False)
+    tournament_name_id = UUIDField(primary_key=True, default=lambda: uuid4(), binary=False)
     name = StringField()
 
     meta = {'collection': 'tournament_names'}
