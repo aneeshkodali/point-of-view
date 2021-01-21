@@ -7,6 +7,7 @@ from scraper.helper import extractVariableFromText
 from models.genders import GenderModel
 from models.levels import LevelModel
 from models.surfaces import SurfaceModel
+from models.tournament_names import TournamentNameModel
 
 tournament_base_url = 'http://www.minorleaguesplits.com/tennisabstract/cgi-bin/jstourneys/'
 
@@ -46,11 +47,18 @@ def getTournamentData(link):
     except:
         pass
 
-    # name
+    # tournament_id
     try:
         name = extractVariableFromText(soup_text, 'tname')
         if name:
-            tournament_dict['name'] = name
+            tournament_name_model_db = TournamentNameModel.find_by_name(name)
+            if tournament_name_model_db:
+                tournament_dict['tournament_id'] = tournament_name_model_db.tournament_id
+            else:
+                tournament_name_dict = {'name': name}
+                tournament_name_model = TournamentNameModel(**tournament_name_dict)
+                tournament_name_model.save()
+                tournament_dict['tournament_id'] = tournament_name_model.tournament_id
     except:
         pass
 
