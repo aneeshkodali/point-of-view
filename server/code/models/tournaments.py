@@ -7,7 +7,7 @@ from models.base import BaseModel
 
 class TournamentModel(BaseModel):
     '''
-    Tournaments - each record is a unique combination of (tournament_name, gender, year)
+    Tournaments - each record is a unique combination of (tournament_name_id, gender_id, year)
     '''
     
     tournament_id = UUIDField(primary_key=True, default=lambda: uuid4(), binary=False)
@@ -25,8 +25,8 @@ class TournamentModel(BaseModel):
     meta = {'collection': 'tournaments'}
 
     @classmethod
-    def find_by_id_and_gender_and_year(cls, tournament_id, gender, year):
-        return TournamentModel.objects(Q(tournament_id=tournament_id) & Q(gender=gender) & Q(year=year)).first()
+    def find_by_name_id_and_gender_id_and_year(cls, tournament_name_id, gender_id, year):
+        return TournamentModel.objects(Q(tournament_name_id=tournament_name_id) & Q(gender_id=gender_id) & Q(year=year)).first()
 
 
 
