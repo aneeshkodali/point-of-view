@@ -7,9 +7,10 @@ from models.base import BaseModel
 
 class TournamentModel(BaseModel):
     '''
-    Tournaments - each record is a unique combination of (tournament, gender, year)
+    Tournaments - each record is a unique combination of (tournament_name, gender, year)
     '''
-
+    
+    tournament_id = UUIDField(primary_key=True, default=lambda: uuid4(), binary=False)
     tournament_name_id = UUIDField(binary=False, default='4e1f7f4b-6f3e-43ce-954d-aa9cf6ca52e4')
     year = IntField(default=2300)
     gender_id = IntField(default=0)
