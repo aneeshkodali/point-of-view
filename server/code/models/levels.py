@@ -8,14 +8,9 @@ class LevelModel(BaseModel):
     '''
 
     level_id = IntField(primary_key=True)
-    abbreviation = StringField()
     level = StringField()
 
     meta = {'collection': 'levels'}
-
-    @classmethod
-    def find_by_abbreviation(cls, abbreviation):
-        return LevelModel.objects(abbreviation=abbreviation).first()
 
     @classmethod
     def find_by_level(cls, level):
