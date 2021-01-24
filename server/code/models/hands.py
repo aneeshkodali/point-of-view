@@ -8,15 +8,10 @@ class HandModel(BaseModel):
     '''
 
     hand_id = IntField(primary_key=True)
-    abbreviation = StringField()
     hand = StringField()
 
     meta = {'collection': 'hands'}
-   
-    @classmethod
-    def find_by_abbreviation(cls, abbreviation):
-        return HandModel.objects(abbreviation=abbreviation).first()
-
+  
     @classmethod
     def find_by_hand(cls, hand):
         return HandModel.objects(hand=hand).first()
