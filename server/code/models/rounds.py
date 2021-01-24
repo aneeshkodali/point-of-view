@@ -8,14 +8,9 @@ class RoundModel(BaseModel):
     '''
 
     round_id = IntField(primary_key=True)
-    abbreviation = StringField()
     round_name = StringField()
 
     meta = {'collection': 'rounds'}
-
-    @classmethod
-    def find_by_abbreviation(cls, abbreviation):
-        return RoundModel.objects(abbreviation=abbreviation).first()
 
     @classmethod
     def find_by_round(cls, round_name):
