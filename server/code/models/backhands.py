@@ -1,14 +1,13 @@
-from mongoengine import IntField, StringField
+from mongoengine import IntField
 from models.base import BaseModel
 
 class BackhandModel(BaseModel):
     '''
     Number of hands used for backhand
-    In this model, 'backhand_id' is also used for determining number of hands
     '''
 
     backhand_id = IntField(primary_key=True)
-    backhand = StringField()
+    backhand = IntField()
 
     meta = {'collection': 'backhands'}
 
