@@ -3,11 +3,11 @@ from bs4 import BeautifulSoup
 import ast
 import datetime
 
-from scraper.helper import extractVariableFromText
-from models.genders import GenderModel
-from models.hands import HandModel
 from models.backhands import BackhandModel
 from models.countries import CountryModel
+from models.genders import GenderModel
+from models.hands import HandModel
+from scraper.helper import extractVariableFromText
 
 def getPlayerData(link):
 
