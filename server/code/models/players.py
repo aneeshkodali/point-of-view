@@ -17,7 +17,7 @@ class PlayerModel(BaseModel):
     hand_id = IntField(default=0)
     backhand_id = IntField(default=0)
     country_id = IntField(default=0)
-    image_url = StringField()
+    image_url = StringField(default="")
     link = URLField(unique=True, nullable=False)
     
 
