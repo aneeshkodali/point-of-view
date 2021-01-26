@@ -103,6 +103,20 @@ def getPlayerData(link):
 
     # country_id
     try:
+        country = extractVariableFromText(text, 'country')
+        country_model_db = CountryModel.find_by_country(country)
+        if country_model_db:
+            player_dict['country_id'] = country_model_db.country_id
+        else:
+            country_id_new = max([country_model['country_id'] for country_model in CountryModel.objects()] or [0]) + 1
+            country_dict_new = {'country_id': country_id_new, 'country': country}
+            country_model_new = CountryModel(**country_dict_new)
+            country_model_new.save()
+            player_dict['country_id'] = country_model_new.country_id
+    except:
+        pass
+
+    try:
         country_three = extractVariableFromText(text, 'country')
         if country_three:
             country_id = CountryModel.find_by_code_three(country_three).country_id
