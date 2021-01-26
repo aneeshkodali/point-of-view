@@ -22,9 +22,19 @@ def getPlayerData(link):
     player_dict['link'] = link
 
     # gender_id
-    gender_abbreviation = 'W' if 'wplayer' in link else 'M'
-    gender_id = GenderModel.find_by_abbreviation(gender_abbreviation).gender_id
-    player_dict['gender_id'] = gender_id 
+    try:
+        gender = 'W' if 'wplayer' in link else 'M'
+        gender_model_db = GenderModel.find_by_gender(gender)
+        if gender_model_db:
+            player_dict['gender_id'] = gender_model_db.gender_id
+        else:
+            gender_id_new = max([gender_model['gender_id'] for gender_model in GenderModel.objects().fields(gender_id=1)] or [0]) + 1
+            gender_dict_new = {'gender_id': gender_id_new, 'gender': gender}
+            gender_model_new = GenderModel(**gender_dict_new)
+            gender_model_new.save()
+            player_dict['gender_id'] = gender_model_new.gender_id
+    except:
+        pass
 
     # create BeautifulSoup object
     page = requests.get(link)
