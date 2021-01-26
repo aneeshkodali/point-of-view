@@ -28,7 +28,7 @@ def getPlayerData(link):
         if gender_model_db:
             player_dict['gender_id'] = gender_model_db.gender_id
         else:
-            gender_id_new = max([gender_model['gender_id'] for gender_model in GenderModel.objects().fields(gender_id=1)] or [0]) + 1
+            gender_id_new = max([gender_model['gender_id'] for gender_model in GenderModel.objects()] or [0]) + 1
             gender_dict_new = {'gender_id': gender_id_new, 'gender': gender}
             gender_model_new = GenderModel(**gender_dict_new)
             gender_model_new.save()
@@ -78,7 +78,7 @@ def getPlayerData(link):
         if hand_model_db:
             player_dict['hand_id'] = hand_model_db.hand_id
         else:
-            hand_id_new = max([hand_model['hand_id'] for hand_model in HandModel.objects().fields(hand_id=1)] or [0]) + 1
+            hand_id_new = max([hand_model['hand_id'] for hand_model in HandModel.objects()] or [0]) + 1
             hand_dict_new = {'hand_id': hand_id_new, 'hand': hand}
             hand_model_new = HandModel(**hand_dict_new)
             hand_model_new.save()
@@ -89,9 +89,15 @@ def getPlayerData(link):
     # backhand_id
     try:
         backhand = extractVariableFromText(text, 'backhand')
-        if backhand:
-            backhand_id = BackhandModel.find_by_id(backhand).backhand_id
-            player_dict['backhand_id'] = backhand_id
+        backhand_model_db = BackhandModel.find_by_backhand(backhand)
+        if backhand_model_db:
+            player_dict['backhand_id'] = backhand_model_db.backhand_id
+        else:
+            backhand_id_new = max([backhand_model['backhand_id'] for backhand_model in BackhandModel.objects()] or [0]) + 1
+            backhand_dict_new = {'backhand_id': backhand_id_new, 'backhand': backhand}
+            backhand_model_new = BackhandModel(**backhand_dict_new)
+            backhand_model_new.save()
+            player_dict['backhand_id'] = backhand_model_new.backhand_id
     except:
         pass
 
