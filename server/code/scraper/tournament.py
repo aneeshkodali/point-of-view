@@ -3,8 +3,8 @@ from bs4 import BeautifulSoup
 import ast
 import datetime
 
-from scraper.helper import extractVariableFromText
 from models.genders import GenderModel
+from scraper.helper import extractVariableFromText
 from models.levels import LevelModel
 from models.surfaces import SurfaceModel
 from models.tournament_names import TournamentNameModel
