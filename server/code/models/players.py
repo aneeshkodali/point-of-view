@@ -11,7 +11,7 @@ class PlayerModel(BaseModel):
 
     player_id = UUIDField(primary_key=True, default=lambda: uuid4(), binary=False)
     full_name = StringField(default="")
-    date_of_birth = DateTimeField(default=datetime.datetime(1900, 1, 1))
+    date_of_birth = DateTimeField(default=datetime.datetime(1700, 1, 1))
     height = IntField(default=0)
     gender_id = IntField(default=0)
     hand_id = IntField(default=0)
