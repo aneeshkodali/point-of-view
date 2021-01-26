@@ -52,21 +52,20 @@ def getTournamentData(link):
     except:
         pass
 
-    # tournament_id
+    # tournament_name_id
     try:
-        name = extractVariableFromText(soup_text, 'tname')
-        if name:
-            tournament_name_model_db = TournamentNameModel.find_by_name(name)
-            if tournament_name_model_db:
-                tournament_dict['tournament_name_id'] = tournament_name_model_db.tournament_name_id
-            else:
-                tournament_name_dict = {'name': name}
-                tournament_name_model = TournamentNameModel(**tournament_name_dict)
-                tournament_name_model.save()
-                tournament_dict['tournament_name_id'] = tournament_name_model.tournament_name_id
+        tournament_name = extractVariableFromText(soup_text, 'tname')
+        tournament_name_model_db = TournamentNameModel.find_by_name(tournament_name)
+        if tournament_name_model_db:
+            tournament_dict['tournament_name_id'] = tournament_name_model_db.tournament_name_id
+        else:
+            tournament_name_dict_new = {'name': tournament_name}
+            tournament_name_model_new = TournamentNameModel(**tournament_name_dict_new)
+            tournament_name_model_new.save()
+            tournament_dict['tournament_name_id'] = tournament_name_model_new.tournament_name_id
     except:
         pass
-
+  
     # date
     try:
         date = extractVariableFromText(soup_text, 'tdate')
