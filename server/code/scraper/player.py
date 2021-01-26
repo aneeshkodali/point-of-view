@@ -116,14 +116,6 @@ def getPlayerData(link):
     except:
         pass
 
-    try:
-        country_three = extractVariableFromText(text, 'country')
-        if country_three:
-            country_id = CountryModel.find_by_code_three(country_three).country_id
-            player_dict['country_id'] = country_id
-    except:
-        pass
-
     # image url
     try:
         photog = extractVariableFromText(text, 'photog')
