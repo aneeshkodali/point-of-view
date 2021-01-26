@@ -109,12 +109,17 @@ def getTournamentData(link):
     # surface_id
     try:
         surface = soup_text.split('var tsurf=')[1].split(';')[0].replace("'","").replace('"', '').lower()
-        if surface:
-            surface_id = SurfaceModel.find_by_surface(surface).surface_id
-            tournament_dict['surface_id'] = surface_id
+        surface_model_db = SurfaceModel.find_by_surface(surface)
+        if surface_model_db:
+            tournament_dict['surface_id'] = surface_model_db.surface_id
+        else:
+            surface_id_new = max([surface_model['surface_id'] for surface_model in SurfaceModel.objects()] or [0]) + 1
+            surface_dict_new = {'surface_id': surface_id_new, 'surface': surface}
+            surface_model_new = SurfaceModel(**surface_dict_new)
+            surface_model_new.save()
+            tournament_dict['surface_id'] = surface_model_new.surface_id
     except:
-        pass
-
+   
     # level_id
     try:
         level = soup_text.split('var tlev=')[1].split(';')[0].replace("'","").replace('"', '')
