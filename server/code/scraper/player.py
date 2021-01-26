@@ -74,9 +74,15 @@ def getPlayerData(link):
     # hand_id
     try:
         hand = extractVariableFromText(text, 'hand')
-        if hand:
-            hand_id = HandModel.find_by_abbreviation(hand).hand_id
-            player_dict['hand_id'] = hand_id
+        hand_model_db = HandModel.find_by_hand(hand)
+        if hand_model_db:
+            player_dict['hand_id'] = hand_model_db.hand_id
+        else:
+            hand_id_new = max([hand_model['hand_id'] for hand_model in HandModel.objects().fields(hand_id=1)] or [0]) + 1
+            hand_dict_new = {'hand_id': hand_id_new, 'hand': hand}
+            hand_model_new = HandModel(**hand_dict_new)
+            hand_model_new.save()
+            player_dict['hand_id'] = hand_model_new.hand_id
     except:
         pass
 
