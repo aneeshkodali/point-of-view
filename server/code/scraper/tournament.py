@@ -20,17 +20,22 @@ def getTournamentData(link):
     tournament_dict = {}
     tournament_dict['link'] = link
 
-    # gender
     # tournament name is `.../jstourneys/<name>`
-    # if tournament starts with W_ then it's W(omen) else M(en)
     tournament_name = link.split('jstourneys/')[1]
 
     # gender_id
+    # if tournament starts with W_ then it's W(omen) else M(en)
     try:
-        gender_abbreviation = 'W' if tournament_name.startswith('W_') else 'M'
-        if gender_abbreviation:
-            gender_id = GenderModel.find_by_abbreviation(gender_abbreviation).gender_id
-            tournament_dict['gender_id'] = gender_id
+        gender = 'W' if tournament_name.startswith('W_') else 'M'
+        gender_model_db = GenderModel.find_by_gender(gender)
+        if gender_model_db:
+            tournament_dict['gender_id'] = gender_model_db.gender_id
+        else:
+            gender_id_new = max([gender_model['gender_id'] for gender_model in GenderModel.objects()] or [0]) + 1
+            gender_dict_new = {'gender_id': gender_id_new, 'gender': gender}
+            gender_model_new = GenderModel(**gender_dict_new)
+            gender_model_new.save()
+            tournament_dict['gender_id'] = gender_model_new.gender_id
     except:
         pass
 
