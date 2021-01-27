@@ -6,8 +6,8 @@ from models.rounds import RountModel
 from models.players import PlayerModel
 from models.tournaments import TournamentModel
 frpm models.tournament_names import TournamentNameModel
-from scraper.tournament import constructTournamentLink, getTournamentData
-from scraper.player import constructPlayerLink, getPlayerData
+from scraper.tournaments import constructTournamentLink, getTournamentData
+from scraper.players import constructPlayerLink, getPlayerData
 from scraper.point import getPointTable, getPointData
 
 

@@ -4,10 +4,10 @@ import ast
 import datetime
 
 from models.genders import GenderModel
-from scraper.helper import extractVariableFromText
 from models.levels import LevelModel
 from models.surfaces import SurfaceModel
 from models.tournament_names import TournamentNameModel
+from scraper.helper import extractVariableFromText
 
 tournament_base_url = 'http://www.minorleaguesplits.com/tennisabstract/cgi-bin/jstourneys/'
 
