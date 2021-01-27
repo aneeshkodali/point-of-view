@@ -1,5 +1,6 @@
 from mongoengine import UUIDField, URLField, DateTimeField, IntField, StringField
 import datetime
+from uuid import uuid4
 
 from models.base import BaseModel
 
