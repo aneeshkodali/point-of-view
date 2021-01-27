@@ -76,6 +76,8 @@ def getMatchData(link):
             tournament_model_new = TournamentModel(**tournament_dict_new)
             tournament_model_new.save()
             match_dict['tournament_id'] = tournament_model_new.tournament_id
+    except:
+        pass
 
     # round_id
     # Either queries rounds table for round_id or creates new record
