@@ -34,17 +34,10 @@ def getMatchData(link):
             match_dict['date'] = datetime.datetime(year, month, day)
     except:
         pass
-    
-    # gender
-    try:
-        gender = suffix[1]
-        if gender:
-            match_dict['gender'] = gender
-    except:
-        pass
 
     # tournament
     try:
+        gender = suffix[1]
         tournament = suffix[2].replace('_', ' ')
         if tournament:
             tournament_db = TournamentModel.find_by_name_and_gender(tournament, gender)
