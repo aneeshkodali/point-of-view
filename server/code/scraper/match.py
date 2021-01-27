@@ -35,9 +35,23 @@ def getMatchData(link):
     except:
         pass
 
-    # tournament
+    # gender_id (not needed as a column)
     try:
         gender = suffix[1]
+        gender_model_db = GenderModel.find_by_gender(gender)
+        if gender_model_db:
+            gender_id = gender_model_db.gender_id
+        else:
+            gender_id_new = max([gender_model['gender_id'] for gender_model in GenderModel.objects()] or [0]) + 1
+            gender_dict_new = {'gender_id': gender_id_new, 'gender': gender}
+            gender_model_new = GenderModel(**gender_dict_new)
+            gender_model_new.save()
+            gender_id = gender_model_new.gender_id
+    except:
+        pass
+
+    # tournament
+    try:
         tournament = suffix[2].replace('_', ' ')
         if tournament:
             tournament_db = TournamentModel.find_by_name_and_gender(tournament, gender)
