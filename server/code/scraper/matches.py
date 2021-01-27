@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import datetime
 
-from models.rounds import RountModel
+from models.rounds import RoundModel
 from models.players import PlayerModel
 from models.tournaments import TournamentModel
 from models.tournament_names import TournamentNameModel
