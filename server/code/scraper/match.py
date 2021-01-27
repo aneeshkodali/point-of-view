@@ -93,30 +93,6 @@ def getMatchData(link):
     except:
         pass
 
-    # player1 and player2
-    try:
-        player_one = suffix[4].replace('_', ' ')
-        player_two = suffix[5].replace('_', ' ').replace('.html','')
-        player_names = [player_one, player_two]
-        if player_names:
-                players = []
-                player_models = []
-                for player_name in player_names:
-                    player_link = constructPlayerLink(name=player_name, gender=gender)
-                    player_db = PlayerModel.find_by_link(player_link)
-                    if player_db:
-                        players.append(player_db)
-                        player_models.append({'player_name': player_name, 'player_model': player_db})
-                    else:
-                        player_data = getPlayerData(player_link)
-                        player_model = PlayerModel(**player_data)
-                        player_model.save()
-                        players.append(player_model)
-                        player_models.append({'player_name': player_name, 'player_model': player_model})
-                match_dict['players'] = players
-    except:
-        pass
-
     # get BeautifulSoup object
     try:
         page = requests.get(link)
@@ -124,37 +100,11 @@ def getMatchData(link):
     except:
         pass
 
-    # title
+    # name
     try:
-        title = soup.select('h2')[0].text
-        if title:
-            match_dict['title'] = title
-    except:
-        pass
-
-    # result
-    try:
-        result = soup.select('b')[0].text
-        if result:
-            match_dict['result'] = result
-    except:
-        pass
-
-    # winner
-    try:
-        winner_name = result.split(' d.')[0]
-        if winner_name:
-            winner = players[0] if winner_name == player_names[0] else players[1]
-            match_dict['winner'] = winner
-    except:
-        pass
-
-    # loser
-    try:
-        loser_name = list(filter(lambda player: player != winner, player_names))[0]
-        if loser_name:
-            loser = players[1] if winner_name == player_names[0] else players[0]
-            match_dict['loser'] = loser
+        name = soup.select('h2')[0].text
+        if name:
+            match_dict['name'] = name
     except:
         pass
 
@@ -201,3 +151,46 @@ def getMatchLinks(link='http://www.tennisabstract.com/charting/'):
     match_links = [f"{link}{match_link['href']}" for match_link in match_links]
 
     return match_links
+
+
+   # player1 and player2
+    #try:
+    #    player_one = suffix[4].replace('_', ' ')
+    #    player_two = suffix[5].replace('_', ' ').replace('.html','')
+    #    player_names = [player_one, player_two]
+    #    if player_names:
+    #            players = []
+    #            player_models = []
+    #            for player_name in player_names:
+    #                player_link = constructPlayerLink(name=player_name, gender=gender)
+    #                player_db = PlayerModel.find_by_link(player_link)
+    #                if player_db:
+    #                    players.append(player_db)
+    #                    player_models.append({'player_name': player_name, 'player_model': player_db})
+    #                else:
+    #                    player_data = getPlayerData(player_link)
+    #                    player_model = PlayerModel(**player_data)
+    #                    player_model.save()
+    #                    players.append(player_model)
+    #                    player_models.append({'player_name': player_name, 'player_model': player_model})
+    #            match_dict['players'] = players
+    #except:
+    #    pass
+
+      # winner
+    #try:
+    #    winner_name = result.split(' d.')[0]
+    #    if winner_name:
+    #        winner = players[0] if winner_name == player_names[0] else players[1]
+    #        match_dict['winner'] = winner
+    #except:
+    #    pass
+
+    # loser
+    #try:
+    #    loser_name = list(filter(lambda player: player != winner, player_names))[0]
+    #    if loser_name:
+    #        loser = players[1] if winner_name == player_names[0] else players[0]
+    #        match_dict['loser'] = loser
+    #except:
+    #    pass
