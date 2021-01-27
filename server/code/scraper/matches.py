@@ -69,7 +69,7 @@ def getMatchData(link):
         if tournament_model_db:
             match_dict['tournament_id'] = tournament_model_db.tournament_id
         else:
-            tournament_link = constructTournamentLink(tournament_name, geder, year)
+            tournament_link = constructTournamentLink(tournament_name, gender, year)
             tournament_dict_new = getTournamentData(tournament_link)
             tournament_model_new = TournamentModel(**tournament_dict_new)
             tournament_model_new.save()
