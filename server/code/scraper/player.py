@@ -22,6 +22,7 @@ def getPlayerData(link):
     player_dict['link'] = link
 
     # gender_id
+    # Either queries genders table for gender_id or creates new record
     try:
         gender = 'W' if 'wplayer' in link else 'M'
         gender_model_db = GenderModel.find_by_gender(gender)
@@ -72,6 +73,7 @@ def getPlayerData(link):
         pass
 
     # hand_id
+    # Either queries hands table for hand_id or creates new record
     try:
         hand = extractVariableFromText(text, 'hand')
         hand_model_db = HandModel.find_by_hand(hand)
@@ -87,6 +89,7 @@ def getPlayerData(link):
         pass
 
     # backhand_id
+    # Either queries backhands table for backhand or creates new record
     try:
         backhand = extractVariableFromText(text, 'backhand')
         backhand_model_db = BackhandModel.find_by_backhand(backhand)
@@ -102,6 +105,7 @@ def getPlayerData(link):
         pass
 
     # country_id
+    # Either queries countries table for country_id or creates new record
     try:
         country = extractVariableFromText(text, 'country')
         country_model_db = CountryModel.find_by_country(country)
