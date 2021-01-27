@@ -60,7 +60,7 @@ def getMatchData(link):
         if tournament_name_model_db:
             tournament_name_id = tournament_name_model_db.tournament_name_id
         else:
-            tournament_name_dict_new = {'tournament_name': tournament_name}
+            tournament_name_dict_new = {'name': tournament_name}
             tournament_name_model_new = TournamentNameModel(**tournament_name_dict_new)
             tournament_name_model_new.save()
             tournament_name_id = tournament_name_model_new.tournament_name_id
