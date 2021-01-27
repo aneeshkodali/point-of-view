@@ -37,6 +37,7 @@ def getMatchData(link):
         pass
 
     # gender_id (not needed as a column)
+    # Either queries genders table for gender_id or creates new record
     try:
         gender = suffix[1]
         gender_model_db = GenderModel.find_by_gender(gender)
@@ -52,6 +53,8 @@ def getMatchData(link):
         pass
 
     # tournament_id
+    # Either queries tournament_names table for tournament_name_id or creates new record
+    # Then either queries tournaments table for tournament_id or creates new record
     try:
         tournament_name = suffix[2].replace('_', ' ')
         tournament_name_model_db = TournamentNameModel.find_by_name(tournament_name)
