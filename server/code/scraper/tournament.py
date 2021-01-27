@@ -156,7 +156,7 @@ def getTournamentLinks(link=tournament_base_url):
     return tournament_links
 
 
-def constructTournamentLink(year, name, gender, url_stem=tournament_base_url):
+def constructTournamentLink(name, gender, year, url_stem=tournament_base_url):
     '''
     Creates a url for a tournament based on the args provided
     url is of form: <url_stem><W_ if women tournament><year><name>.js
