@@ -2,8 +2,9 @@ import requests
 from bs4 import BeautifulSoup
 import datetime
 
-from models.tournament import TournamentModel
-from models.player import PlayerModel
+from models.players import PlayerModel
+from models.tournaments import TournamentModel
+frpm models.tournament_names import TournamentNameModel
 from scraper.tournament import constructTournamentLink, getTournamentData
 from scraper.player import constructPlayerLink, getPlayerData
 from scraper.point import getPointTable, getPointData
@@ -50,21 +51,27 @@ def getMatchData(link):
     except:
         pass
 
-    # tournament
+    # tournament_id
     try:
-        tournament = suffix[2].replace('_', ' ')
-        if tournament:
-            tournament_db = TournamentModel.find_by_name_and_gender(tournament, gender)
-            if tournament_db:
-                match_dict['tournament'] = tournament_db
-            else:
-                tournament_link = constructTournamentLink(year=year, name=tournament, gender=gender)
-                tournament_data = getTournamentData(tournament_link) 
-                tournament_model = TournamentModel(**tournament_data)
-                tournament_model.save()
-                match_dict['tournament'] = tournament_model
-    except:
-        pass
+        tournament_name = suffix[2].replace('_', ' ')
+        tournament_name_model_db = TournamentNameModel.find_by_name(tournament_name)
+        if tournament_name_model_db:
+            tournament_name_id = tournament_name_model_db.tournament_name_id
+        else:
+            tournament_name_dict_new = {'tournament_name': tournament_name}
+            tournament_name_model_new = TournamentNameModel(**tournament_name_dict_new)
+            tournament_name_model_new.save()
+            tournament_name_id = tournament_name_model_new.tournament_name_id
+
+        tournament_model_db = TournamentModel.find_by_name_id_and_gender_id_and_year(tournament_name_id, gender_id, year)
+        if tournament_model_db:
+            tournament_dict['tournament_id'] = tournament_model_db.tournament_id
+        else:
+            tournament_link = constructTournamentLink(tournament_name, geder, year)
+            tournament_dict_new = getTournamentData(tournament_link)
+            tournament_model_new = TournamentModel(**tournament_dict_new)
+            tournament_model_new.save()
+            tournament_dict['tournament_id'] = tournament_model_new.tournament_id
 
     # round
     try:
