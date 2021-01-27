@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import datetime
 
+from models.rounds import RountModel
 from models.players import PlayerModel
 from models.tournaments import TournamentModel
 frpm models.tournament_names import TournamentNameModel
@@ -68,19 +69,27 @@ def getMatchData(link):
 
         tournament_model_db = TournamentModel.find_by_name_id_and_gender_id_and_year(tournament_name_id, gender_id, year)
         if tournament_model_db:
-            tournament_dict['tournament_id'] = tournament_model_db.tournament_id
+            match_dict['tournament_id'] = tournament_model_db.tournament_id
         else:
             tournament_link = constructTournamentLink(tournament_name, geder, year)
             tournament_dict_new = getTournamentData(tournament_link)
             tournament_model_new = TournamentModel(**tournament_dict_new)
             tournament_model_new.save()
-            tournament_dict['tournament_id'] = tournament_model_new.tournament_id
+            match_dict['tournament_id'] = tournament_model_new.tournament_id
 
-    # round
+    # round_id
+    # Either queries rounds table for round_id or creates new record
     try:
-        match_round = suffix[3]
-        if match_round:
-            match_dict['match_round'] = match_round
+        round_name = suffix[3]
+        round_model_db = RoundModel.find_by_round(round_name)
+        if round_model_db:
+            match_dict['round_id'] = round_model_db.round_id
+        else:
+            round_id_new = max([round_model['round_id'] for round_model in RoundModel.objects()] or [0]) + 1
+            round_dict_new = {'round_id': round_id_new, 'round_name': round_name}
+            round_model_new = RoundModel(**round_dict_new)
+            round_model_new.save()
+            match_dict['round_id'] = round_model_new.bacround_idkhand_id
     except:
         pass
 
