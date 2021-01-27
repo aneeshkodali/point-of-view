@@ -110,27 +110,17 @@ def getMatchData(link):
 
     # score
     try:
-        score = result.split(f"{loser_name} ")[1]
-        if score:
+        player_one = suffix[4].replace('_', ' ')
+        player_two = suffix[5].replace('_', ' ').replace('.html','')
+        result = soup.select('b')[0].text
+        winner_name = result.split(' d.')[0]
+        winner = player_one if winner_name == player_one else player_two
+        loser = player_one if winner_name != player_one else player_two
+        score = result.split(f"{loser} ")[1]
+        sets = len(score.split(' '))
+        if result:
             match_dict['score'] = score
-    except:
-        pass
-
-    # sets
-    try:
-        sets = score.split(' ')
-        if sets:
-            match_dict['sets'] = len(sets)
-    except:
-        pass
-
-   
-    # points
-    try:
-        point_table = getPointTable(soup)
-        if point_table:
-            points_data = getPointData(point_table, player_models)
-            match_dict['points'] = points_data
+            match_dict['sets'] = sets
     except:
         pass
 
@@ -177,7 +167,7 @@ def getMatchLinks(link='http://www.tennisabstract.com/charting/'):
     #except:
     #    pass
 
-      # winner
+       # winner
     #try:
     #    winner_name = result.split(' d.')[0]
     #    if winner_name:
@@ -186,11 +176,36 @@ def getMatchLinks(link='http://www.tennisabstract.com/charting/'):
     #except:
     #    pass
 
-    # loser
+    ## loser
     #try:
     #    loser_name = list(filter(lambda player: player != winner, player_names))[0]
     #    if loser_name:
     #        loser = players[1] if winner_name == player_names[0] else players[0]
     #        match_dict['loser'] = loser
+    #except:
+    #    pass
+
+    ## score
+    #try:
+    #    score = result.split(f"{loser_name} ")[1]
+    #    if score:
+    #        match_dict['score'] = score
+    #except:
+    #    pass
+
+    ## sets
+    #try:
+    #    sets = score.split(' ')
+    #    if sets:
+    #        match_dict['sets'] = len(sets)
+    #except:
+    #    pass
+
+  # points
+    #try:
+    #    point_table = getPointTable(soup)
+    #    if point_table:
+    #        points_data = getPointData(point_table, player_models)
+    #        match_dict['points'] = points_data
     #except:
     #    pass
