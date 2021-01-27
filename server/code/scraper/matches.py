@@ -8,7 +8,7 @@ from models.tournaments import TournamentModel
 from models.tournament_names import TournamentNameModel
 from scraper.tournaments import constructTournamentLink, getTournamentData
 from scraper.players import constructPlayerLink, getPlayerData
-from scraper.points import getPointTable, getPointData
+#from scraper.points import getPointTable, getPointData
 
 def getMatchData(link):
 
