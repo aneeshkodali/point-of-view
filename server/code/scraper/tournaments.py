@@ -24,6 +24,7 @@ def getTournamentData(link):
     tournament_name = link.split('jstourneys/')[1]
 
     # gender_id
+    # Either queries genders table for gender_id or creates new record
     # if tournament starts with W_ then it's W(omen) else M(en)
     try:
         gender = 'W' if tournament_name.startswith('W_') else 'M'
@@ -53,6 +54,8 @@ def getTournamentData(link):
         pass
 
     # tournament_name_id
+    # Either queries tournament_names table for tournament_name_id or creates new record
+    # Also creates new TournamentNameModel record if necessary
     try:
         tournament_name = extractVariableFromText(soup_text, 'tname')
         tournament_name_model_db = TournamentNameModel.find_by_name(tournament_name)

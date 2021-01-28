@@ -52,8 +52,7 @@ def getMatchData(link):
         pass
 
     # tournament_id
-    # Either queries tournament_names table for tournament_name_id or creates new record
-    # Then either queries tournaments table for tournament_id or creates new record
+    # Either queries tournaments table for tournament_id or creates new record
     try:
         tournament_name = suffix[2].replace('_', ' ')
         tournament_link = constructTournamentLink(tournament_name, gender, year)
