@@ -56,20 +56,11 @@ def getMatchData(link):
     # Then either queries tournaments table for tournament_id or creates new record
     try:
         tournament_name = suffix[2].replace('_', ' ')
-        tournament_name_model_db = TournamentNameModel.find_by_name(tournament_name)
-        if tournament_name_model_db:
-            tournament_name_id = tournament_name_model_db.tournament_name_id
-        else:
-            tournament_name_dict_new = {'name': tournament_name}
-            tournament_name_model_new = TournamentNameModel(**tournament_name_dict_new)
-            tournament_name_model_new.save()
-            tournament_name_id = tournament_name_model_new.tournament_name_id
-
-        tournament_model_db = TournamentModel.find_by_name_id_and_gender_id_and_year(tournament_name_id, gender_id, year)
+        tournament_link = constructTournamentLink(tournament_name, gender, year)
+        tournament_model_db = TournamentModel.objects(link=tournament_link).first()
         if tournament_model_db:
             match_dict['tournament_id'] = tournament_model_db.tournament_id
         else:
-            tournament_link = constructTournamentLink(tournament_name, gender, year)
             tournament_dict_new = getTournamentData(tournament_link)
             tournament_model_new = TournamentModel(**tournament_dict_new)
             tournament_model_new.save()
