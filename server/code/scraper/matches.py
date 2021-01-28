@@ -79,7 +79,7 @@ def getMatchData(link):
             round_dict_new = {'round_id': round_id_new, 'round_name': round_name}
             round_model_new = RoundModel(**round_dict_new)
             round_model_new.save()
-            match_dict['round_id'] = round_model_new.bacround_idkhand_id
+            match_dict['round_id'] = round_model_new.round_id
     except:
         pass
 
@@ -98,10 +98,27 @@ def getMatchData(link):
     except:
         pass
 
+    # players (not needed as a column)
+    # Either queries players table for player_id or creates new record
+    try:
+        player_one_name = suffix[4].replace('_', ' ')
+        player_two_name = suffix[5].replace('_', ' ').replace('.html','')
+        player_name_id_dict = {}
+        for player_name in [player_one_name, player_two_name]:
+            player_link = constructPlayerLink(player_name, gender)
+            player_model_db = PlayerModel.find_by_link(player_link)
+            if player_model_db:
+                player_name_id_dict[player_name] = player_model_db.player_id
+            else:
+                player_dict_new = getPlayerData(player_link)
+                player_model_new = PlayerModel(**player_dict_new)
+                player_model_new.save()
+                player_name_id_dict[player_name] = player_model_new.player_id
+    except:
+        pass
+
     # score
     try:
-        player_one = suffix[4].replace('_', ' ')
-        player_two = suffix[5].replace('_', ' ').replace('.html','')
         result = soup.select('b')[0].text
         winner_name = result.split(' d.')[0]
         winner = player_one if winner_name == player_one else player_two
