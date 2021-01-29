@@ -58,7 +58,7 @@ def getMatchData(link):
     try:
         tournament_name = suffix[2].replace('_', ' ')
         tournament_link = constructTournamentLink(tournament_name, gender, year)
-        tournament_model_db = TournamentModel.objects(link=tournament_link).first()
+        tournament_model_db = TournamentModel.find_by_link(tournament_link)
         if tournament_model_db:
             match_model['tournament_id'] = tournament_model_db.tournament_id
         else:
