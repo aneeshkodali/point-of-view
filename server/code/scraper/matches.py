@@ -2,6 +2,8 @@ import requests
 from bs4 import BeautifulSoup
 import datetime
 
+from models.match_players import MatchPlayerModel
+from models.matches import MatchModel
 from models.rounds import RoundModel
 from models.players import PlayerModel
 from models.tournaments import TournamentModel
@@ -16,9 +18,9 @@ def getMatchData(link):
     Takes in a match link and returns a dictionary of match data
     '''
 
-    # initialize match dictionary
-    match_dict = {}
-    match_dict['link'] = link
+    # initialize match model
+    match_model = MatchModel()
+    match_model['link'] = link
 
     # parse link for data
     # after the stem, link is of the form <date>-<gender>-<tournament>-<round>-<player1>-<player2>.html
@@ -31,7 +33,7 @@ def getMatchData(link):
             year = int(date[:4])
             month = int(date[4:6])
             day = int(date[6:])
-            match_dict['date'] = datetime.datetime(year, month, day)
+            match_model['date'] = datetime.datetime(year, month, day)
     except:
         pass
 
@@ -58,12 +60,12 @@ def getMatchData(link):
         tournament_link = constructTournamentLink(tournament_name, gender, year)
         tournament_model_db = TournamentModel.objects(link=tournament_link).first()
         if tournament_model_db:
-            match_dict['tournament_id'] = tournament_model_db.tournament_id
+            match_model['tournament_id'] = tournament_model_db.tournament_id
         else:
             tournament_dict_new = getTournamentData(tournament_link)
             tournament_model_new = TournamentModel(**tournament_dict_new)
             tournament_model_new.save()
-            match_dict['tournament_id'] = tournament_model_new.tournament_id
+            match_model['tournament_id'] = tournament_model_new.tournament_id
     except:
         pass
 
@@ -73,13 +75,13 @@ def getMatchData(link):
         round_name = suffix[3]
         round_model_db = RoundModel.find_by_round(round_name)
         if round_model_db:
-            match_dict['round_id'] = round_model_db.round_id
+            match_model['round_id'] = round_model_db.round_id
         else:
             round_id_new = max([round_model['round_id'] for round_model in RoundModel.objects()] or [0]) + 1
             round_dict_new = {'round_id': round_id_new, 'round_name': round_name}
             round_model_new = RoundModel(**round_dict_new)
             round_model_new.save()
-            match_dict['round_id'] = round_model_new.round_id
+            match_model['round_id'] = round_model_new.round_id
     except:
         pass
 
@@ -94,7 +96,7 @@ def getMatchData(link):
     try:
         name = soup.select('h2')[0].text
         if name:
-            match_dict['name'] = name
+            match_model['name'] = name
     except:
         pass
 
@@ -117,21 +119,26 @@ def getMatchData(link):
     except:
         pass
 
-    # score
+    # score, sets,  MatchPlayerModel
     try:
         result = soup.select('b')[0].text
         winner_name = result.split(' d.')[0]
-        winner = player_one if winner_name == player_one else player_two
-        loser = player_one if winner_name != player_one else player_two
-        score = result.split(f"{loser} ")[1]
+        loser_name = player_one_name if  winner_name != player_one_name else player_two_name
+        winner_id = player_name_id_dict[winner_name]
+        loser_id = player_name_id_dict[loser_name]
+        score = result.split(f"{loser_name} ")[1]
         sets = len(score.split(' '))
         if result:
-            match_dict['score'] = score
-            match_dict['sets'] = sets
+            match_model['score'] = score
+            match_model['sets'] = sets
+            match_player_model_winner = MatchPlayerModel(**{'match_id': match_model.match_id, 'player_id': winner_id, 'win': 1})
+            match_player_model_winner.save()
+            match_player_model_loser = MatchPlayerModel(**{'match_id': match_model.match_id, 'player_id': loser_id, 'win': 0})
+            match_player_model_loser.save()
     except:
         pass
 
-    return match_dict
+    return match_model
 
 
 def getMatchLinks(link='http://www.tennisabstract.com/charting/'):
@@ -170,7 +177,7 @@ def getMatchLinks(link='http://www.tennisabstract.com/charting/'):
     #                    player_model.save()
     #                    players.append(player_model)
     #                    player_models.append({'player_name': player_name, 'player_model': player_model})
-    #            match_dict['players'] = players
+    #            match_model['players'] = players
     #except:
     #    pass
 
@@ -179,7 +186,7 @@ def getMatchLinks(link='http://www.tennisabstract.com/charting/'):
     #    winner_name = result.split(' d.')[0]
     #    if winner_name:
     #        winner = players[0] if winner_name == player_names[0] else players[1]
-    #        match_dict['winner'] = winner
+    #        match_model['winner'] = winner
     #except:
     #    pass
 
@@ -188,7 +195,7 @@ def getMatchLinks(link='http://www.tennisabstract.com/charting/'):
     #    loser_name = list(filter(lambda player: player != winner, player_names))[0]
     #    if loser_name:
     #        loser = players[1] if winner_name == player_names[0] else players[0]
-    #        match_dict['loser'] = loser
+    #        match_model['loser'] = loser
     #except:
     #    pass
 
@@ -196,7 +203,7 @@ def getMatchLinks(link='http://www.tennisabstract.com/charting/'):
     #try:
     #    score = result.split(f"{loser_name} ")[1]
     #    if score:
-    #        match_dict['score'] = score
+    #        match_model['score'] = score
     #except:
     #    pass
 
@@ -204,7 +211,7 @@ def getMatchLinks(link='http://www.tennisabstract.com/charting/'):
     #try:
     #    sets = score.split(' ')
     #    if sets:
-    #        match_dict['sets'] = len(sets)
+    #        match_model['sets'] = len(sets)
     #except:
     #    pass
 
@@ -213,6 +220,6 @@ def getMatchLinks(link='http://www.tennisabstract.com/charting/'):
     #    point_table = getPointTable(soup)
     #    if point_table:
     #        points_data = getPointData(point_table, player_models)
-    #        match_dict['points'] = points_data
+    #        match_model['points'] = points_data
     #except:
     #    pass
