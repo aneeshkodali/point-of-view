@@ -15,7 +15,7 @@ from scraper.players import constructPlayerLink, getPlayerData
 def getMatchData(link):
 
     '''
-    Takes in a match link and returns a dictionary of match data
+    Takes in a match link and returns a MatchModel(dictionary of match data)
     '''
 
     # initialize match model
@@ -46,8 +46,7 @@ def getMatchData(link):
             gender_id = gender_model_db.gender_id
         else:
             gender_id_new = max([gender_model['gender_id'] for gender_model in GenderModel.objects()] or [0]) + 1
-            gender_dict_new = {'gender_id': gender_id_new, 'gender': gender}
-            gender_model_new = GenderModel(**gender_dict_new)
+            gender_model_new = GenderModel(**{'gender_id': gender_id_new, 'gender': gender})
             gender_model_new.save()
             gender_id = gender_model_new.gender_id
     except:
@@ -62,8 +61,7 @@ def getMatchData(link):
         if tournament_model_db:
             match_model['tournament_id'] = tournament_model_db.tournament_id
         else:
-            tournament_dict_new = getTournamentData(tournament_link)
-            tournament_model_new = TournamentModel(**tournament_dict_new)
+            tournament_model_new = getTournamentData(tournament_link)
             tournament_model_new.save()
             match_model['tournament_id'] = tournament_model_new.tournament_id
     except:
@@ -78,8 +76,7 @@ def getMatchData(link):
             match_model['round_id'] = round_model_db.round_id
         else:
             round_id_new = max([round_model['round_id'] for round_model in RoundModel.objects()] or [0]) + 1
-            round_dict_new = {'round_id': round_id_new, 'round_name': round_name}
-            round_model_new = RoundModel(**round_dict_new)
+            round_model_new = RoundModel(**{'round_id': round_id_new, 'round_name': round_name})
             round_model_new.save()
             match_model['round_id'] = round_model_new.round_id
     except:
@@ -112,8 +109,7 @@ def getMatchData(link):
             if player_model_db:
                 player_name_id_dict[player_name] = player_model_db.player_id
             else:
-                player_dict_new = getPlayerData(player_link)
-                player_model_new = PlayerModel(**player_dict_new)
+                player_model_new = getPlayerData(player_link)
                 player_model_new.save()
                 player_name_id_dict[player_name] = player_model_new.player_id
     except:
