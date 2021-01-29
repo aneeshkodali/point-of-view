@@ -1,5 +1,6 @@
 from mongoengine import UUIDField, IntField
 from mongoengine.queryset.visitor import Q
+from uuid import uuid4
 
 from models.base import BaseModel
 
@@ -9,6 +10,7 @@ class MatchPlayerModel(BaseModel):
     So a match should have 2 rows, one for each player
     '''
 
+    match_player_id = UUIDField(primary_key=True, default=lambda: uuid4(), binary=False)
     match_id = UUIDField(required=True, binary=False)
     player_id = UUIDField(required=True, binary=False)
     win = IntField()
