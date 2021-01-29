@@ -9,8 +9,8 @@ class MatchPlayerModel(BaseModel):
     So a match should have 2 rows, one for each player
     '''
 
-    match_id = UUIDField(required=True)
-    player_id = UUIDField(required=True)
+    match_id = UUIDField(required=True, binary=False)
+    player_id = UUIDField(required=True, binary=False)
     win = IntField()
 
     meta = {'collection': 'match_players'}
