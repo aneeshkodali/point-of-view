@@ -28,12 +28,12 @@ def getPlayerData(link):
         gender = 'W' if 'wplayer' in link else 'M'
         gender_model_db = GenderModel.find_by_gender(gender)
         if gender_model_db:
-            player_model['gender_id'] = gender_model_db.gender_id
+            player_model['gender_id'] = gender_model_db
         else:
             gender_id_new = max([gender_model['gender_id'] for gender_model in GenderModel.objects()] or [0]) + 1
             gender_model_new = GenderModel(**{'gender_id': gender_id_new, 'gender': gender})
             gender_model_new.save()
-            player_model['gender_id'] = gender_model_new.gender_id
+            player_model['gender_id'] = gender_model_new
     except:
         pass
 
@@ -43,8 +43,6 @@ def getPlayerData(link):
 
     # data is in the '4th' <script> tag
     text = str(soup.select('script')[3])
-
-    #### GET VARIABLE DATA
 
     # full_name
     try:
@@ -78,12 +76,12 @@ def getPlayerData(link):
         hand = extractVariableFromText(text, 'hand')
         hand_model_db = HandModel.find_by_hand(hand)
         if hand_model_db:
-            player_model['hand_id'] = hand_model_db.hand_id
+            player_model['hand_id'] = hand_model_db
         else:
             hand_id_new = max([hand_model['hand_id'] for hand_model in HandModel.objects()] or [0]) + 1
             hand_model_new = HandModel(**{'hand_id': hand_id_new, 'hand': hand})
             hand_model_new.save()
-            player_model['hand_id'] = hand_model_new.hand_id
+            player_model['hand_id'] = hand_model_new
     except:
         pass
 
@@ -93,12 +91,12 @@ def getPlayerData(link):
         backhand = extractVariableFromText(text, 'backhand')
         backhand_model_db = BackhandModel.find_by_backhand(backhand)
         if backhand_model_db:
-            player_model['backhand_id'] = backhand_model_db.backhand_id
+            player_model['backhand_id'] = backhand_model_db
         else:
             backhand_id_new = max([backhand_model['backhand_id'] for backhand_model in BackhandModel.objects()] or [0]) + 1
             backhand_model_new = BackhandModel(**{'backhand_id': backhand_id_new, 'backhand': backhand})
             backhand_model_new.save()
-            player_model['backhand_id'] = backhand_model_new.backhand_id
+            player_model['backhand_id'] = backhand_model_new
     except:
         pass
 
@@ -108,12 +106,12 @@ def getPlayerData(link):
         country = extractVariableFromText(text, 'country')
         country_model_db = CountryModel.find_by_country(country)
         if country_model_db:
-            player_model['country_id'] = country_model_db.country_id
+            player_model['country_id'] = country_model_db
         else:
             country_id_new = max([country_model['country_id'] for country_model in CountryModel.objects()] or [0]) + 1
             country_model_new = CountryModel(**{'country_id': country_id_new, 'country': country})
             country_model_new.save()
-            player_model['country_id'] = country_model_new.country_id
+            player_model['country_id'] = country_model_new
     except:
         pass
 
