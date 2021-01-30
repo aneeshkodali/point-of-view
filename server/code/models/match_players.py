@@ -15,7 +15,7 @@ class MatchPlayerModel(BaseModel):
     match_player_id = UUIDField(primary_key=True, default=lambda: uuid4(), binary=False)
     match_id = ReferenceField(MatchModel)
     player_id = ReferenceField(PlayerModel)
-    win = IntField()
+    win = IntField(default=0)
 
     meta = {'collection': 'match_players'}
 

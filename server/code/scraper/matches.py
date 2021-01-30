@@ -103,7 +103,7 @@ def getMatchData(link):
                 player_model_new = getPlayerData(player_link)
                 player_model_new.save()
                 player_name_model_dict[player_name] = player_model_new
-            match_player_model = MatchPlayerModel(**{'match_id': match_model, 'player_id': player_name_model_dict[player_name], 'win': 0})
+            match_player_model = MatchPlayerModel(**{'match_id': match_model, 'player_id': player_name_model_dict[player_name]})
             match_player_model.save()
     except:
         pass
