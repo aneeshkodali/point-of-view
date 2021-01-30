@@ -1,4 +1,4 @@
-from mongoengine import UUIDField, StringField, DateTimeField, IntField, ReferenceField, URLField
+from mongoengine import StringField, DateTimeField, IntField, ReferenceField, URLField
 import datetime
 from uuid import uuid4
 
@@ -13,7 +13,7 @@ class PlayerModel(BaseModel):
     Players
     '''
 
-    player_id = UUIDField(primary_key=True, default=lambda: uuid4(), binary=False)
+    player_id = StringField(primary_key=True, default=lambda: str(uuid4()))
     full_name = StringField(default="")
     date_of_birth = DateTimeField(default=datetime.datetime(1700, 1, 1))
     height = IntField(default=0)

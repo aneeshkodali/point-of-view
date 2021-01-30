@@ -1,4 +1,4 @@
-from mongoengine import UUIDField, StringField, IntField, DateTimeField, URLField, ReferenceField
+from mongoengine import StringField, IntField, DateTimeField, URLField, ReferenceField
 from mongoengine.queryset.visitor import Q
 import datetime
 from uuid import uuid4
@@ -14,7 +14,7 @@ class TournamentModel(BaseModel):
     Tournaments - each record is a unique combination of (tournament_name_id, gender_id, year)
     '''
     
-    tournament_id = UUIDField(primary_key=True, default=lambda: uuid4(), binary=False)
+    tournament_id = StringField(primary_key=True, default=lambda: str(uuid4()))
     tournament_name_id = ReferenceField(TournamentNameModel, default='4e1f7f4b-6f3e-43ce-954d-aa9cf6ca52e4')
     year = IntField(default=0)
     gender_id = ReferenceField(GenderModel, default=0)
