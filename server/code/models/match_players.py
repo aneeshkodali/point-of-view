@@ -1,8 +1,10 @@
-from mongoengine import UUIDField, IntField
+from mongoengine import UUIDField, IntField, ReferenceField
 from mongoengine.queryset.visitor import Q
 from uuid import uuid4
 
 from models.base import BaseModel
+from models.matches import MatchModel
+from models.players import PlayerModel
 
 class MatchPlayerModel(BaseModel):
     '''
@@ -11,8 +13,8 @@ class MatchPlayerModel(BaseModel):
     '''
 
     match_player_id = UUIDField(primary_key=True, default=lambda: uuid4(), binary=False)
-    match_id = UUIDField(required=True, binary=False)
-    player_id = UUIDField(required=True, binary=False)
+    match_id = ReferenceField(MatchModel)
+    player_id = ReferenceField(PlayerModel)
     win = IntField()
 
     meta = {'collection': 'match_players'}
