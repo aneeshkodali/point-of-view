@@ -1,8 +1,12 @@
-from mongoengine import UUIDField, StringField, DateTimeField, IntField, LazyReferenceField, URLField
+from mongoengine import UUIDField, StringField, DateTimeField, IntField, ReferenceField, URLField
 import datetime
 from uuid import uuid4
 
+from models.backhands import BackhandModel
 from models.base import BaseModel
+from models.countries import CountryModel
+from models.genders import GenderModel
+from models.hands import HandModel
 
 class PlayerModel(BaseModel):
     '''
@@ -13,10 +17,10 @@ class PlayerModel(BaseModel):
     full_name = StringField(default="")
     date_of_birth = DateTimeField(default=datetime.datetime(1700, 1, 1))
     height = IntField(default=0)
-    gender_id = IntField(default=0)
-    hand_id = IntField(default=0)
-    backhand_id = IntField(default=0)
-    country_id = IntField(default=0)
+    gender_id = ReferenceField(GenderModel, default=0)
+    hand_id = ReferenceField(HandModel, default=0)
+    backhand_id = ReferenceField(BackhandModel, default=0)
+    country_id = ReferenceField(CountryModel, default=0)
     image_url = StringField(default="")
     link = URLField(unique=True, nullable=False)
     
