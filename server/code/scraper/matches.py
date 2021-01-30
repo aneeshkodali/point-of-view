@@ -103,6 +103,8 @@ def getMatchData(link):
                 player_model_new = getPlayerData(player_link)
                 player_model_new.save()
                 player_name_model_dict[player_name] = player_model_new
+            match_player_model = MatchPlayerModel(**{'match_id': match_model, 'player_id': player_name_model_dict[player_name], 'win': 0})
+            match_player_model.save()
     except:
         pass
 
@@ -112,16 +114,12 @@ def getMatchData(link):
         winner_name = result.split(' d.')[0]
         loser_name = player_one_name if  winner_name != player_one_name else player_two_name
         winner_model = player_name_model_dict[winner_name]
-        loser_model = player_name_model_dict[loser_name]
         score = result.split(f"{loser_name} ")[1]
         sets = len(score.split(' '))
         if result:
             match_model['score'] = score
             match_model['sets'] = sets
-            match_player_model_winner = MatchPlayerModel(**{'match_id': match_model, 'player_id': winner_model, 'win': 1})
-            match_player_model_winner.save()
-            match_player_model_loser = MatchPlayerModel(**{'match_id': match_model, 'player_id': loser_model, 'win': 0})
-            match_player_model_loser.save()
+            MatchPlayerModel.find_by_match_id_and_player_id(match_model['match_id'], winner_model['player_id']).update(win=1)
     except:
         pass
 
