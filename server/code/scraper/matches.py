@@ -37,18 +37,9 @@ def getMatchData(link):
     except:
         pass
 
-    # gender_id (not needed as a column)
-    # Either queries genders table for gender_id or creates new record
+    # gender (not needed as a column; needed for TournamentModel and PlayerModel)
     try:
         gender = suffix[1]
-        gender_model_db = GenderModel.find_by_gender(gender)
-        if gender_model_db:
-            gender_id = gender_model_db.gender_id
-        else:
-            gender_id_new = max([gender_model['gender_id'] for gender_model in GenderModel.objects()] or [0]) + 1
-            gender_model_new = GenderModel(**{'gender_id': gender_id_new, 'gender': gender})
-            gender_model_new.save()
-            gender_id = gender_model_new.gender_id
     except:
         pass
 
@@ -59,11 +50,11 @@ def getMatchData(link):
         tournament_link = constructTournamentLink(tournament_name, gender, year)
         tournament_model_db = TournamentModel.find_by_link(tournament_link)
         if tournament_model_db:
-            match_model['tournament_id'] = tournament_model_db.tournament_id
+            match_model['tournament_id'] = tournament_model_db
         else:
             tournament_model_new = getTournamentData(tournament_link)
             tournament_model_new.save()
-            match_model['tournament_id'] = tournament_model_new.tournament_id
+            match_model['tournament_id'] = tournament_model_new
     except:
         pass
 
@@ -73,12 +64,12 @@ def getMatchData(link):
         round_name = suffix[3]
         round_model_db = RoundModel.find_by_round(round_name)
         if round_model_db:
-            match_model['round_id'] = round_model_db.round_id
+            match_model['round_id'] = round_model_db
         else:
             round_id_new = max([round_model['round_id'] for round_model in RoundModel.objects()] or [0]) + 1
             round_model_new = RoundModel(**{'round_id': round_id_new, 'round_name': round_name})
             round_model_new.save()
-            match_model['round_id'] = round_model_new.round_id
+            match_model['round_id'] = round_model_new
     except:
         pass
 
@@ -102,16 +93,16 @@ def getMatchData(link):
     try:
         player_one_name = suffix[4].replace('_', ' ')
         player_two_name = suffix[5].replace('_', ' ').replace('.html','')
-        player_name_id_dict = {}
+        player_name_model_dict = {}
         for player_name in [player_one_name, player_two_name]:
             player_link = constructPlayerLink(player_name, gender)
             player_model_db = PlayerModel.find_by_link(player_link)
             if player_model_db:
-                player_name_id_dict[player_name] = player_model_db.player_id
+                player_name_model_dict[player_name] = player_model_db
             else:
                 player_model_new = getPlayerData(player_link)
                 player_model_new.save()
-                player_name_id_dict[player_name] = player_model_new.player_id
+                player_name_model_dict[player_name] = player_model_new
     except:
         pass
 
@@ -120,16 +111,16 @@ def getMatchData(link):
         result = soup.select('b')[0].text
         winner_name = result.split(' d.')[0]
         loser_name = player_one_name if  winner_name != player_one_name else player_two_name
-        winner_id = player_name_id_dict[winner_name]
-        loser_id = player_name_id_dict[loser_name]
+        winner_model = player_name_model_dict[winner_name]
+        loser_model = player_name_model_dict[loser_name]
         score = result.split(f"{loser_name} ")[1]
         sets = len(score.split(' '))
         if result:
             match_model['score'] = score
             match_model['sets'] = sets
-            match_player_model_winner = MatchPlayerModel(**{'match_id': match_model.match_id, 'player_id': winner_id, 'win': 1})
+            match_player_model_winner = MatchPlayerModel(**{'match_id': match_model, 'player_id': winner_model, 'win': 1})
             match_player_model_winner.save()
-            match_player_model_loser = MatchPlayerModel(**{'match_id': match_model.match_id, 'player_id': loser_id, 'win': 0})
+            match_player_model_loser = MatchPlayerModel(**{'match_id': match_model, 'player_id': loser_model, 'win': 0})
             match_player_model_loser.save()
     except:
         pass
