@@ -1,9 +1,8 @@
 from mongoengine import StringField, IntField, DateTimeField, URLField, ReferenceField
 from mongoengine.queryset.visitor import Q
-import datetime
 
 from models.base import BaseModel
-from models.default_values import default_uuid_value
+from models.default_values import default_uuid_value, default_date_value, default_year_value
 from models.genders import GenderModel
 from models.levels import LevelModel
 from models.surfaces import SurfaceModel
@@ -16,9 +15,9 @@ class TournamentModel(BaseModel):
     
     tournament_id = StringField(primary_key=True, default=default_uuid_value)
     tournament_name_id = ReferenceField(TournamentNameModel)#, default='4e1f7f4b-6f3e-43ce-954d-aa9cf6ca52e4')
-    year = IntField(default=0)
+    year = IntField(default=default_year_value)
     gender_id = ReferenceField(GenderModel, default=0)
-    date = DateTimeField(default=datetime.datetime(1700, 1, 1))
+    date = DateTimeField(default=default_date_value)
     size = IntField(default=0)
     points = IntField(default=0)
     sets = IntField(default=0)
