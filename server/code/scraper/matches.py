@@ -12,6 +12,8 @@ from scraper.tournaments import constructTournamentLink, getTournamentData
 from scraper.players import constructPlayerLink, getPlayerData
 #from scraper.points import getPointTable, getPointData
 
+url_stem = 'http://www.tennisabstract.com/charting/'
+
 def getMatchData(link):
 
     '''
@@ -24,7 +26,7 @@ def getMatchData(link):
 
     # parse link for data
     # after the stem, link is of the form <date>-<gender>-<tournament>-<round>-<player1>-<player2>.html
-    suffix = link.split('http://www.tennisabstract.com/charting/')[1].split('-')
+    suffix = link.split(url_stem)[1].split('-')
 
     # date
     try:
@@ -126,7 +128,7 @@ def getMatchData(link):
     return match_model
 
 
-def getMatchLinks(link='http://www.tennisabstract.com/charting/'):
+def getMatchLinks(link=url_stem):
     '''
     Returns list of match links
     '''
