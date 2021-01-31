@@ -20,7 +20,7 @@ class PlayerModel(BaseModel):
     hand_id = ReferenceField(HandModel, default=0)
     backhand_id = ReferenceField(BackhandModel, default=0)
     country_id = ReferenceField(CountryModel, default=0)
-    image_url = StringField(default="")
+    image_url = URLField(default="")
     link = URLField(unique=True, nullable=False)
     
 
