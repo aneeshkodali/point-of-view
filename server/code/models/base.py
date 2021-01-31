@@ -9,7 +9,7 @@ class BaseModel(db.Document):
     Base model used to build other models
     '''
 
-    uid = StringField(unique=True, nullable=False, default=default_uuid_value)
+    uuid = StringField(unique=True, nullable=False, default=default_uuid_value)
 
     # allows for 'inheritance' while allowing other models to be created as separate collections
     meta = {'abstract': True}
