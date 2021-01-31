@@ -12,7 +12,7 @@ class MatchModel(BaseModel):
     match_id = StringField(primary_key=True, default=default_uuid_value)
     name = StringField(default="")
     date = DateTimeField(default=default_date_value)
-    tournament_id = ReferenceField(TournamentModel)#, default='dda2c34f-f992-4701-a76e-e02b12cbdf0e')
+    tournament_id = ReferenceField(TournamentModel)
     round_id = ReferenceField(RoundModel, default=0)
     score = StringField(default="")
     sets = IntField(default=0)

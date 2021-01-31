@@ -14,7 +14,7 @@ class TournamentModel(BaseModel):
     '''
     
     tournament_id = StringField(primary_key=True, default=default_uuid_value)
-    tournament_name_id = ReferenceField(TournamentNameModel)#, default='4e1f7f4b-6f3e-43ce-954d-aa9cf6ca52e4')
+    tournament_name_id = ReferenceField(TournamentNameModel)
     year = IntField(default=default_year_value)
     gender_id = ReferenceField(GenderModel, default=0)
     date = DateTimeField(default=default_date_value)
