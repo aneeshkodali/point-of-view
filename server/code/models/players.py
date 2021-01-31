@@ -1,10 +1,10 @@
 from mongoengine import StringField, DateTimeField, IntField, ReferenceField, URLField
 import datetime
-from uuid import uuid4
 
 from models.backhands import BackhandModel
 from models.base import BaseModel
 from models.countries import CountryModel
+from models.default_values import default_uuid_value
 from models.genders import GenderModel
 from models.hands import HandModel
 
@@ -13,7 +13,7 @@ class PlayerModel(BaseModel):
     Players
     '''
 
-    player_id = StringField(primary_key=True, default=lambda: str(uuid4()))
+    player_id = StringField(primary_key=True, default=default_uuid_value)
     full_name = StringField(default="")
     date_of_birth = DateTimeField(default=datetime.datetime(1700, 1, 1))
     height = IntField(default=0)

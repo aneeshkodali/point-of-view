@@ -1,14 +1,14 @@
-from mongoengine import UUIDField, StringField
-from uuid import uuid4
+from mongoengine import StringField
 
 from models.base import BaseModel
+from models.default_values import default_uuid_value
 
 class TournamentNameModel(BaseModel):
     '''
     Tournament Names
     '''
 
-    tournament_name_id = UUIDField(primary_key=True, default=lambda: uuid4(), binary=False)
+    tournament_name_id = StringField(primary_key=True, default=default_uuid_value)
     name = StringField()
 
     meta = {'collection': 'tournament_names'}

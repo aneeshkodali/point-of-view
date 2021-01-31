@@ -1,14 +1,15 @@
+from mongoengine import StringField
 import json
-from uuid import uuid4
 
 from db import db
+from models.default_values import default_uuid_value
 
 class BaseModel(db.Document):
     '''
     Base model used to build other models
     '''
 
-    uid = db.UUIDField(unique=True, nullable=False, default=lambda: uuid4(), binary=False)
+    uid = StringField(unique=True, nullable=False, default=default_uuid_value)
 
     # allows for 'inheritance' while allowing other models to be created as separate collections
     meta = {'abstract': True}
