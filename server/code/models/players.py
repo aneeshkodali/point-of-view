@@ -26,6 +26,20 @@ class PlayerModel(BaseModel):
 
     meta = {'collection': 'players'}
 
+    def json(self):
+        return {
+            'player_id': self.player_id,
+            'full_name': self.full_name,
+            'date_of_birth': self.date_of_birth,
+            'height': self.height,
+            'gender': self.gender_id.gender,
+            'hand': self.hand_id.hand,
+            'backhand': self.backhand_id.backhand,
+            'country': self.country_id.country,
+            'image_url': self.image_url,
+            'link': self.link
+        }
+
     @classmethod
     def find_by_full_name(cls, full_name):
         return PlayerModel.objects(full_name=full_name).first()
