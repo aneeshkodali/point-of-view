@@ -25,7 +25,7 @@ class MatchModel(BaseModel):
             'match_id': self.match_id,
             'name': self.name,
             'date': self.date,
-            'tournament': self.tournament_id.tournament_name_id.name,
+            'tournament': self.tournament_id,
             'round': self.round_id.round_name,
             'score': self.score,
             'sets': self.sets,

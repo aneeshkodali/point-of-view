@@ -22,8 +22,8 @@ class MatchPlayerModel(BaseModel):
     def json(self):
         return {
             'match_player_id': self.match_player_id,
-            'match_id': self.match_id,
-            'player': self.player_id.json(),
+            'match': self.match_id,
+            'player': self.player_id,
             'win': self.win
         }
 

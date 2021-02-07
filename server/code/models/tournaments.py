@@ -38,7 +38,7 @@ class TournamentModel(BaseModel):
             'points': self.points,
             'sets': self.sets,
             'surface': self.surface_id.surface,
-            'level_id': self.level_id.level,
+            'level': self.level_id.level,
             'link': self.link
         }
 
