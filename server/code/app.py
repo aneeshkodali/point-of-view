@@ -44,14 +44,19 @@ def get_matches():
 
 @app.route('/server/matches/<string:match_id>')
 def get_match_data(match_id):
-    match = MatchModel.find_by_id(match_id)
+
+    # get match
+    match = MatchModel.find_by_id(match_id).json()
+
+    # convert tournament data to json
+    tournament_keys = ['name', 'gender', 'surface']
+    match['tournament'] = match['tournament'].json()
+
+    # get match players (only need 'player' data and 'win')
     match_players = MatchPlayerModel.objects(match_id = match_id)
-    return { 
-        'match': match.json(),
-        'match_players': [match_player.json() for match_player in match_players],
-        #'tournament': match.tournament_id.json(),
-        #'tournament_name': match.tournament_id.tournament_name_id.name
-    }
+    match['players'] = [{'player': match_player.player_id.json(), 'win': match_player.win} for match_player in match_players]
+    
+    return {'data': match}
 
 #api.add_resource(Players, '/server/players')
 #api.add_resource(Player, '/server/player')
