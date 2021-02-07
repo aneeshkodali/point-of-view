@@ -13,6 +13,8 @@ import os
 #from resources.player import Players, Player, PlayerID
 #from resources.match import Matches, MatchesUniqueFieldValues, Match, MatchID
 #from resources.tournament import Tournaments, Tournament, TournamentID
+from models.match_players import MatchPlayerModel
+from models.matches import MatchModel
 
 #### APP SETUP
 
@@ -35,6 +37,21 @@ db = MongoEngine(app)
 @app.route('/')
 def index():
     return 'Hello World'
+
+@app.route('/server/matches')
+def get_matches():
+    return {'matches': MatchModel.objects().fields(match_id=1, link=1)}
+
+@app.route('/server/matches/<string:match_id>')
+def get_match_data(match_id):
+    match = MatchModel.find_by_id(match_id)
+    match_players = MatchPlayerModel.objects(match_id = match_id)
+    return { 
+        'match': match.json(),
+        'match_players': [match_player.player_id.json() for match_player in match_players],
+        'tournament': match.tournament_id.json(),
+        'tournament_name': match.tournament_id.tournament_name_id.name
+    }
 
 #api.add_resource(Players, '/server/players')
 #api.add_resource(Player, '/server/player')
