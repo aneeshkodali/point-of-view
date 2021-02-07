@@ -19,6 +19,14 @@ class MatchPlayerModel(BaseModel):
 
     meta = {'collection': 'match_players'}
 
+    def json(self):
+        return {
+            'match_player_id': self.match_player_id,
+            'match_id': self.match_id,
+            'player': self.player_id.json(),
+            'win': self.win
+        }
+
     @classmethod
     def find_by_match_id_and_player_id(cls, match_id, player_id):
         return MatchPlayerModel.objects(Q(match_id=match_id) & Q(player_id=player_id)).first()
