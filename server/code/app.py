@@ -28,7 +28,7 @@ app.config['MONGODB_HOST'] = DB_URI
 db = MongoEngine(app)
 
 # connect flask_restful api
-api = Api(app)
+#api = Api(app)
 
 
 #### ENDPOINT CONFIG
