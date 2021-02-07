@@ -27,6 +27,21 @@ class TournamentModel(BaseModel):
 
     meta = {'collection': 'tournaments'}
 
+    def json(self):
+        return {
+            'tournament_id': self.tournament_id,
+            'name': self.tournament_name_id.name,
+            'year': self.year,
+            'gender': self.gender_id.gender,
+            'date': self.date,
+            'size': self.size,
+            'points': self.points,
+            'sets': self.sets,
+            'surface': self.surface_id.surface,
+            'level_id': self.level_id.level,
+            'link': self.link
+        }
+
     @classmethod
     def find_by_link(cls, link):
         return TournamentModel.objects(link=link)
