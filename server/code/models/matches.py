@@ -20,6 +20,18 @@ class MatchModel(BaseModel):
 
     meta = {'collection': 'matches'}
 
+    def json(self):
+        return {
+            'match_id': self.match_id,
+            'name': self.name,
+            'date': self.date,
+            'tournament': self.tournament_id.tournament_name_id.name,
+            'round': self.round_id.round_name,
+            'score': self.score,
+            'sets': self.sets,
+            'link': self.link
+        }
+
     @classmethod
     def find_by_link(cls, link):
         return MatchModel.objects(link=link).first()
