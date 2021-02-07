@@ -48,9 +48,9 @@ def get_match_data(match_id):
     match_players = MatchPlayerModel.objects(match_id = match_id)
     return { 
         'match': match.json(),
-        'match_players': [match_player.player_id.json() for match_player in match_players],
-        'tournament': match.tournament_id.json(),
-        'tournament_name': match.tournament_id.tournament_name_id.name
+        'match_players': [match_player.json() for match_player in match_players],
+        #'tournament': match.tournament_id.json(),
+        #'tournament_name': match.tournament_id.tournament_name_id.name
     }
 
 #api.add_resource(Players, '/server/players')
