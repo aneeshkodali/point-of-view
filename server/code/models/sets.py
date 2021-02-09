@@ -25,6 +25,7 @@ class SetModel(BaseModel):
             'score': self.score
         }
 
+
     @classmethod
-    def find_by_set_id_and_match_id_and_player_id(cls, set_id, match_id):
+    def find_by_set_id_and_match_id(cls, set_id, match_id):
         return MatchPlayerModel.objects(Q(set_id=set_id)& Q(match_id=match_id)).first()
