@@ -46,17 +46,18 @@ def get_matches():
 def get_match_data(match_id):
 
     # get match
-    match = MatchModel.find_by_id(match_id).json()
+    match = MatchModel.find_by_id(match_id)
+    match_json = match.json()
 
     # convert tournament data to json
     tournament_keys = ['name', 'gender', 'surface']
-    match['tournament'] = match['tournament'].json()
+    match_json['tournament'] = match_json['tournament'].json()
 
     # get match players (only need 'player' data and 'win')
-    match_players = MatchPlayerModel.objects(match_id = match_id)
-    match['players'] = [{'player': match_player.player_id.json(), 'win': match_player.win} for match_player in match_players]
+    match_players = MatchPlayerModel.objects(match = match)
+    match_json['players'] = [{'player': match_player.player.json(), 'win': match_player.win} for match_player in match_players]
     
-    return {'data': match}
+    return {'data': match_json}
 
 #api.add_resource(Players, '/server/players')
 #api.add_resource(Player, '/server/player')

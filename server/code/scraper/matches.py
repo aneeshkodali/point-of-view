@@ -105,7 +105,7 @@ def getMatchData(link):
                 player_model_new = getPlayerData(player_link)
                 player_model_new.save()
                 player_name_model_dict[player_name] = player_model_new
-            match_player_model = MatchPlayerModel(**{'match_id': match_model, 'player_id': player_name_model_dict[player_name]})
+            match_player_model = MatchPlayerModel(**{'match': match_model, 'player': player_name_model_dict[player_name], 'win': 0})
             match_player_model.save()
     except:
         pass
@@ -121,7 +121,7 @@ def getMatchData(link):
         if result:
             match_model['score'] = score
             match_model['sets'] = sets
-            MatchPlayerModel.find_by_match_id_and_player_id(match_model['match_id'], winner_model['player_id']).update(win=1)
+            MatchPlayerModel.find_by_match_and_player(match_model, winner_model).update(win=1)
     except:
         pass
 

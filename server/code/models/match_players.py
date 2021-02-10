@@ -13,8 +13,8 @@ class MatchPlayerModel(BaseModel):
     '''
 
     match_player_id = StringField(primary_key=True, default=default_uuid_value)
-    match_id = ReferenceField(MatchModel)
-    player_id = ReferenceField(PlayerModel)
+    match = ReferenceField(MatchModel)
+    player = ReferenceField(PlayerModel)
     win = IntField(default=0)
 
     meta = {'collection': 'match_players'}
@@ -22,11 +22,11 @@ class MatchPlayerModel(BaseModel):
     def json(self):
         return {
             'match_player_id': self.match_player_id,
-            'match': self.match_id,
-            'player': self.player_id,
+            'match': self.match,
+            'player': self.player,
             'win': self.win
         }
 
     @classmethod
-    def find_by_match_id_and_player_id(cls, match_id, player_id):
-        return MatchPlayerModel.objects(Q(match_id=match_id) & Q(player_id=player_id)).first()
+    def find_by_match_and_player(cls, match, player):
+        return MatchPlayerModel.objects(Q(match=match) & Q(player=player)).first()
