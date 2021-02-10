@@ -52,11 +52,11 @@ def getMatchData(link):
         tournament_link = constructTournamentLink(tournament_name, gender, year)
         tournament_model_db = TournamentModel.find_by_link(tournament_link)
         if tournament_model_db:
-            match_model['tournament_id'] = tournament_model_db
+            match_model['tournament'] = tournament_model_db
         else:
             tournament_model_new = getTournamentData(tournament_link)
             tournament_model_new.save()
-            match_model['tournament_id'] = tournament_model_new
+            match_model['tournament'] = tournament_model_new
     except:
         pass
 
@@ -66,12 +66,12 @@ def getMatchData(link):
         round_name = suffix[3]
         round_model_db = RoundModel.find_by_round(round_name)
         if round_model_db:
-            match_model['round_id'] = round_model_db
+            match_model['match_round'] = round_model_db
         else:
             round_id_new = max([round_model['round_id'] for round_model in RoundModel.objects()] or [0]) + 1
             round_model_new = RoundModel(**{'round_id': round_id_new, 'round_name': round_name})
             round_model_new.save()
-            match_model['round_id'] = round_model_new
+            match_model['match_round'] = round_model_new
     except:
         pass
 

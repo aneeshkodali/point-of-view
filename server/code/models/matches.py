@@ -12,8 +12,8 @@ class MatchModel(BaseModel):
     match_id = StringField(primary_key=True, default=default_uuid_value)
     name = StringField(default="")
     date = DateTimeField(default=default_date_value)
-    tournament_id = ReferenceField(TournamentModel)
-    round_id = ReferenceField(RoundModel, default=0)
+    tournament = ReferenceField(TournamentModel)
+    match_round = ReferenceField(RoundModel, default=0)
     score = StringField(default="")
     sets = IntField(default=0)
     link = URLField(unique=True, nullable=False)
@@ -25,8 +25,8 @@ class MatchModel(BaseModel):
             'match_id': self.match_id,
             'name': self.name,
             'date': self.date,
-            'tournament': self.tournament_id,
-            'round': self.round_id.round_name,
+            'tournament': self.tournament,
+            'match_round': self.match_round,
             'score': self.score,
             'sets': self.sets,
             'link': self.link
