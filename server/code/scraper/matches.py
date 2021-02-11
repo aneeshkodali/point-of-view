@@ -45,7 +45,7 @@ def getMatchData(link):
     except:
         pass
 
-    # tournament_id
+    # tournament
     # Either queries tournaments table for tournament_id or creates new record
     try:
         tournament_name = suffix[2].replace('_', ' ')
@@ -60,7 +60,7 @@ def getMatchData(link):
     except:
         pass
 
-    # round_id
+    # round
     # Either queries rounds table for round_id or creates new record
     try:
         round_name = suffix[3]
