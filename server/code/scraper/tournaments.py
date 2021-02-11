@@ -24,19 +24,19 @@ def getTournamentData(link):
     # tournament name is `.../jstourneys/<name>`
     tournament_name = link.split('jstourneys/')[1]
 
-    # gender_id
+    # gender
     # Either queries genders table for gender_id or creates new record
     # if tournament starts with W_ then it's W(omen) else M(en)
     try:
         gender = 'W' if tournament_name.startswith('W_') else 'M'
         gender_model_db = GenderModel.find_by_gender(gender)
         if gender_model_db:
-            tournament_model['gender_id'] = gender_model_db
+            tournament_model['gender'] = gender_model_db
         else:
             gender_id_new = max([gender_model['gender_id'] for gender_model in GenderModel.objects()] or [0]) + 1
             gender_model_new = GenderModel(**{'gender_id': gender_id_new, 'gender': gender})
             gender_model_new.save()
-            tournament_model['gender_id'] = gender_model_new
+            tournament_model['gender'] = gender_model_new
     except:
         pass
 
@@ -53,18 +53,18 @@ def getTournamentData(link):
     except:
         pass
 
-    # tournament_name_id
+    # tournament_name
     # Either queries tournament_names table for tournament_name_id or creates new record
     # Also creates new TournamentNameModel record if necessary
     try:
         tournament_name = extractVariableFromText(soup_text, 'tname')
         tournament_name_model_db = TournamentNameModel.find_by_name(tournament_name)
         if tournament_name_model_db:
-            tournament_model['tournament_name_id'] = tournament_name_model_db
+            tournament_model['tournament_name'] = tournament_name_model_db
         else:
             tournament_name_model_new = TournamentNameModel(**{'name': tournament_name})
             tournament_name_model_new.save()
-            tournament_model['tournament_name_id'] = tournament_name_model_new
+            tournament_model['tournament_name'] = tournament_name_model_new
     except:
         pass
   
@@ -108,31 +108,31 @@ def getTournamentData(link):
     except:
         pass
 
-    # surface_id
+    # surface
     try:
         surface = soup_text.split('var tsurf=')[1].split(';')[0].replace("'","").replace('"', '').lower()
         surface_model_db = SurfaceModel.find_by_surface(surface)
         if surface_model_db:
-            tournament_model['surface_id'] = surface_model_db
+            tournament_model['surface'] = surface_model_db
         else:
             surface_id_new = max([surface_model['surface_id'] for surface_model in SurfaceModel.objects()] or [0]) + 1
             surface_model_new = SurfaceModel(**{'surface_id': surface_id_new, 'surface': surface})
             surface_model_new.save()
-            tournament_model['surface_id'] = surface_model_new
+            tournament_model['surface'] = surface_model_new
     except:
         pass
    
-    # level_id
+    # level
     try:
         level = soup_text.split('var tlev=')[1].split(';')[0].replace("'","").replace('"', '')
         level_model_db = LevelModel.find_by_level(level)
         if level_model_db:
-            tournament_model['level_id'] = level_model_db
+            tournament_model['level'] = level_model_db
         else:
             level_id_new = max([level_model['level_id'] for level_model in LevelModel.objects()] or [0]) + 1
             level_model_new = LevelModel(**{'level_id': level_id_new, 'level': level})
             level_model_new.save()
-            tournament_model['level_id'] = level_model_new
+            tournament_model['level'] = level_model_new
     except:
         pass
 

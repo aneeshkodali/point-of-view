@@ -14,15 +14,15 @@ class TournamentModel(BaseModel):
     '''
     
     tournament_id = StringField(primary_key=True, default=default_uuid_value)
-    tournament_name_id = ReferenceField(TournamentNameModel)
+    tournament_name = ReferenceField(TournamentNameModel)
     year = IntField(default=default_year_value)
-    gender_id = ReferenceField(GenderModel, default=0)
+    gender = ReferenceField(GenderModel)
     date = DateTimeField(default=default_date_value)
     size = IntField(default=0)
     points = IntField(default=0)
     sets = IntField(default=0)
-    surface_id = ReferenceField(SurfaceModel, default=0)
-    level_id = ReferenceField(LevelModel, default=0)
+    surface = ReferenceField(SurfaceModel)
+    level = ReferenceField(LevelModel)
     link = URLField(unique=True, nullable=False)
 
     meta = {'collection': 'tournaments'}
@@ -30,15 +30,15 @@ class TournamentModel(BaseModel):
     def json(self):
         return {
             'tournament_id': self.tournament_id,
-            'name': self.tournament_name_id.name,
+            'tournament_name': self.tournament_name,
             'year': self.year,
-            'gender': self.gender_id.gender,
+            'gender': self.gender,
             'date': self.date,
             'size': self.size,
             'points': self.points,
             'sets': self.sets,
-            'surface': self.surface_id.surface,
-            'level': self.level_id.level,
+            'surface': self.surface,
+            'level': self.level,
             'link': self.link
         }
 
@@ -47,8 +47,8 @@ class TournamentModel(BaseModel):
         return TournamentModel.objects(link=link)
 
     @classmethod
-    def find_by_name_id_and_gender_id_and_year(cls, tournament_name_id, gender_id, year):
-        return TournamentModel.objects(Q(tournament_name_id=tournament_name_id) & Q(gender_id=gender_id) & Q(year=year)).first()
+    def find_by_tournament_name_and_gender_and_year(cls, tournament_name, gender, year):
+        return TournamentModel.objects(Q(tournament_name=tournament_name) & Q(gender=gender) & Q(year=year)).first()
 
 
 
