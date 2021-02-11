@@ -51,6 +51,7 @@ def get_match_data(match_id):
 
     # convert tournament data to json
     match_json['tournament'] = match_json['tournament'].json()
+    #match_json['tournament']['tournament_name'] =  match_json['tournament']['tournament_name'].json()
 
     # get match players (only need 'player' data and 'win')
     match_players = MatchPlayerModel.objects(match = match)

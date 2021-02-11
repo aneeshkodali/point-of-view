@@ -58,11 +58,11 @@ def getTournamentData(link):
     # Also creates new TournamentNameModel record if necessary
     try:
         tournament_name = extractVariableFromText(soup_text, 'tname')
-        tournament_name_model_db = TournamentNameModel.find_by_name(tournament_name)
+        tournament_name_model_db = TournamentNameModel.find_by_tournament_name(tournament_name)
         if tournament_name_model_db:
             tournament_model['tournament_name'] = tournament_name_model_db
         else:
-            tournament_name_model_new = TournamentNameModel(**{'name': tournament_name})
+            tournament_name_model_new = TournamentNameModel(**{'tournament_name': tournament_name})
             tournament_name_model_new.save()
             tournament_model['tournament_name'] = tournament_name_model_new
     except:
