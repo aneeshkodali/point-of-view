@@ -16,10 +16,10 @@ class PlayerModel(BaseModel):
     full_name = StringField(default="")
     date_of_birth = DateTimeField(default=default_date_value)
     height = IntField(default=0)
-    gender_id = ReferenceField(GenderModel, default=0)
-    hand_id = ReferenceField(HandModel, default=0)
-    backhand_id = ReferenceField(BackhandModel, default=0)
-    country_id = ReferenceField(CountryModel, default=0)
+    gender = ReferenceField(GenderModel)
+    hand = ReferenceField(HandModel)
+    backhand = ReferenceField(BackhandModel)
+    country = ReferenceField(CountryModel)
     image_url = URLField(default="")
     link = URLField(unique=True, nullable=False)
     
@@ -32,10 +32,10 @@ class PlayerModel(BaseModel):
             'full_name': self.full_name,
             'date_of_birth': self.date_of_birth,
             'height': self.height,
-            'gender': self.gender_id.gender,
-            'hand': self.hand_id.hand,
-            'backhand': self.backhand_id.backhand,
-            'country': self.country_id.country,
+            'gender': self.gender,
+            'hand': self.hand,
+            'backhand': self.backhand,
+            'country': self.country,
             'image_url': self.image_url,
             'link': self.link
         }

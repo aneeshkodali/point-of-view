@@ -22,18 +22,18 @@ def getPlayerData(link):
     # link
     player_model['link'] = link
 
-    # gender_id
+    # gender
     # Either queries genders table for gender_id or creates new record
     try:
         gender = 'W' if 'wplayer' in link else 'M'
         gender_model_db = GenderModel.find_by_gender(gender)
         if gender_model_db:
-            player_model['gender_id'] = gender_model_db
+            player_model['gender'] = gender_model_db
         else:
             gender_id_new = max([gender_model['gender_id'] for gender_model in GenderModel.objects()] or [0]) + 1
             gender_model_new = GenderModel(**{'gender_id': gender_id_new, 'gender': gender})
             gender_model_new.save()
-            player_model['gender_id'] = gender_model_new
+            player_model['gender'] = gender_model_new
     except:
         pass
 
@@ -70,48 +70,48 @@ def getPlayerData(link):
     except:
         pass
 
-    # hand_id
+    # hand
     # Either queries hands table for hand_id or creates new record
     try:
         hand = extractVariableFromText(text, 'hand')
         hand_model_db = HandModel.find_by_hand(hand)
         if hand_model_db:
-            player_model['hand_id'] = hand_model_db
+            player_model['hand'] = hand_model_db
         else:
             hand_id_new = max([hand_model['hand_id'] for hand_model in HandModel.objects()] or [0]) + 1
             hand_model_new = HandModel(**{'hand_id': hand_id_new, 'hand': hand})
             hand_model_new.save()
-            player_model['hand_id'] = hand_model_new
+            player_model['hand'] = hand_model_new
     except:
         pass
 
-    # backhand_id
+    # backhand
     # Either queries backhands table for backhand or creates new record
     try:
         backhand = extractVariableFromText(text, 'backhand')
         backhand_model_db = BackhandModel.find_by_backhand(backhand)
         if backhand_model_db:
-            player_model['backhand_id'] = backhand_model_db
+            player_model['backhand'] = backhand_model_db
         else:
             backhand_id_new = max([backhand_model['backhand_id'] for backhand_model in BackhandModel.objects()] or [0]) + 1
             backhand_model_new = BackhandModel(**{'backhand_id': backhand_id_new, 'backhand': backhand})
             backhand_model_new.save()
-            player_model['backhand_id'] = backhand_model_new
+            player_model['backhand'] = backhand_model_new
     except:
         pass
 
-    # country_id
+    # country
     # Either queries countries table for country_id or creates new record
     try:
         country = extractVariableFromText(text, 'country')
         country_model_db = CountryModel.find_by_country(country)
         if country_model_db:
-            player_model['country_id'] = country_model_db
+            player_model['country'] = country_model_db
         else:
             country_id_new = max([country_model['country_id'] for country_model in CountryModel.objects()] or [0]) + 1
             country_model_new = CountryModel(**{'country_id': country_id_new, 'country': country})
             country_model_new.save()
-            player_model['country_id'] = country_model_new
+            player_model['country'] = country_model_new
     except:
         pass
 
