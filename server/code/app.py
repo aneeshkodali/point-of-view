@@ -49,13 +49,29 @@ def get_match_data(match_id):
     match = MatchModel.find_by_id(match_id)
     match_json = match.json()
 
-    # convert tournament data to json
-    match_json['tournament'] = match_json['tournament'].json()
-    #match_json['tournament']['tournament_name'] =  match_json['tournament']['tournament_name'].json()
-
-    # get match players (only need 'player' data and 'win')
+    # format players
     match_players = MatchPlayerModel.objects(match = match)
-    match_json['players'] = [{'player': match_player.player.json(), 'win': match_player.win} for match_player in match_players]
+    match_json['players'] = []
+    for match_player in match_players:
+        match_player_dict = {}
+        match_player_dict['player'] = match_player.player.json()
+        match_player_dict['player']['backhand'] = match_player_dict['player']['backhand']['backhand']
+        match_player_dict['player']['country'] = match_player_dict['player']['country']['country']
+        match_player_dict['player']['gender'] = match_player_dict['player']['gender']['gender']
+        match_player_dict['player']['hand'] = match_player_dict['player']['hand']['hand']
+        match_player_dict['win'] = match_player.win
+        match_json['players'].append(match_player_dict)
+    #match_json['players'] = [{'player': match_player.player.json(), 'win': match_player.win} for match_player in match_players]
+
+    # format round
+    match_json['match_round'] = match_json['match_round']['round_name']
+
+    # format tournament
+    match_json['tournament'] = match_json['tournament'].json()
+    match_json['tournament']['gender'] =  match_json['tournament']['gender']['gender']
+    match_json['tournament']['level'] =  match_json['tournament']['level']['level']
+    match_json['tournament']['surface'] =  match_json['tournament']['surface']['surface']
+    match_json['tournament']['tournament_name'] =  match_json['tournament']['tournament_name']['tournament_name']
     
     return {'data': match_json}
 
