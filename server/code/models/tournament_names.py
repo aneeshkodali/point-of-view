@@ -9,10 +9,10 @@ class TournamentNameModel(BaseModel):
     '''
 
     tournament_name_id = StringField(primary_key=True, default=default_uuid_value)
-    name = StringField()
+    tournament_name = StringField()
 
     meta = {'collection': 'tournament_names'}
 
     @classmethod
-    def find_by_name(cls, name):
-        return TournamentNameModel.objects(name=name).first()
+    def find_by_tournament_name(cls, tournament_name):
+        return TournamentNameModel.objects(tournament_name=tournament_name).first()
