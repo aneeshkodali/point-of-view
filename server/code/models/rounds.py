@@ -11,7 +11,3 @@ class RoundModel(BaseModel):
     round_name = StringField()
 
     meta = {'collection': 'rounds'}
-
-    @classmethod
-    def find_by_round(cls, round_name):
-        return RoundModel.objects(round_name=round_name).first()
