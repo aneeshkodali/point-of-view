@@ -11,7 +11,3 @@ class CountryModel(BaseModel):
     country = StringField()
 
     meta = {'collection': 'countries'}
-
-    @classmethod
-    def find_by_country(cls, country):
-        return CountryModel.objects(country=country).first()
