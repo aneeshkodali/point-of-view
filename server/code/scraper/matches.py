@@ -4,10 +4,10 @@ import datetime
 
 from models.match_players import MatchPlayerModel
 from models.matches import MatchModel
-from models.rounds import RoundModel
 from models.players import PlayerModel
 from models.tournaments import TournamentModel
 from models.tournament_names import TournamentNameModel
+from scraper.helper import getRoundModel
 from scraper.tournaments import constructTournamentLink, getTournamentData
 from scraper.players import constructPlayerLink, getPlayerData
 #from scraper.points import getPointTable, getPointData
@@ -64,14 +64,8 @@ def getMatchData(link):
     # Either queries rounds table for round_id or creates new record
     try:
         round_name = suffix[3]
-        round_model_db = RoundModel.find_by_round(round_name)
-        if round_model_db:
-            match_model['match_round'] = round_model_db
-        else:
-            round_id_new = max([round_model['round_id'] for round_model in RoundModel.objects()] or [0]) + 1
-            round_model_new = RoundModel(**{'round_id': round_id_new, 'round_name': round_name})
-            round_model_new.save()
-            match_model['match_round'] = round_model_new
+        round_model = getRoundModel(round_name)
+         match_model['match_round'] = round_model
     except:
         pass
 
