@@ -3,6 +3,7 @@ from models.countries import CountryModel
 from models.genders import GenderModel
 from models.hands import HandModel
 from models.levels import LevelModel
+from models.rounds import RoundModel
 from models.surfaces import SurfaceModel
 from models.tournament_names import TournamentNameModel
 
@@ -123,6 +124,23 @@ def getLevelModel(level):
     level_model_new.save()
 
     return level_model_new
+
+
+def getRoundModel(round_name):
+    '''
+    Takes a round and queries RoundModel for record
+    Return record or create new one if not found
+    '''
+
+    round_model_db = RoundModel.objects(round_name=round_name).first()
+    if round_model_db:
+        return round_model_db
+
+    round_id_new = max([round_model['round_id'] for round_model in RoundModel.objects()] or [0]) + 1
+    round_model_new = RoundModel(**{'round_id': round_id_new, 'round_name': round_name})
+    round_model_new.save()
+    
+    return round_model_new
 
 
 def extractVariableFromText(text, variable):
