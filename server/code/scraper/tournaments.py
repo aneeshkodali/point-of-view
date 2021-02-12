@@ -3,12 +3,11 @@ from bs4 import BeautifulSoup
 import ast
 import datetime
 
-from models.genders import GenderModel
 from models.levels import LevelModel
 from models.surfaces import SurfaceModel
 from models.tournament_names import TournamentNameModel
 from models.tournaments import TournamentModel
-from scraper.helper import extractVariableFromText
+from scraper.helper import extractVariableFromText, getGenderModel
 
 tournament_base_url = 'http://www.minorleaguesplits.com/tennisabstract/cgi-bin/jstourneys/'
 
@@ -25,18 +24,10 @@ def getTournamentData(link):
     tournament_name = link.split('jstourneys/')[1]
 
     # gender
-    # Either queries genders table for gender_id or creates new record
-    # if tournament starts with W_ then it's W(omen) else M(en)
     try:
         gender = 'W' if tournament_name.startswith('W_') else 'M'
-        gender_model_db = GenderModel.find_by_gender(gender)
-        if gender_model_db:
-            tournament_model['gender'] = gender_model_db
-        else:
-            gender_id_new = max([gender_model['gender_id'] for gender_model in GenderModel.objects()] or [0]) + 1
-            gender_model_new = GenderModel(**{'gender_id': gender_id_new, 'gender': gender})
-            gender_model_new.save()
-            tournament_model['gender'] = gender_model_new
+        gender_model = getGenderModel(gender)
+        tournament_model['gender'] = gender_model
     except:
         pass
 
