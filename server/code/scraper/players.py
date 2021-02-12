@@ -3,10 +3,9 @@ from bs4 import BeautifulSoup
 import ast
 import datetime
 
-from models.backhands import BackhandModel
 from models.countries import CountryModel
 from models.players import PlayerModel
-from scraper.helper import extractVariableFromText, getGenderModel, getHandModel
+from scraper.helper import extractVariableFromText, getBackhandModel, getGenderModel, getHandModel
 
 def getPlayerData(link):
 
@@ -73,14 +72,8 @@ def getPlayerData(link):
     # Either queries backhands table for backhand or creates new record
     try:
         backhand = extractVariableFromText(text, 'backhand')
-        backhand_model_db = BackhandModel.find_by_backhand(backhand)
-        if backhand_model_db:
-            player_model['backhand'] = backhand_model_db
-        else:
-            backhand_id_new = max([backhand_model['backhand_id'] for backhand_model in BackhandModel.objects()] or [0]) + 1
-            backhand_model_new = BackhandModel(**{'backhand_id': backhand_id_new, 'backhand': backhand})
-            backhand_model_new.save()
-            player_model['backhand'] = backhand_model_new
+        backhand_model = getBackhandModel(backhand)
+        player_model['backhand'] = backhand_model
     except:
         pass
 
