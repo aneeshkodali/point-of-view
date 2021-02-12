@@ -5,9 +5,8 @@ import datetime
 
 from models.backhands import BackhandModel
 from models.countries import CountryModel
-from models.hands import HandModel
 from models.players import PlayerModel
-from scraper.helper import extractVariableFromText, getGenderModel
+from scraper.helper import extractVariableFromText, getGenderModel, getHandModel
 
 def getPlayerData(link):
 
@@ -63,17 +62,10 @@ def getPlayerData(link):
         pass
 
     # hand
-    # Either queries hands table for hand_id or creates new record
     try:
         hand = extractVariableFromText(text, 'hand')
-        hand_model_db = HandModel.find_by_hand(hand)
-        if hand_model_db:
-            player_model['hand'] = hand_model_db
-        else:
-            hand_id_new = max([hand_model['hand_id'] for hand_model in HandModel.objects()] or [0]) + 1
-            hand_model_new = HandModel(**{'hand_id': hand_id_new, 'hand': hand})
-            hand_model_new.save()
-            player_model['hand'] = hand_model_new
+        hand_model = getHandModel(hand)
+        player_model['hand'] = hand_model
     except:
         pass
 
