@@ -1,5 +1,4 @@
 from mongoengine import StringField, IntField, DateTimeField, URLField, ReferenceField
-from mongoengine.queryset.visitor import Q
 
 from models.base import BaseModel
 from models.default_values import default_uuid_value, default_date_value, default_year_value
@@ -45,10 +44,4 @@ class TournamentModel(BaseModel):
     @classmethod
     def find_by_link(cls, link):
         return TournamentModel.objects(link=link)
-
-    @classmethod
-    def find_by_tournament_name_and_gender_and_year(cls, tournament_name, gender, year):
-        return TournamentModel.objects(Q(tournament_name=tournament_name) & Q(gender=gender) & Q(year=year)).first()
-
-
 
