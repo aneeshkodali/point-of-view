@@ -5,9 +5,8 @@ import datetime
 
 from models.levels import LevelModel
 from models.surfaces import SurfaceModel
-from models.tournament_names import TournamentNameModel
 from models.tournaments import TournamentModel
-from scraper.helper import extractVariableFromText, getGenderModel
+from scraper.helper import extractVariableFromText, getGenderModel, getTournamentNameModel
 
 tournament_base_url = 'http://www.minorleaguesplits.com/tennisabstract/cgi-bin/jstourneys/'
 
@@ -45,17 +44,10 @@ def getTournamentData(link):
         pass
 
     # tournament_name
-    # Either queries tournament_names table for tournament_name_id or creates new record
-    # Also creates new TournamentNameModel record if necessary
     try:
         tournament_name = extractVariableFromText(soup_text, 'tname')
-        tournament_name_model_db = TournamentNameModel.find_by_tournament_name(tournament_name)
-        if tournament_name_model_db:
-            tournament_model['tournament_name'] = tournament_name_model_db
-        else:
-            tournament_name_model_new = TournamentNameModel(**{'tournament_name': tournament_name})
-            tournament_name_model_new.save()
-            tournament_model['tournament_name'] = tournament_name_model_new
+        tournament_name_model = getTournamentNameModel(tournament_name)
+        tournament_model['tournament_name'] = tournament_name_model
     except:
         pass
   
