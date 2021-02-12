@@ -11,7 +11,3 @@ class BackhandModel(BaseModel):
     backhand = IntField()
 
     meta = {'collection': 'backhands'}
-
-    @classmethod
-    def find_by_backhand(cls, backhand):
-        return BackhandModel.objects(backhand=backhand).first()
