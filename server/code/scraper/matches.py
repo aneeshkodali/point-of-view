@@ -5,10 +5,8 @@ import datetime
 from models.match_players import MatchPlayerModel
 from models.matches import MatchModel
 from models.players import PlayerModel
-from models.tournaments import TournamentModel
-from models.tournament_names import TournamentNameModel
-from scraper.helper import getRoundModel
-from scraper.tournaments import constructTournamentLink, getTournamentData
+from scraper.helper import getTournamentModel, getRoundModel
+from scraper.tournaments import constructTournamentLink
 from scraper.players import constructPlayerLink, getPlayerData
 #from scraper.points import getPointTable, getPointData
 
@@ -46,17 +44,11 @@ def getMatchData(link):
         pass
 
     # tournament
-    # Either queries tournaments table for tournament_id or creates new record
     try:
         tournament_name = suffix[2].replace('_', ' ')
         tournament_link = constructTournamentLink(tournament_name, gender, year)
-        tournament_model_db = TournamentModel.find_by_link(tournament_link)
-        if tournament_model_db:
-            match_model['tournament'] = tournament_model_db
-        else:
-            tournament_model_new = getTournamentData(tournament_link)
-            tournament_model_new.save()
-            match_model['tournament'] = tournament_model_new
+        tournament_model = getTournamentModel(tournament_link)
+        match_model['tournament'] = tournament_model
     except:
         pass
 
