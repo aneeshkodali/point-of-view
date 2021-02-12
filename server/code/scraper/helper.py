@@ -5,7 +5,9 @@ from models.hands import HandModel
 from models.levels import LevelModel
 from models.rounds import RoundModel
 from models.surfaces import SurfaceModel
+from models.tournaments import TournamentModel
 from models.tournament_names import TournamentNameModel
+from scraper.tournaments import getTournamentData
 
 
 def getGenderModel(gender):
@@ -82,7 +84,7 @@ def getTournamentNameModel(tournament_name):
     Return record or create new one if not found
     '''
 
-     tournament_name_model_db = TournamentNameModel.objects(tournament_name=tournament_name).first()
+    tournament_name_model_db = TournamentNameModel.objects(tournament_name=tournament_name).first()
     if tournament_name_model_db:
         return tournament_name_model_db
 
@@ -90,6 +92,22 @@ def getTournamentNameModel(tournament_name):
     tournament_name_model_new.save()
 
     return tournament_name_model_new
+
+
+def getTournamentModel(link):
+    '''
+    Takes a tournament link and queries TournamentModel for record
+    Return record or create new one if not found
+    '''
+
+    tournament_model_db = TournamentModel.objects(link=link).first()
+    if tournament_model_db:
+        return tournament_model_db
+
+    tournament_model_new = getTournamentData(link)
+    tournament_model_new.save()
+    
+    return tournament_model_new
 
 
 def getSurfaceModel(surface):
