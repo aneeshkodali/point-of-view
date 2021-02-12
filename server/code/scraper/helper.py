@@ -2,6 +2,7 @@ from models.backhands import BackhandModel
 from models.countries import CountryModel
 from models.genders import GenderModel
 from models.hands import HandModel
+from models.tournament_names import TournamentNameModel
 
 
 def getGenderModel(gender):
@@ -56,8 +57,8 @@ def getBackhandModel(backhand):
 
 
  def getCountryModel(country):
-     '''
-     Takes a country and queries CountryModel for record
+    '''
+    Takes a country and queries CountryModel for record
     Return record or create new one if not found
     '''
 
@@ -71,6 +72,21 @@ def getBackhandModel(backhand):
 
     return country_model_new
 
+
+def getTournamentNameModel(tournament_name):
+    '''
+    Takes a tournament_name and queries TournamentNameModel for record
+    Return record or create new one if not found
+    '''
+
+     tournament_name_model_db = TournamentNameModel.objects(tournament_name=tournament_name).first()
+    if tournament_name_model_db:
+        return tournament_name_model_db
+
+    tournament_name_model_new = TournamentNameModel(**{'tournament_name': tournament_name})
+    tournament_name_model_new.save()
+
+    return tournament_name_model_new
 
 def extractVariableFromText(text, variable):
     '''
