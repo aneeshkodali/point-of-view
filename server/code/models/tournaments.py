@@ -40,8 +40,3 @@ class TournamentModel(BaseModel):
             'level': self.level,
             'link': self.link
         }
-
-    @classmethod
-    def find_by_link(cls, link):
-        return TournamentModel.objects(link=link)
-
