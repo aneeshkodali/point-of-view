@@ -12,7 +12,3 @@ class TournamentNameModel(BaseModel):
     tournament_name = StringField()
 
     meta = {'collection': 'tournament_names'}
-
-    @classmethod
-    def find_by_tournament_name(cls, tournament_name):
-        return TournamentNameModel.objects(tournament_name=tournament_name).first()
