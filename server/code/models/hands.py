@@ -12,6 +12,3 @@ class HandModel(BaseModel):
 
     meta = {'collection': 'hands'}
   
-    @classmethod
-    def find_by_hand(cls, hand):
-        return HandModel.objects(hand=hand).first()
