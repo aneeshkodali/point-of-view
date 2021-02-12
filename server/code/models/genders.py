@@ -11,7 +11,3 @@ class GenderModel(BaseModel):
     gender = StringField()
 
     meta = {'collection': 'genders'}
- 
-    @classmethod
-    def find_by_gender(cls, gender):
-        return GenderModel.objects(gender=gender).first()
