@@ -3,9 +3,8 @@ from bs4 import BeautifulSoup
 import ast
 import datetime
 
-from models.countries import CountryModel
 from models.players import PlayerModel
-from scraper.helper import extractVariableFromText, getBackhandModel, getGenderModel, getHandModel
+from scraper.helper import extractVariableFromText, getBackhandModel, getCountryModel, getGenderModel, getHandModel
 
 def getPlayerData(link):
 
@@ -69,7 +68,6 @@ def getPlayerData(link):
         pass
 
     # backhand
-    # Either queries backhands table for backhand or creates new record
     try:
         backhand = extractVariableFromText(text, 'backhand')
         backhand_model = getBackhandModel(backhand)
@@ -78,17 +76,10 @@ def getPlayerData(link):
         pass
 
     # country
-    # Either queries countries table for country_id or creates new record
     try:
         country = extractVariableFromText(text, 'country')
-        country_model_db = CountryModel.find_by_country(country)
-        if country_model_db:
-            player_model['country'] = country_model_db
-        else:
-            country_id_new = max([country_model['country_id'] for country_model in CountryModel.objects()] or [0]) + 1
-            country_model_new = CountryModel(**{'country_id': country_id_new, 'country': country})
-            country_model_new.save()
-            player_model['country'] = country_model_new
+        country_model = getCountryModel(country)
+            player_model['country'] = country_model
     except:
         pass
 
