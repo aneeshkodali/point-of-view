@@ -5,10 +5,9 @@ import datetime
 
 from models.backhands import BackhandModel
 from models.countries import CountryModel
-from models.genders import GenderModel
 from models.hands import HandModel
 from models.players import PlayerModel
-from scraper.helper import extractVariableFromText
+from scraper.helper import extractVariableFromText, getGenderModel
 
 def getPlayerData(link):
 
@@ -23,17 +22,10 @@ def getPlayerData(link):
     player_model['link'] = link
 
     # gender
-    # Either queries genders table for gender_id or creates new record
     try:
         gender = 'W' if 'wplayer' in link else 'M'
-        gender_model_db = GenderModel.find_by_gender(gender)
-        if gender_model_db:
-            player_model['gender'] = gender_model_db
-        else:
-            gender_id_new = max([gender_model['gender_id'] for gender_model in GenderModel.objects()] or [0]) + 1
-            gender_model_new = GenderModel(**{'gender_id': gender_id_new, 'gender': gender})
-            gender_model_new.save()
-            player_model['gender'] = gender_model_new
+        gender_model = getGenderModel(gender)
+        player_model['gender'] = gender_model
     except:
         pass
 
