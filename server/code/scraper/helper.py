@@ -2,6 +2,7 @@ from models.backhands import BackhandModel
 from models.countries import CountryModel
 from models.genders import GenderModel
 from models.hands import HandModel
+from models.levels import LevelModel
 from models.surfaces import SurfaceModel
 from models.tournament_names import TournamentNameModel
 
@@ -96,7 +97,7 @@ def getSurfaceModel(surface):
     Return record or create new one if not found
     '''
 
-    surface_model_db = SurfaceModel.objects(surface=surface)
+    surface_model_db = SurfaceModel.objects(surface=surface).first()
     if surface_model_db:
         return surface_model_db
     
@@ -105,6 +106,23 @@ def getSurfaceModel(surface):
     surface_model_new.save()
 
     return surface_model_new
+
+
+def getLevelModel(level):
+    '''
+    Takes a level and queries LevelModel for record
+    Return record or create new one if not found
+    '''
+
+    level_model_db = LevelModel.objects(level=level).first()
+    if level_model_db:
+        return level_model_db
+    
+    level_id_new = max([level_model['level_id'] for level_model in LevelModel.objects()] or [0]) + 1
+    level_model_new = LevelModel(**{'level_id': level_id_new, 'level': level})
+    level_model_new.save()
+
+    return level_model_new
 
 
 def extractVariableFromText(text, variable):
