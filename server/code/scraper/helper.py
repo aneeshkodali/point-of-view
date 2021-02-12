@@ -1,3 +1,4 @@
+from models.backhands import BackhandModel
 from models.genders import GenderModel
 from models.hands import HandModel
 
@@ -34,6 +35,22 @@ def getHandModel(hand):
 
     return hand_model_new
 
+
+def getBackhandModel(backhand):
+    '''
+    Takes a backhand and queries BackhandModel for record
+    Return record or create new one if not found
+    '''
+
+    backhand_model_db = BackhandModel.objects(backhand=backhand).first()
+    if backhand_model_db:
+        return backhand_model_db
+    
+    backhand_id_new = max([backhand_model['backhand_id'] for backhand_model in BackhandModel.objects()] or [0]) + 1
+    backhand_model_new = BackhandModel(**{'backhand_id': backhand_id_new, 'backhand': backhand})
+    backhand_model_new.save()
+
+    return backhand_model_new
 
 def extractVariableFromText(text, variable):
     '''
