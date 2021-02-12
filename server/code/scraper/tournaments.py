@@ -4,9 +4,8 @@ import ast
 import datetime
 
 from models.levels import LevelModel
-from models.surfaces import SurfaceModel
 from models.tournaments import TournamentModel
-from scraper.helper import extractVariableFromText, getGenderModel, getTournamentNameModel
+from scraper.helper import extractVariableFromText, getGenderModel, getSurfaceModel, getTournamentNameModel
 
 tournament_base_url = 'http://www.minorleaguesplits.com/tennisabstract/cgi-bin/jstourneys/'
 
@@ -94,14 +93,8 @@ def getTournamentData(link):
     # surface
     try:
         surface = soup_text.split('var tsurf=')[1].split(';')[0].replace("'","").replace('"', '').lower()
-        surface_model_db = SurfaceModel.find_by_surface(surface)
-        if surface_model_db:
-            tournament_model['surface'] = surface_model_db
-        else:
-            surface_id_new = max([surface_model['surface_id'] for surface_model in SurfaceModel.objects()] or [0]) + 1
-            surface_model_new = SurfaceModel(**{'surface_id': surface_id_new, 'surface': surface})
-            surface_model_new.save()
-            tournament_model['surface'] = surface_model_new
+        surface_model = getSurfaceModel(surface)
+        tournament_model['surface'] = surface_model
     except:
         pass
    
