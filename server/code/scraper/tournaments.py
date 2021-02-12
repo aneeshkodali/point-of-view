@@ -3,9 +3,8 @@ from bs4 import BeautifulSoup
 import ast
 import datetime
 
-from models.levels import LevelModel
 from models.tournaments import TournamentModel
-from scraper.helper import extractVariableFromText, getGenderModel, getSurfaceModel, getTournamentNameModel
+from scraper.helper import extractVariableFromText, getGenderModel, getLevelModel, getSurfaceModel, getTournamentNameModel
 
 tournament_base_url = 'http://www.minorleaguesplits.com/tennisabstract/cgi-bin/jstourneys/'
 
@@ -101,14 +100,8 @@ def getTournamentData(link):
     # level
     try:
         level = soup_text.split('var tlev=')[1].split(';')[0].replace("'","").replace('"', '')
-        level_model_db = LevelModel.find_by_level(level)
-        if level_model_db:
-            tournament_model['level'] = level_model_db
-        else:
-            level_id_new = max([level_model['level_id'] for level_model in LevelModel.objects()] or [0]) + 1
-            level_model_new = LevelModel(**{'level_id': level_id_new, 'level': level})
-            level_model_new.save()
-            tournament_model['level'] = level_model_new
+        level_model = getLevelModel(level)
+        tournament_model['level'] = level_model
     except:
         pass
 
