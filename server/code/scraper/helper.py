@@ -2,6 +2,7 @@ from models.backhands import BackhandModel
 from models.countries import CountryModel
 from models.genders import GenderModel
 from models.hands import HandModel
+from models.surfaces import SurfaceModel
 from models.tournament_names import TournamentNameModel
 
 
@@ -87,6 +88,24 @@ def getTournamentNameModel(tournament_name):
     tournament_name_model_new.save()
 
     return tournament_name_model_new
+
+
+def getSurfaceModel(surface):
+    '''
+    Takes a surface and queries SurfaceModel for record
+    Return record or create new one if not found
+    '''
+
+    surface_model_db = SurfaceModel.objects(surface=surface)
+    if surface_model_db:
+        return surface_model_db
+    
+    surface_id_new = max([surface_model['surface_id'] for surface_model in SurfaceModel.objects()] or [0]) + 1
+    surface_model_new = SurfaceModel(**{'surface_id': surface_id_new, 'surface': surface})
+    surface_model_new.save()
+
+    return surface_model_new
+
 
 def extractVariableFromText(text, variable):
     '''
