@@ -12,6 +12,3 @@ class SurfaceModel(BaseModel):
 
     meta = {'collection': 'surfaces'}
     
-    @classmethod
-    def find_by_surface(cls, surface):
-        return SurfaceModel.objects(surface=surface).first()
