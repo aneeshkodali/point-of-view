@@ -1,6 +1,8 @@
 from models.backhands import BackhandModel
+from models.countries import CountryModel
 from models.genders import GenderModel
 from models.hands import HandModel
+
 
 def getGenderModel(gender):
     '''
@@ -51,6 +53,24 @@ def getBackhandModel(backhand):
     backhand_model_new.save()
 
     return backhand_model_new
+
+
+ def getCountryModel(country):
+     '''
+     Takes a country and queries CountryModel for record
+    Return record or create new one if not found
+    '''
+
+    country_model_db = CountryModel.objects(country=country).first()
+    if country_model_db:
+        return country_model_db
+
+    country_id_new = max([country_model['country_id'] for country_model in CountryModel.objects()] or [0]) + 1
+    country_model_new = CountryModel(**{'country_id': country_id_new, 'country': country})
+    country_model_new.save()
+
+    return country_model_new
+
 
 def extractVariableFromText(text, variable):
     '''
