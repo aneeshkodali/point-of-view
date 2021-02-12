@@ -11,7 +11,3 @@ class LevelModel(BaseModel):
     level = StringField()
 
     meta = {'collection': 'levels'}
-
-    @classmethod
-    def find_by_level(cls, level):
-        return LevelModel.objects(level=level).first()
