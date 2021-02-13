@@ -4,7 +4,7 @@ import ast
 import datetime
 
 from models.tournaments import TournamentModel
-from scraper.helper import extractVariableFromText, getGenderModel, getLevelModel, getSurfaceModel, getTournamentNameModel
+import scraper.helper as helper
 
 tournament_base_url = 'http://www.minorleaguesplits.com/tennisabstract/cgi-bin/jstourneys/'
 
@@ -23,7 +23,7 @@ def getTournamentData(link):
     # gender
     try:
         gender = 'W' if tournament_name.startswith('W_') else 'M'
-        gender_model = getGenderModel(gender)
+        gender_model = helper.getGenderModel(gender)
         tournament_model['gender'] = gender_model
     except:
         pass
@@ -35,7 +35,7 @@ def getTournamentData(link):
 
     # year
     try:
-        year = extractVariableFromText(soup_text, 'tyear')
+        year = helper.extractVariableFromText(soup_text, 'tyear')
         if year:
             tournament_model['year'] = year
     except:
@@ -43,15 +43,15 @@ def getTournamentData(link):
 
     # tournament_name
     try:
-        tournament_name = extractVariableFromText(soup_text, 'tname')
-        tournament_name_model = getTournamentNameModel(tournament_name)
+        tournament_name = helper.extractVariableFromText(soup_text, 'tname')
+        tournament_name_model = helper.getTournamentNameModel(tournament_name)
         tournament_model['tournament_name'] = tournament_name_model
     except:
         pass
   
     # date
     try:
-        date = extractVariableFromText(soup_text, 'tdate')
+        date = helper.extractVariableFromText(soup_text, 'tdate')
         if date:
             year = int(date[:4])
             month = int(date[4:6])
@@ -92,7 +92,7 @@ def getTournamentData(link):
     # surface
     try:
         surface = soup_text.split('var tsurf=')[1].split(';')[0].replace("'","").replace('"', '').lower()
-        surface_model = getSurfaceModel(surface)
+        surface_model = helper.getSurfaceModel(surface)
         tournament_model['surface'] = surface_model
     except:
         pass
@@ -100,7 +100,7 @@ def getTournamentData(link):
     # level
     try:
         level = soup_text.split('var tlev=')[1].split(';')[0].replace("'","").replace('"', '')
-        level_model = getLevelModel(level)
+        level_model = helper.getLevelModel(level)
         tournament_model['level'] = level_model
     except:
         pass

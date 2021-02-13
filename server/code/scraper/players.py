@@ -4,7 +4,7 @@ import ast
 import datetime
 
 from models.players import PlayerModel
-from scraper.helper import extractVariableFromText, getBackhandModel, getCountryModel, getGenderModel, getHandModel
+import scraper.helper as helper
 
 def getPlayerData(link):
 
@@ -21,7 +21,7 @@ def getPlayerData(link):
     # gender
     try:
         gender = 'W' if 'wplayer' in link else 'M'
-        gender_model = getGenderModel(gender)
+        gender_model = helper.getGenderModel(gender)
         player_model['gender'] = gender_model
     except:
         pass
@@ -35,7 +35,7 @@ def getPlayerData(link):
 
     # full_name
     try:
-        full_name = extractVariableFromText(text, 'fullname')
+        full_name = helper.extractVariableFromText(text, 'fullname')
         if full_name:
             player_model['full_name'] = full_name
     except:
@@ -43,14 +43,14 @@ def getPlayerData(link):
 
     # height
     try:
-        height = extractVariableFromText(text, 'ht')
+        height = helper.extractVariableFromText(text, 'ht')
         if height:
             player_model['height'] = height
     except:
         pass
 
     try:
-        date_of_birth = extractVariableFromText(text, 'dob')
+        date_of_birth = helper.extractVariableFromText(text, 'dob')
         if date_of_birth:
             year = int(date_of_birth[:4])
             month = int(date_of_birth[4:6])
@@ -61,24 +61,24 @@ def getPlayerData(link):
 
     # hand
     try:
-        hand = extractVariableFromText(text, 'hand')
-        hand_model = getHandModel(hand)
+        hand = helper.extractVariableFromText(text, 'hand')
+        hand_model = helper.getHandModel(hand)
         player_model['hand'] = hand_model
     except:
         pass
 
     # backhand
     try:
-        backhand = extractVariableFromText(text, 'backhand')
-        backhand_model = getBackhandModel(backhand)
+        backhand = helper.extractVariableFromText(text, 'backhand')
+        backhand_model = helper.getBackhandModel(backhand)
         player_model['backhand'] = backhand_model
     except:
         pass
 
     # country
     try:
-        country = extractVariableFromText(text, 'country')
-        country_model = getCountryModel(country)
+        country = helper.extractVariableFromText(text, 'country')
+        country_model = helper.getCountryModel(country)
         player_model['country'] = country_model
     except:
         pass
