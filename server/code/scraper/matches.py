@@ -4,7 +4,7 @@ import datetime
 
 from models.match_players import MatchPlayerModel
 from models.matches import MatchModel
-from scraper.helper import getTournamentModel, getPlayerModel, getRoundModel
+import scraper.helper as helper
 from scraper.tournaments import constructTournamentLink
 from scraper.players import constructPlayerLink
 #from scraper.points import getPointTable, getPointData
@@ -46,7 +46,7 @@ def getMatchData(link):
     try:
         tournament_name = suffix[2].replace('_', ' ')
         tournament_link = constructTournamentLink(tournament_name, gender, year)
-        tournament_model = getTournamentModel(tournament_link)
+        tournament_model = helper.getTournamentModel(tournament_link)
         match_model['tournament'] = tournament_model
     except:
         pass
@@ -54,7 +54,7 @@ def getMatchData(link):
     # round
     try:
         round_name = suffix[3]
-        round_model = getRoundModel(round_name)
+        round_model = helper.getRoundModel(round_name)
         match_model['match_round'] = round_model
     except:
         pass
@@ -80,12 +80,12 @@ def getMatchData(link):
 
         player_one_name = suffix[4].replace('_', ' ')
         player_one_link = constructPlayerLink(player_one_name, gender)
-        player_one_model = getPlayerModel(player_one_link)
+        player_one_model = helper.getPlayerModel(player_one_link)
         player_dict[player_one_name] = player_one_model
 
         player_two_name = suffix[5].replace('_', ' ').replace('.html','')
         player_two_link = constructPlayerLink(player_two_name, gender)
-        player_two_model = getPlayerModel(player_two_link)
+        player_two_model = helper.getPlayerModel(player_two_link)
         player_dict[player_two_name] = player_two_model
 
         result = soup.select('b')[0].text

@@ -50,7 +50,7 @@ def get_match_data(match_id):
     match_json = match.json()
 
     # format players
-    match_players = list(MatchPlayerModel.objects(match = match))
+    match_players = MatchPlayerModel.objects(match = match)
     match_json['players'] = []
     for match_player in match_players:
         match_player_dict = {}
