@@ -3,10 +3,12 @@ from models.countries import CountryModel
 from models.genders import GenderModel
 from models.hands import HandModel
 from models.levels import LevelModel
+from models.players import PlayerModel
 from models.rounds import RoundModel
 from models.surfaces import SurfaceModel
 from models.tournaments import TournamentModel
 from models.tournament_names import TournamentNameModel
+from scraper.players import getPlayerData
 from scraper.tournaments import getTournamentData
 
 
@@ -159,6 +161,22 @@ def getRoundModel(round_name):
     round_model_new.save()
     
     return round_model_new
+
+
+def getPlayerModel(link):
+    '''
+    Takes a player link and queries PlayerModel for record
+    Return record or create new one if not found
+    '''
+
+    player_model_db = PlayerModel.objects(link=link).first()
+    if player_model_db:
+        return player_model_db
+
+    player_model_new = getPlayerData(link)
+    player_model_new.save()
+    
+    return player_model_new
 
 
 def extractVariableFromText(text, variable):
