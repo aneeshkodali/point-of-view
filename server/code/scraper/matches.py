@@ -126,63 +126,7 @@ def getMatchLinks(link=url_stem):
     return match_links
 
 
-   # player1 and player2
-    #try:
-    #    player_one = suffix[4].replace('_', ' ')
-    #    player_two = suffix[5].replace('_', ' ').replace('.html','')
-    #    player_names = [player_one, player_two]
-    #    if player_names:
-    #            players = []
-    #            player_models = []
-    #            for player_name in player_names:
-    #                player_link = constructPlayerLink(name=player_name, gender=gender)
-    #                player_db = PlayerModel.find_by_link(player_link)
-    #                if player_db:
-    #                    players.append(player_db)
-    #                    player_models.append({'player_name': player_name, 'player_model': player_db})
-    #                else:
-    #                    player_data = getPlayerData(player_link)
-    #                    player_model = PlayerModel(**player_data)
-    #                    player_model.save()
-    #                    players.append(player_model)
-    #                    player_models.append({'player_name': player_name, 'player_model': player_model})
-    #            match_model['players'] = players
-    #except:
-    #    pass
 
-       # winner
-    #try:
-    #    winner_name = result.split(' d.')[0]
-    #    if winner_name:
-    #        winner = players[0] if winner_name == player_names[0] else players[1]
-    #        match_model['winner'] = winner
-    #except:
-    #    pass
-
-    ## loser
-    #try:
-    #    loser_name = list(filter(lambda player: player != winner, player_names))[0]
-    #    if loser_name:
-    #        loser = players[1] if winner_name == player_names[0] else players[0]
-    #        match_model['loser'] = loser
-    #except:
-    #    pass
-
-    ## score
-    #try:
-    #    score = result.split(f"{loser_name} ")[1]
-    #    if score:
-    #        match_model['score'] = score
-    #except:
-    #    pass
-
-    ## sets
-    #try:
-    #    sets = score.split(' ')
-    #    if sets:
-    #        match_model['sets'] = len(sets)
-    #except:
-    #    pass
 
   # points
     #try:
