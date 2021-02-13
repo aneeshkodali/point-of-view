@@ -17,6 +17,9 @@ def getPointTable(link_soup):
     point_data = str(link_soup.select('script')[2])
     point_data = point_data.split('var pointlog = ')[1].split('\n')[0]
     point_table = BeautifulSoup(point_data, 'lxml')
+    # points data is in 'tr' tags (except for 1st one, which is header)
+    point_table = point_table.select('table tr')[1:]
+
 
     return point_table
 
@@ -30,11 +33,8 @@ def getPointData(point_table, player_list):
     # initialize point counter
     point_number = 1
 
-    # points data is in 'tr' tags (except for 1st one, which is header)
-    points_tr = point_table.select('table tr')[1:]
-
-    # loop through points_tr
-    for point_tr in points_tr:
+    # loop through point_table (each row is a <tr>)
+    for point_tr in point_table:
         
         # initialize point dictionary
         point_dict = {}
