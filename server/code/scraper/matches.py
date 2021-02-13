@@ -2,12 +2,12 @@ import requests
 from bs4 import BeautifulSoup
 import datetime
 
+import scraper.helper as helper
 from models.match_players import MatchPlayerModel
 from models.matches import MatchModel
-import scraper.helper as helper
 from scraper.tournaments import constructTournamentLink
 from scraper.players import constructPlayerLink
-#from scraper.points import getPointTable, getPointData
+from scraper.points import getPointData
 
 url_stem = 'http://www.tennisabstract.com/charting/'
 
@@ -76,17 +76,17 @@ def getMatchData(link):
 
     # score, sets, match_players
     try:
-        player_dict = {}
+        player_model_dict = {}
 
         player_one_name = suffix[4].replace('_', ' ')
         player_one_link = constructPlayerLink(player_one_name, gender)
         player_one_model = helper.getPlayerModel(player_one_link)
-        player_dict[player_one_name] = player_one_model
+        player_model_dict[player_one_name] = player_one_model
 
         player_two_name = suffix[5].replace('_', ' ').replace('.html','')
         player_two_link = constructPlayerLink(player_two_name, gender)
         player_two_model = helper.getPlayerModel(player_two_link)
-        player_dict[player_two_name] = player_two_model
+        player_model_dict[player_two_name] = player_two_model
 
         result = soup.select('b')[0].text
         
@@ -104,6 +104,13 @@ def getMatchData(link):
             MatchPlayerModel(**{'match': match_model, 'player': winner_model, 'win': 1}).save()
             MatchPlayerModel(**{'match': match_model, 'player': loser_model, 'win': 0}).save()
 
+    except:
+        pass
+
+    # point-related data
+    try:
+        points = getPointData(soup, match_model, player_model_dict)
+        print(points)
     except:
         pass
 

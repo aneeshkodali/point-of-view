@@ -2,31 +2,21 @@ import requests
 from bs4 import BeautifulSoup
 from unidecode import unidecode
 
-from models.point import PointModel
-from scraper.shot import getShotData
+#from models.point import PointModel
+#from scraper.shot import getShotData
 
 
-def getPointTable(link_soup):
-
+def getPointData(match_soup, match_model, player_model_dict):
     '''
-    Return point data portion as a table from a match link BeautifulSoup element
-    Data is contained in a <table>-like string
+    Given
+        - match_soup: BeautifulSoup soup element for match
+        - match_model: MatchModel object
+        - player_model_dict: dictionary of {player_name: PlayerModel} pairs
+    
     '''
 
-    # point data is in a html-like string called 'pointlog' in 3rd script
-    point_data = str(link_soup.select('script')[2])
-    point_data = point_data.split('var pointlog = ')[1].split('\n')[0]
-    point_table = BeautifulSoup(point_data, 'lxml')
-    # points data is in 'tr' tags (except for 1st one, which is header)
-    point_table = point_table.select('table tr')[1:]
-
-
-    return point_table
-
-def getPointData(point_table, player_list):
-    '''
-    Given a HTML table of point data and player array, returns data from that table as an array
-    '''
+    # get point_table
+    point_table = getPointTable(match_soup)
 
     # initialize array
     points = []
@@ -244,11 +234,29 @@ def getPointData(point_table, player_list):
         except:
             pass
         
-        point_model = PointModel(**point_dict)
-        points.append(point_model)
+        #point_model = PointModel(**point_dict)
+        points.append(point_dict)
         point_number += 1
 
     return points
+
+
+def getPointTable(link_soup):
+
+    '''
+    Return point data portion as a table from a match link BeautifulSoup element
+    Data is contained in a <table>-like string
+    '''
+
+    # point data is in a html-like string called 'pointlog' in 3rd script
+    point_data = str(link_soup.select('script')[2])
+    point_data = point_data.split('var pointlog = ')[1].split('\n')[0]
+    point_table = BeautifulSoup(point_data, 'lxml')
+    # points data is in 'tr' tags (except for 1st one, which is header)
+    point_table = point_table.select('table tr')[1:]
+
+    return point_table
+
 
 def getSide(point_score):
 
