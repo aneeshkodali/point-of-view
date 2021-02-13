@@ -46,11 +46,11 @@ def get_matches():
 def get_match_data(match_id):
 
     # get match
-    match = MatchModel.find_by_id(match_id)
+    match = MatchModel.objects(match_id=match_id).first()
     match_json = match.json()
 
     # format players
-    match_players = MatchPlayerModel.objects(match = match)
+    match_players = list(MatchPlayerModel.objects(match = match))
     match_json['players'] = []
     for match_player in match_players:
         match_player_dict = {}
