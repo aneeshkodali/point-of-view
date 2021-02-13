@@ -39,11 +39,3 @@ class PlayerModel(BaseModel):
             'image_url': self.image_url,
             'link': self.link
         }
-
-    @classmethod
-    def find_by_full_name(cls, full_name):
-        return PlayerModel.objects(full_name=full_name).first()
-    
-    @classmethod
-    def find_by_link(cls, link):
-        return PlayerModel.objects(link=link).first()
