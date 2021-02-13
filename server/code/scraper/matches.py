@@ -4,10 +4,9 @@ import datetime
 
 from models.match_players import MatchPlayerModel
 from models.matches import MatchModel
-from models.players import PlayerModel
-from scraper.helper import getTournamentModel, getRoundModel
+from scraper.helper import getTournamentModel, getPlayerModel, getRoundModel
 from scraper.tournaments import constructTournamentLink
-from scraper.players import constructPlayerLink, getPlayerData
+from scraper.players import constructPlayerLink
 #from scraper.points import getPointTable, getPointData
 
 url_stem = 'http://www.tennisabstract.com/charting/'
@@ -53,7 +52,6 @@ def getMatchData(link):
         pass
 
     # round
-    # Either queries rounds table for round_id or creates new record
     try:
         round_name = suffix[3]
         round_model = getRoundModel(round_name)
@@ -76,38 +74,36 @@ def getMatchData(link):
     except:
         pass
 
-    # players (not needed as a column)
-    # Either queries players table for player_id or creates new record
+    # score, sets, match_players
     try:
-        player_one_name = suffix[4].replace('_', ' ')
-        player_two_name = suffix[5].replace('_', ' ').replace('.html','')
-        player_name_model_dict = {}
-        for player_name in [player_one_name, player_two_name]:
-            player_link = constructPlayerLink(player_name, gender)
-            player_model_db = PlayerModel.find_by_link(player_link)
-            if player_model_db:
-                player_name_model_dict[player_name] = player_model_db
-            else:
-                player_model_new = getPlayerData(player_link)
-                player_model_new.save()
-                player_name_model_dict[player_name] = player_model_new
-            match_player_model = MatchPlayerModel(**{'match': match_model, 'player': player_name_model_dict[player_name], 'win': 0})
-            match_player_model.save()
-    except:
-        pass
+        player_dict = {}
 
-    # score, sets,  MatchPlayerModel
-    try:
+        player_one_name = suffix[4].replace('_', ' ')
+        player_one_link = constructPlayerLink(player_one_name, gender)
+        player_one_model = getPlayerModel(player_one_link)
+        player_dict[player_one_name] = player_one_model
+
+        player_two_name = suffix[5].replace('_', ' ').replace('.html','')
+        player_two_link = constructPlayerLink(player_two_name, gender)
+        player_two_model = getPlayerModel(player_two_link)
+        player_dict[player_two_name] = player_two_model
+
         result = soup.select('b')[0].text
+        
         winner_name = result.split(' d.')[0]
         loser_name = player_one_name if  winner_name != player_one_name else player_two_name
-        winner_model = player_name_model_dict[winner_name]
+        winner_model = player_one_model if winner_name == player_one_name else player_two_model
+        loser_model = player_one_model if winner_name != player_one_name else player_two_model
+        
         score = result.split(f"{loser_name} ")[1]
         sets = len(score.split(' '))
+
         if result:
             match_model['score'] = score
             match_model['sets'] = sets
-            MatchPlayerModel.find_by_match_and_player(match_model, winner_model).update(win=1)
+            MatchPlayerModel(**{'match': match_model, 'player': winner_model, 'win': 1}).save()
+            MatchPlayerModel(**{'match': match_model, 'player': loser_model, 'win': 0}).save()
+
     except:
         pass
 
