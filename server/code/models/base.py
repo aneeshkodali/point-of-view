@@ -16,8 +16,3 @@ class BaseModel(db.Document):
     # return json representation of record
     def json(self):
         return json.loads(self.to_json())
-
-    # queries model for record based on the primary key
-    @classmethod
-    def find_by_id(cls, id):
-        return cls.objects(pk=id).first()

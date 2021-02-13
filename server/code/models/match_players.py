@@ -1,5 +1,4 @@
 from mongoengine import StringField, IntField, ReferenceField
-from mongoengine.queryset.visitor import Q
 
 from models.base import BaseModel
 from models.default_values import default_uuid_value
@@ -26,7 +25,3 @@ class MatchPlayerModel(BaseModel):
             'player': self.player,
             'win': self.win
         }
-
-    @classmethod
-    def find_by_match_and_player(cls, match, player):
-        return MatchPlayerModel.objects(Q(match=match) & Q(player=player)).first()

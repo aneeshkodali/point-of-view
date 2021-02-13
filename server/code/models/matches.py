@@ -31,7 +31,3 @@ class MatchModel(BaseModel):
             'sets': self.sets,
             'link': self.link
         }
-
-    @classmethod
-    def find_by_link(cls, link):
-        return MatchModel.objects(link=link).first()
