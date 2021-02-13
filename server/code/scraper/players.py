@@ -85,7 +85,7 @@ def getPlayerData(link):
 
     # image url
     try:
-        photog = extractVariableFromText(text, 'photog')
+        photog = helper.extractVariableFromText(text, 'photog')
         full_name = player_model['full_name']
         if photog and full_name:
             player_model['image_url'] = f"http://www.tennisabstract.com/photos/{full_name.lower().replace(' ', '_')}-{photog}.jpg"
