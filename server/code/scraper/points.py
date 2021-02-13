@@ -1,18 +1,52 @@
+import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 from unidecode import unidecode
 
+from models.sets import SetModel
 #from models.point import PointModel
 #from scraper.shot import getShotData
 
-
 def getPointData(match_soup, match_model, player_model_dict):
+    '''
+    Creates/inserts the appropriate data
+    '''
+    # create list of playe names
+    player_list = [k for k in player_model_dict]
+
+    # get dataframe
+    point_df = makePointDF(match_soup, player_list)
+
+    # get list of set numbers
+    sets_in_match = list(point_df['set_in_match'].unique())
+    sets_in_match.sort()
+
+    # loop through sets_in_match
+    for set_in_match in sets_in_match:
+
+        # get game score by getting last game_score in the set and incrementing winner score
+        last_point_in_set = point_df.loc[point_df['set_in_match'] == set_in_match].iloc[-1]
+        server = last_point_in_set['server']
+        winner = last_point_in_set['winner']
+        game_score_server = last_point_in_set['game_score_server']
+        game_score_receiver = last_point_in_set['game_score_receiver']
+        game_score_winner = (game_score_server+1) if winner == server else (game_score_receiver+1)
+        game_score_loser = game_score_server if winner != server else game_score_receiver
+        set_score = f"{game_score_winner}-{game_score_loser}"
+
+        # create SetModel
+        set_model = SetModel(**{'set_in_match': set_in_match, 'match': match_model, 'score': set_score})
+        set_model.save()
+        
+
+    return set_score
+
+def makePointDF(match_soup, player_list):
     '''
     Given
         - match_soup: BeautifulSoup soup element for match
-        - match_model: MatchModel object
-        - player_model_dict: dictionary of {player_name: PlayerModel} pairs
-    
+        - player_list: list of player_names
+    Return dataframe of points
     '''
 
     # get point_table
@@ -41,19 +75,16 @@ def getPointData(match_soup, match_model, player_model_dict):
 
         # server
         try:
-            server_name = unidecode(point_td[0].text).strip()
-            if server_name:
-                server = list(filter(lambda player: player['player_name'] == server_name, player_list))[0]['player_model']
+            server = unidecode(point_td[0].text).strip()
+            if server:
                 point_dict['server'] = server
         except:
             pass
             
         # receiver
         try:
-            receiver_obj = list(filter(lambda player: player['player_name'] != server_name, player_list))[0]
-            receiver_name = receiver_obj['player_name']
-            if receiver_name:
-                receiver = receiver_obj['player_model']
+            receiver = list(filter(lambda player: player != server, player_list))[0]
+            if receiver:
                 point_dict['receiver'] = receiver
         except:
             pass
@@ -70,7 +101,7 @@ def getPointData(match_soup, match_model, player_model_dict):
 
         # set_score_server
         try:
-            set_score_server = set_score.split('-')[0]
+            set_score_server = int(set_score.split('-')[0])
             if set_score_server:
                 point_dict['set_score_server'] = set_score_server
         except:
@@ -78,7 +109,7 @@ def getPointData(match_soup, match_model, player_model_dict):
 
         # set_score_receiver
         try:
-            set_score_receiver = set_score.split('-')[1]
+            set_score_receiver = int(set_score.split('-')[1])
             if set_score_receiver:
                 point_dict['set_score_receiver'] = set_score_receiver
         except:
@@ -86,7 +117,7 @@ def getPointData(match_soup, match_model, player_model_dict):
 
         # set_in_match
         try:
-            set_in_match = int(set_score_server) + int(set_score_receiver) + 1
+            set_in_match = set_score_server + set_score_receiver + 1
             if set_in_match:
                 point_dict['set_in_match'] = set_in_match
         except:
@@ -102,7 +133,7 @@ def getPointData(match_soup, match_model, player_model_dict):
 
         # game_score_server
         try:
-            game_score_server = game_score.split('-')[0]
+            game_score_server = int(game_score.split('-')[0])
             if game_score_server:
                 point_dict['game_score_server'] = game_score_server
         except:
@@ -110,7 +141,7 @@ def getPointData(match_soup, match_model, player_model_dict):
 
         # game_score_receiver
         try:
-            game_score_receiver = game_score.split('-')[1]
+            game_score_receiver = int(game_score.split('-')[1])
             if game_score_receiver:
                 point_dict['game_score_receiver'] = game_score_receiver
         except:
@@ -118,7 +149,7 @@ def getPointData(match_soup, match_model, player_model_dict):
 
         # game_in_set
         try:
-            game_in_set = int(game_score_server) + int(game_score_receiver) + 1
+            game_in_set = game_score_server + game_score_receiver + 1
             if game_in_set:
                 point_dict['game_in_set'] = game_in_set
         except:
@@ -234,11 +265,11 @@ def getPointData(match_soup, match_model, player_model_dict):
         except:
             pass
         
-        #point_model = PointModel(**point_dict)
         points.append(point_dict)
         point_number += 1
-
-    return points
+    
+    points_df = pd.DataFrame(points)
+    return points_df
 
 
 def getPointTable(link_soup):
