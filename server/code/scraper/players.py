@@ -79,7 +79,7 @@ def getPlayerData(link):
     try:
         country = extractVariableFromText(text, 'country')
         country_model = getCountryModel(country)
-            player_model['country'] = country_model
+        player_model['country'] = country_model
     except:
         pass
 

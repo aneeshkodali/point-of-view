@@ -63,7 +63,7 @@ def getBackhandModel(backhand):
     return backhand_model_new
 
 
- def getCountryModel(country):
+def getCountryModel(country):
     '''
     Takes a country and queries CountryModel for record
     Return record or create new one if not found
