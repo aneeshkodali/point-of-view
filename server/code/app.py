@@ -1,11 +1,11 @@
 #### IMPORTS
 
 ## imports from python
-from flask import Flask
-from flask_mongoengine import MongoEngine
-#from flask_restful import Api
-from flask_cors import CORS
 from dotenv import load_dotenv
+from flask import Flask
+from flask_cors import CORS
+from flask_mongoengine import MongoEngine
+from mongoengine.queryset.visitor import Q
 load_dotenv()
 import os
 
@@ -15,6 +15,8 @@ import os
 #from resources.tournament import Tournaments, Tournament, TournamentID
 from models.match_players import MatchPlayerModel
 from models.matches import MatchModel
+from models.set_players import SetPlayerModel
+from models.sets import SetModel
 
 #### APP SETUP
 
@@ -50,7 +52,7 @@ def get_match_data(match_id):
     match_json = match.json()
 
     # format players
-    match_players = MatchPlayerModel.objects(match = match)
+    match_players = MatchPlayerModel.objects(match=match)
     match_json['players'] = []
     for match_player in match_players:
         match_player_dict = {}
@@ -61,7 +63,6 @@ def get_match_data(match_id):
         match_player_dict['player']['hand'] = match_player_dict['player']['hand']['hand']
         match_player_dict['win'] = match_player.win
         match_json['players'].append(match_player_dict)
-    #match_json['players'] = [{'player': match_player.player.json(), 'win': match_player.win} for match_player in match_players]
 
     # format round
     match_json['match_round'] = match_json['match_round']['round_name']
@@ -72,7 +73,18 @@ def get_match_data(match_id):
     match_json['tournament']['level'] =  match_json['tournament']['level']['level']
     match_json['tournament']['surface'] =  match_json['tournament']['surface']['surface']
     match_json['tournament']['tournament_name'] =  match_json['tournament']['tournament_name']['tournament_name']
-    
+
+    # format sets
+    match_sets = SetModel.objects(match=match)
+    match_json['sets'] = []
+    for match_set in match_sets:
+        set_player = SetPlayerModel.objects(Q(match_set=match_set) & Q(win=1)).first().player.full_name
+        match_set_dict = {}
+        match_set_dict['set_in_match'] = match_set['set_in_match']
+        match_set_dict['winner'] = set_player
+        match_set_dict['score'] = match_set['score']
+        match_json['sets'].append(match_set_dict)
+
     return {'data': match_json}
 
 #api.add_resource(Players, '/server/players')
