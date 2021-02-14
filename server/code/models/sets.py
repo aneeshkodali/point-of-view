@@ -19,7 +19,7 @@ class SetModel(BaseModel):
     def json(self):
         return {
             'set_id': self.set_id,
-            'match_id': self.match,
+            'match': self.match,
             'set_in_match': self.set_in_match,
             'score': self.score
         }
