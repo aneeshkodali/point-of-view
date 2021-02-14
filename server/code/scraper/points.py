@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 from unidecode import unidecode
 
 from models.sets import SetModel
+from models.set_players import SetPlayerModel
 #from models.point import PointModel
 #from scraper.shot import getShotData
 
@@ -24,22 +25,26 @@ def getPointData(match_soup, match_model, player_model_dict):
     # loop through sets_in_match
     for set_in_match in sets_in_match:
 
-        # get game score by getting last game_score in the set and incrementing winner score
+        # get set score by getting last game_score in the set and incrementing winner score
         last_point_in_set = point_df.loc[point_df['set_in_match'] == set_in_match].iloc[-1]
         server = last_point_in_set['server']
         winner = last_point_in_set['winner']
-        game_score_server = last_point_in_set['game_score_server']
-        game_score_receiver = last_point_in_set['game_score_receiver']
-        game_score_winner = (game_score_server+1) if winner == server else (game_score_receiver+1)
+        loser = last_point_in_set['loser']
+        game_score_server = int(last_point_in_set['game_score_server'])
+        game_score_receiver = int(last_point_in_set['game_score_receiver'])
+        game_score_winner = game_score_server+1 if winner == server else game_score_receiver+1
         game_score_loser = game_score_server if winner != server else game_score_receiver
         set_score = f"{game_score_winner}-{game_score_loser}"
 
         # create SetModel
         set_model = SetModel(**{'set_in_match': set_in_match, 'match': match_model, 'score': set_score})
         set_model.save()
-        
 
-    return set_score
+        ## create SetPlayerModel
+        SetPlayerModel(**{'match_set': set_model, 'player': player_model_dict[winner], 'win': 1, 'score': game_score_winner}).save()
+        SetPlayerModel(**{'match_set': set_model, 'player': player_model_dict[loser], 'win': 0, 'score': game_score_loser}).save()     
+
+    return
 
 def makePointDF(match_soup, player_list):
     '''
@@ -101,7 +106,7 @@ def makePointDF(match_soup, player_list):
 
         # set_score_server
         try:
-            set_score_server = int(set_score.split('-')[0])
+            set_score_server = set_score.split('-')[0]
             if set_score_server:
                 point_dict['set_score_server'] = set_score_server
         except:
@@ -109,7 +114,7 @@ def makePointDF(match_soup, player_list):
 
         # set_score_receiver
         try:
-            set_score_receiver = int(set_score.split('-')[1])
+            set_score_receiver = set_score.split('-')[1]
             if set_score_receiver:
                 point_dict['set_score_receiver'] = set_score_receiver
         except:
@@ -117,7 +122,7 @@ def makePointDF(match_soup, player_list):
 
         # set_in_match
         try:
-            set_in_match = set_score_server + set_score_receiver + 1
+            set_in_match = int(set_score_server) + int(set_score_receiver) + 1
             if set_in_match:
                 point_dict['set_in_match'] = set_in_match
         except:
@@ -133,7 +138,7 @@ def makePointDF(match_soup, player_list):
 
         # game_score_server
         try:
-            game_score_server = int(game_score.split('-')[0])
+            game_score_server = game_score.split('-')[0]
             if game_score_server:
                 point_dict['game_score_server'] = game_score_server
         except:
@@ -141,7 +146,7 @@ def makePointDF(match_soup, player_list):
 
         # game_score_receiver
         try:
-            game_score_receiver = int(game_score.split('-')[1])
+            game_score_receiver = game_score.split('-')[1]
             if game_score_receiver:
                 point_dict['game_score_receiver'] = game_score_receiver
         except:
@@ -149,7 +154,7 @@ def makePointDF(match_soup, player_list):
 
         # game_in_set
         try:
-            game_in_set = game_score_server + game_score_receiver + 1
+            game_in_set = int(game_score_server) + int(game_score_receiver) + 1
             if game_in_set:
                 point_dict['game_in_set'] = game_in_set
         except:
