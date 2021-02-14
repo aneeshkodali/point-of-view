@@ -17,7 +17,7 @@ class SetPlayerModel(BaseModel):
     score = IntField()
     win = IntField(default=0)
 
-    meta = {'collection': 'match_sets'}
+    meta = {'collection': 'set_players'}
 
     def json(self):
         return {
