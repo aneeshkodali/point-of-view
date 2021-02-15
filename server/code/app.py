@@ -76,9 +76,12 @@ def get_match_data(match_id):
 
     # format sets
     match_sets = SetModel.objects(match=match)
+    match_sets_ids = [match_set.set_id for match_set in match_sets]
+    set_players = SetPlayerModel.objects(Q(match_set__in=match_sets_ids) & Q(win=1))
     match_json['sets'] = []
     for match_set in match_sets:
-        set_player = SetPlayerModel.objects(Q(match_set=match_set) & Q(win=1)).first().player.full_name
+        set_player = list(filter(lambda set_player: set_player.match_set==match_set, set_players))[0].player.full_name
+        #SetPlayerModel.objects(Q(match_set=match_set) & Q(win=1)).first().player.full_name
         match_set_dict = {}
         match_set_dict['set_in_match'] = match_set['set_in_match']
         match_set_dict['winner'] = set_player
