@@ -25,8 +25,10 @@ def getPointData(match_soup, match_model, player_model_dict):
     # loop through sets_in_match
     for set_in_match in sets_in_match:
 
+        # filter for set
+        set_df = point_df.loc[point_df['set_in_match'] == set_in_match]
         # get set score by getting last game_score in the set and incrementing winner score
-        last_point_in_set = point_df.loc[point_df['set_in_match'] == set_in_match].iloc[-1]
+        last_point_in_set = set_df.iloc[-1]
         server = last_point_in_set['server']
         winner = last_point_in_set['winner']
         loser = last_point_in_set['loser']
