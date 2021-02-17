@@ -12,7 +12,7 @@ class SetModel(BaseModel):
     set_id = StringField(primary_key=True, default=default_uuid_value)
     match = ReferenceField(MatchModel)
     set_in_match = IntField(default=0)
-    score = StringField(default="0-0")
+    score = StringField()
 
     meta = {'collection': 'sets'}
 
