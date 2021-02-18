@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 from unidecode import unidecode
 
 from models.games import GameModel
+from models.game_players import GamePlayerModel
 from models.sets import SetModel
 from models.set_players import SetPlayerModel
 #from models.point import PointModel
@@ -68,10 +69,15 @@ def getPointData(match_soup, match_model, player_model_dict):
             game_score_winner = game_score_server if winner == server else game_score_receiver
             game_score_loser = game_score_server if winner != server else game_score_receiver
             game_score = f"{game_score_winner}-{game_score_loser}"
+            serve = (server == winner)*1
 
             # create GameModel
             game_model = GameModel(**{'match_set': set_model, 'game_in_set': game_in_set, 'game_in_match': game_in_match, 'score': game_score})
             game_model.save()
+
+            # Create GamePlayerModel
+            GamePlayerModel(**{'game': game_model, 'player': player_model_dict[winner], 'win': 1, 'serve': serve, 'score': game_score_winner}).save()
+            GamePlayerModel(**{'game': game_model, 'player': player_model_dict[loser], 'win': 0, 'serve': serve, 'score': game_score_loser}).save()
 
     return
 
