@@ -95,7 +95,7 @@ def makePointDF(match_soup, player_list):
     # initialize array
     points = []
     # initialize point counter
-    point_number = 1
+    point_in_match = 1
 
     # loop through point_table (each row is a <tr>)
     for point_tr in point_table:
@@ -110,8 +110,8 @@ def makePointDF(match_soup, player_list):
         if [x.text for x in point_td][1:] == ['','','','']:
             continue
 
-        # point_number
-        point_dict['point_number'] = point_number
+        # point_in_match
+        point_dict['point_in_match'] = point_in_match
 
         # server
         try:
@@ -233,10 +233,10 @@ def makePointDF(match_soup, player_list):
         # point_in_game
         try:
             if game_in_set == 1:
-                point_in_game = point_number
+                point_in_game = point_in_match
             else:            
-                point_num_min = min([x['point_number'] for x in points if (x['set_score'] == set_score) and (x['game_score'] == game_score)])
-                point_in_game = point_number - point_num_min + 1
+                point_num_min = min([x['point_in_match'] for x in points if (x['set_score'] == set_score) and (x['game_score'] == game_score)])
+                point_in_game = point_in_match - point_num_min + 1
             point_dict['point_in_game'] = point_in_game
         except:
             pass
@@ -244,10 +244,10 @@ def makePointDF(match_soup, player_list):
         # point_in_set
         try:
             if set_in_match == 1:
-                point_in_set = point_number
+                point_in_set = point_in_match
             else:
-                point_num_min = min([x['point_number'] for x in points if x['set_score'] == set_score])
-                point_in_set = point_number - point_num_min + 1
+                point_num_min = min([x['point_in_match'] for x in points if x['set_score'] == set_score])
+                point_in_set = point_in_match - point_num_min + 1
             point_dict['point_in_set'] = point_in_set
         except:
             pass
@@ -328,7 +328,7 @@ def makePointDF(match_soup, player_list):
             pass
         
         points.append(point_dict)
-        point_number += 1
+        point_in_match += 1
     
     points_df = pd.DataFrame(points)
     return points_df
