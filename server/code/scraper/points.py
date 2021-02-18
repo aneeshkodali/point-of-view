@@ -162,6 +162,15 @@ def makePointDF(match_soup, player_list):
         except:
             pass
 
+        # game_in_match
+        try:
+            if set_in_match == 1:
+                game_in_match = game_in_set
+            else:
+                game_in_last_set = max([x['game_in_set'] for x in points if x['set_in_match'] == (set_in_match-1)])
+                game_in_match = game_in_last_set + game_in_set
+            point_dict['game_in_match'] = game_in_match
+
         # point_score
         try:
             point_score = unidecode(point_td[3].text)
@@ -188,14 +197,23 @@ def makePointDF(match_soup, player_list):
 
         # point_in_game
         try:
-            if point_number == 1:
-                point_in_game = 1
+            if game_in_set == 1:
+                point_in_game = point_number
             else:            
-                point_num_min = [x for x in points if (x['set_score'] == set_score) and (x['game_score'] == game_score)][0]['point_number']
+                point_num_min = min([x['point_number'] for x in points if (x['set_score'] == set_score) and (x['game_score'] == game_score)])
                 point_in_game = point_number - point_num_min + 1
             point_dict['point_in_game'] = point_in_game
         except:
             pass
+
+        # point_in_set
+        try:
+            if set_in_match = 1:
+                point_in_set = point_number
+            else:
+                point_num_min = min([x['point_number'] for x in points if x['set_score'] == set_score])
+                point_in_set = point_number - point_num_min + 1
+            point_dict['point_in_set'] = point_in_set
 
         # side
         try:
