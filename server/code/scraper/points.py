@@ -3,6 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 from unidecode import unidecode
 
+from models.games import GameModel
 from models.sets import SetModel
 from models.set_players import SetPlayerModel
 #from models.point import PointModel
@@ -42,9 +43,35 @@ def getPointData(match_soup, match_model, player_model_dict):
         set_model = SetModel(**{'set_in_match': set_in_match, 'match': match_model, 'score': set_score})
         set_model.save()
 
-        ## create SetPlayerModel
+        # create SetPlayerModel
         SetPlayerModel(**{'match_set': set_model, 'player': player_model_dict[winner], 'win': 1, 'score': game_score_winner}).save()
-        SetPlayerModel(**{'match_set': set_model, 'player': player_model_dict[loser], 'win': 0, 'score': game_score_loser}).save()     
+        SetPlayerModel(**{'match_set': set_model, 'player': player_model_dict[loser], 'win': 0, 'score': game_score_loser}).save()  
+
+        # get list of games
+        games_in_set = list(set_df['game_in_set'].unique())
+        games_in_set.sort()
+
+        # loop through games_in_set
+        for game_in_set in games_in_set:
+
+            # filter for game
+            game_df = set_df.loc[set_df['game_in_set'] == game_in_set]
+            # get game score by getting last game_score in the set and incrementing winner score
+            last_point_in_game = game_df.iloc[-1]
+            game_in_set = last_point_in_game['game_in_set']
+            game_in_match = last_point_in_game['game_in_match']
+            server = last_point_in_game['server']
+            winner = last_point_in_game['winner']
+            loser = last_point_in_game['loser']
+            game_score_server = int(last_point_in_game['game_score_server'])
+            game_score_receiver = int(last_point_in_game['game_score_receiver'])
+            game_score_winner = game_score_server if winner == server else game_score_receiver
+            game_score_loser = game_score_server if winner != server else game_score_receiver
+            game_score = f"{game_score_winner}-{game_score_loser}"
+
+            # create GameModel
+            game_model = GameModel(**{'match_set': set_model, 'game_in_set': game_in_set, 'game_in_match': game_in_match, 'score': game_score})
+            game_model.save()
 
     return
 
@@ -170,6 +197,8 @@ def makePointDF(match_soup, player_list):
                 game_in_last_set = max([x['game_in_set'] for x in points if x['set_in_match'] == (set_in_match-1)])
                 game_in_match = game_in_last_set + game_in_set
             point_dict['game_in_match'] = game_in_match
+        except:
+            pass
 
         # point_score
         try:
@@ -208,12 +237,14 @@ def makePointDF(match_soup, player_list):
 
         # point_in_set
         try:
-            if set_in_match = 1:
+            if set_in_match == 1:
                 point_in_set = point_number
             else:
                 point_num_min = min([x['point_number'] for x in points if x['set_score'] == set_score])
                 point_in_set = point_number - point_num_min + 1
             point_dict['point_in_set'] = point_in_set
+        except:
+            pass
 
         # side
         try:
