@@ -58,14 +58,15 @@ def getPointData(match_soup, match_model, player_model_dict):
             # filter for game
             game_df = set_df.loc[set_df['game_in_set'] == game_in_set]
             # get game score by getting last game_score in the set and incrementing winner score
+            first_point_in_game = game_df.iloc[0]
+            server = first_point_in_game['server']
             last_point_in_game = game_df.iloc[-1]
             game_in_set = last_point_in_game['game_in_set']
             game_in_match = last_point_in_game['game_in_match']
-            server = last_point_in_game['server']
             winner = last_point_in_game['winner']
             loser = last_point_in_game['loser']
-            game_score_server = int(last_point_in_game['game_score_server'])
-            game_score_receiver = int(last_point_in_game['game_score_receiver'])
+            game_score_server = last_point_in_game['game_score_server']
+            game_score_receiver = last_point_in_game['game_score_receiver']
             game_score_winner = game_score_server if winner == server else game_score_receiver
             game_score_loser = game_score_server if winner != server else game_score_receiver
             game_score = f"{game_score_winner}-{game_score_loser}"
