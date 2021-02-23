@@ -5,10 +5,11 @@ from unidecode import unidecode
 
 from models.games import GameModel
 from models.game_players import GamePlayerModel
+from models.points import PointModel
+from models.sides import SideModel
 from models.sets import SetModel
 from models.set_players import SetPlayerModel
 from models.sides import SideModel
-#from models.point import PointModel
 #from scraper.shot import getShotData
 
 def getPointData(match_soup, match_model, player_model_dict):
@@ -66,11 +67,11 @@ def getPointData(match_soup, match_model, player_model_dict):
             game_in_match = last_point_in_game['game_in_match']
             winner = last_point_in_game['winner']
             loser = last_point_in_game['loser']
+            game_score = last_point_in_game['game_score']
             game_score_server = last_point_in_game['game_score_server']
             game_score_receiver = last_point_in_game['game_score_receiver']
             game_score_winner = game_score_server if winner == server else game_score_receiver
             game_score_loser = game_score_server if winner != server else game_score_receiver
-            game_score = f"{game_score_winner}-{game_score_loser}"
             serve = (server == winner)*1
 
             # create GameModel
@@ -90,6 +91,24 @@ def getPointData(match_soup, match_model, player_model_dict):
 
                 # filter for point (should only be one row)
                 point = game_df.loc[game_df['point_in_game'] == point_in_game].iloc[0]
+                server = point['server']
+                point_in_set = point['point_in_set']
+                point_in_match = point['point_in_match']
+                winner = point['winner']
+                loser = point['loser']
+                point_score = point['point_score']
+                point_score_server = point['point_score_server']
+                point_score_receiver = point['point_score_receiver']
+                point_score_winner = point_score_server if winner == server else point_score_receiver
+                point_score_loser = point_score_server if winner != server else point_score_receiver
+                serve = (server == winner)*1
+
+                side = getSide(point_score)
+                side_model = getSideModel(side)
+
+                # create PointModel
+                point_model = PointModel(**{'game': game_model, 'point_in_game': point_in_game, 'point_in_set': point_in_set, 'point_in_match': point_in_match, 'side': side_model, 'score': point_score})
+                point_model.save()
 
 
     return
