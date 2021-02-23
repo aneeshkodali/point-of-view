@@ -7,6 +7,7 @@ from models.games import GameModel
 from models.game_players import GamePlayerModel
 from models.sets import SetModel
 from models.set_players import SetPlayerModel
+from models.sides import SideModel
 #from models.point import PointModel
 #from scraper.shot import getShotData
 
@@ -79,6 +80,17 @@ def getPointData(match_soup, match_model, player_model_dict):
             # Create GamePlayerModel
             GamePlayerModel(**{'game': game_model, 'player': player_model_dict[winner], 'win': 1, 'serve': serve, 'score': game_score_winner}).save()
             GamePlayerModel(**{'game': game_model, 'player': player_model_dict[loser], 'win': 0, 'serve': serve, 'score': game_score_loser}).save()
+
+            # get list of points
+            points_in_game = list(game_df['point_in_game'].unique())
+            points_in_game.sort()
+
+            # loop through points_in_game
+            for point_in_game in points_in_game:
+
+                # filter for point (should only be one row)
+                point = game_df.loc[game_df['point_in_game'] == point_in_game].iloc[0]
+
 
     return
 
@@ -321,12 +333,12 @@ def makePointDF(match_soup, player_list):
             pass
 
         # shots
-        try:
-            shots = getShotData(rally_split, [server, receiver], result)
-            if shots:
-                point_dict['shots'] = shots
-        except:
-            pass
+        #try:
+        #    shots = getShotData(rally_split, [server, receiver], result)
+        #    if shots:
+        #        point_dict['shots'] = shots
+        #except:
+        #    pass
         
         points.append(point_dict)
         point_in_match += 1
@@ -356,12 +368,30 @@ def getSide(point_score):
 
     point_score_deuce = ['0-0', '15-15', '30-0', '0-30', '30-30', '40-15', '15-40', '40-40']
     point_score_ad = ['15-0', '0-15', '30-15', '15-30', '40-0', '0-40', '40-30', '30-40', 'AD-40', '40-AD']
-
-    if point_score in point_score_deuce:
-        return 'deuce'
-    elif point_score in point_score_ad:
-        return 'ad'
-    
     point_score_sum = sum([int(x) for x in point_score.split('-')])
 
-    return 'deuce' if point_score_sum % 2 == 0 else 'ad'
+    if point_score in point_score_deuce:
+        side = 'deuce'
+    elif point_score in point_score_ad:
+        side = 'ad'
+    elif point_score_sum % 2 == 0:
+        side = 'deuce'
+    else:
+        side = 'ad'
+    
+    return side
+
+def getSideModel(side):
+    '''
+    Takes a round and queries RoundModel for record
+    Return record or create new one if not found
+    '''
+    side_model_db = SideModel.objects(side=side).first()
+    if side_model_db:
+        return side_model_db
+
+    side_id_new = max([side_model['side_id'] for side_model in SideModel.objects()] or [0]) + 1
+    side_model_new = SideModel(**{'side_id': side_id_new, 'side': side})
+    side_model_new.save()
+
+    return side_model_new
