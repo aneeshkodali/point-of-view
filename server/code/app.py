@@ -1,13 +1,10 @@
 #### IMPORTS
 
 ## imports from python
-from dotenv import load_dotenv
 from flask import Flask
 from flask_cors import CORS
 from flask_mongoengine import MongoEngine
 from mongoengine.queryset.visitor import Q
-load_dotenv()
-import os
 
 ## imports from project
 #from resources.player import Players, Player, PlayerID
@@ -23,12 +20,13 @@ from models.sets import SetModel
 # initialize app
 app = Flask(__name__)
 
+# configure app
+app.config.from_object('config.DevConfig')
+
 # enable cross resource sharing
 CORS(app)
 
 # connect db
-DB_URI = os.getenv('DB_URI')
-app.config['MONGODB_HOST'] = DB_URI
 db = MongoEngine(app)
 
 # connect flask_restful api
