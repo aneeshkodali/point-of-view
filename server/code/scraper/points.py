@@ -264,22 +264,17 @@ def makePointDF(match_soup, player_list):
 
         # point_in_game
         try:
-            if game_in_set == 1:
-                point_in_game = point_in_match
-            else:            
-                point_num_min = min([x['point_in_match'] for x in points if (x['set_score'] == set_score) and (x['game_score'] == game_score)])
-                point_in_game = point_in_match - point_num_min + 1
+            point_num_min = min([x['point_in_match'] for x in points if (x['set_score'] == set_score) and (x['game_score'] == game_score)] or [point_in_match])
+            point_in_game = point_in_match - point_num_min + 1
             point_dict['point_in_game'] = point_in_game
         except:
             pass
 
         # point_in_set
         try:
-            if set_in_match == 1:
-                point_in_set = point_in_match
-            else:
-                point_num_min = min([x['point_in_match'] for x in points if x['set_score'] == set_score])
-                point_in_set = point_in_match - point_num_min + 1
+          
+            point_num_min = min([x['point_in_match'] for x in points if x['set_score'] == set_score] or [point_in_match])
+            point_in_set = point_in_match - point_num_min + 1
             point_dict['point_in_set'] = point_in_set
         except:
             pass
@@ -387,18 +382,15 @@ def getSide(point_score):
 
     point_score_deuce = ['0-0', '15-15', '30-0', '0-30', '30-30', '40-15', '15-40', '40-40']
     point_score_ad = ['15-0', '0-15', '30-15', '15-30', '40-0', '0-40', '40-30', '30-40', 'AD-40', '40-AD']
-    point_score_sum = sum([int(x) for x in point_score.split('-')])
 
     if point_score in point_score_deuce:
-        side = 'deuce'
+        return 'deuce'
     elif point_score in point_score_ad:
-        side = 'ad'
-    elif point_score_sum % 2 == 0:
-        side = 'deuce'
-    else:
-        side = 'ad'
+        return 'ad'
     
-    return side
+    point_score_sum = sum([int(x) for x in point_score.split('-')])
+
+    return 'deuce' if point_score_sum % 2 == 0 else 'ad'
 
 def getSideModel(side):
     '''
