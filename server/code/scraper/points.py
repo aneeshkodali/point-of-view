@@ -5,6 +5,7 @@ from unidecode import unidecode
 
 from models.games import GameModel
 from models.game_players import GamePlayerModel
+from models.point_players import PointPlayerModel
 from models.points import PointModel
 from models.sides import SideModel
 from models.sets import SetModel
@@ -109,6 +110,10 @@ def getPointData(match_soup, match_model, player_model_dict):
                 # create PointModel
                 point_model = PointModel(**{'game': game_model, 'point_in_game': point_in_game, 'point_in_set': point_in_set, 'point_in_match': point_in_match, 'side': side_model, 'score': point_score})
                 point_model.save()
+
+                # create PointPlayerModel
+                PointPlayerModel(**{'point': point_model, 'player': player_model_dict[winner], 'win': 1, 'serve': serve, 'score': point_score_winner}).save()
+                PointPlayerModel(**{'point': point_model, 'player': player_model_dict[loser], 'win': 0, 'serve': serve, 'score': point_score_loser}).save()
 
 
     return
