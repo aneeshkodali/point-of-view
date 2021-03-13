@@ -1,8 +1,10 @@
-import pandas as pd
-import requests
+# python imports
 from bs4 import BeautifulSoup
 from unidecode import unidecode
+import pandas as pd
+import requests
 
+# project imports
 from models.games import GameModel
 from models.game_players import GamePlayerModel
 from models.point_players import PointPlayerModel
@@ -13,7 +15,7 @@ from models.set_players import SetPlayerModel
 from models.sides import SideModel
 from scraper.shots import getShotData
 
-def getPointData(match_soup, match_model, player_model_dict):
+def getPointData(match_soup, match_id, player_model_dict):
     '''
     Creates/inserts the appropriate data
     '''
@@ -44,7 +46,7 @@ def getPointData(match_soup, match_model, player_model_dict):
         set_score = f"{game_score_winner}-{game_score_loser}"
 
         # create SetModel
-        set_model = SetModel(**{'set_in_match': set_in_match, 'match': match_model, 'score': set_score})
+        set_model = SetModel(**{'set_in_match': set_in_match, 'match_id': match_id, 'score': set_score})
         set_model.save()
 
         # create SetPlayerModel
