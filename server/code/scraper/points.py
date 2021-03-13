@@ -117,10 +117,10 @@ def getPointData(match_soup, match_id, player_id_dict):
                     rally_length = 0
 
                 side = getSide(point_score)
-                side_model = getSideModel(side)
+                side_id = getSideModel(side)['side_id']
 
                 # create PointModel
-                point_model = PointModel(**{'game': game_model, 'point_in_game': point_in_game, 'point_in_set': point_in_set, 'point_in_match': point_in_match, 'number_of_shots': number_of_shots, 'rally_length': rally_length, 'result': result, 'side': side_model, 'score': point_score})
+                point_model = PointModel(**{'game_id': game_id, 'point_in_game': point_in_game, 'point_in_set': point_in_set, 'point_in_match': point_in_match, 'number_of_shots': number_of_shots, 'rally_length': rally_length, 'result': result, 'side_id': side_id, 'score': point_score})
                 point_model.save()
 
                 # create PointPlayerModel

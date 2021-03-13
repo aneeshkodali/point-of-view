@@ -1,24 +1,24 @@
-from mongoengine import IntField, StringField, ReferenceField
+# python imports
+from mongoengine import Document, IntField, StringField
 
-from models.base import BaseModel
+# project imports
 from models.default_values import default_uuid_value
-from models.games import GameModel
-from models.sides import SideModel
+from models.shared.base_mixin import BaseMixin
 
-class PointModel(BaseModel):
+class PointModel(BaseMixin, Document):
     '''
     Points
     '''
 
     point_id = StringField(primary_key=True, default=default_uuid_value)
-    game = ReferenceField(GameModel)
+    game_id = StringField(required=True)
     point_in_game = IntField(default=0)
     point_in_set = IntField(default=0)
     point_in_match = IntField(default=0)
     number_of_shots = IntField()
     rally_length =  IntField()
     result = StringField()
-    side = ReferenceField(SideModel)
+    side_id = StringField(required=True)
     score = StringField()
 
     meta = {'collection': 'points'}
