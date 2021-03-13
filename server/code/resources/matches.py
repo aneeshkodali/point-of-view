@@ -12,10 +12,7 @@ class Match(Resource):
         match_model = MatchModel.objects(match_id=match_id).first()
         match = match_model.as_dict()
 
-        # return match or 404 (not found)
-        if match_model:
-            return {'match': match}
-        return {'message': 'Match not found'}, 404
+        return {'match': match}
 
   
 
@@ -23,4 +20,4 @@ class Matches(Resource):
 
     # GET method
     def get(self):
-        return {'matches': match['title'] for match in MatchModel.objects()}
+        return {'matches': [{k:match[k] for k in ['match_id', 'name']} for match in MatchModel.objects()]}
