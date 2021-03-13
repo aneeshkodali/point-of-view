@@ -109,6 +109,9 @@ def getPointData(match_soup, match_model, player_model_dict):
                 rally_split = point['rally_split']
                 result = point['result']
 
+                if result == 'double fault':
+                    rally_length = 0
+
                 side = getSide(point_score)
                 side_model = getSideModel(side)
 
