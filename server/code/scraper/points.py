@@ -81,10 +81,11 @@ def getPointData(match_soup, match_id, player_id_dict):
             # create GameModel
             game_model = GameModel(**{'set_id': set_id, 'game_in_set': game_in_set, 'game_in_match': game_in_match, 'score': game_score})
             game_model.save()
+            game_id = game_model['game_id']
 
             # Create GamePlayerModel
-            GamePlayerModel(**{'game': game_model, 'player': player_model_dict[winner], 'win': 1, 'serve': serve, 'score': game_score_winner}).save()
-            GamePlayerModel(**{'game': game_model, 'player': player_model_dict[loser], 'win': 0, 'serve': serve, 'score': game_score_loser}).save()
+            GamePlayerModel(**{'game_id': game_id, 'player_id': player_model_dict[winner], 'win': 1, 'serve': serve, 'score': game_score_winner}).save()
+            GamePlayerModel(**{'game_id': game_id, 'player_id': player_model_dict[loser], 'win': 0, 'serve': serve, 'score': game_score_loser}).save()
 
             # get list of points
             points_in_game = list(game_df['point_in_game'].unique())
