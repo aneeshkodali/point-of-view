@@ -11,7 +11,7 @@ from models.sides import SideModel
 from models.sets import SetModel
 from models.set_players import SetPlayerModel
 from models.sides import SideModel
-#from scraper.shot import getShotData
+from scraper.shots import getShotData
 
 def getPointData(match_soup, match_model, player_model_dict):
     '''
@@ -93,6 +93,7 @@ def getPointData(match_soup, match_model, player_model_dict):
                 # filter for point (should only be one row)
                 point = game_df.loc[game_df['point_in_game'] == point_in_game].iloc[0]
                 server = point['server']
+                receiver = point['receiver']
                 point_in_set = point['point_in_set']
                 point_in_match = point['point_in_match']
                 winner = point['winner']
@@ -105,6 +106,7 @@ def getPointData(match_soup, match_model, player_model_dict):
                 serve = (server == winner)*1
                 number_of_shots = point['number_of_shots']
                 rally_length = point['rally_length']
+                rally_split = point['rally_split']
                 result = point['result']
 
                 side = getSide(point_score)
@@ -117,6 +119,10 @@ def getPointData(match_soup, match_model, player_model_dict):
                 # create PointPlayerModel
                 PointPlayerModel(**{'point': point_model, 'player': player_model_dict[winner], 'win': 1, 'serve': serve, 'score': point_score_winner}).save()
                 PointPlayerModel(**{'point': point_model, 'player': player_model_dict[loser], 'win': 0, 'serve': serve, 'score': point_score_loser}).save()
+
+                # get shot data
+                player_model_list = [player_model_dict[server], player_model_dict[receiver]]
+                getShotData(rally_split, player_model_list, result)
 
 
 

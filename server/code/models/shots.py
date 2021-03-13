@@ -14,7 +14,9 @@ class ShotModel(BaseModel):
     point = ReferenceField(PointModel)
     shot_number = IntField()
     shot_number_w_serve = IntField()
-    shot_by = db.ReferenceField(PlayerModel)
-    shot = db.StringField()
-    location = db.StringField()
-    result = db.StringField()
+    shot_by = ReferenceField(PlayerModel)
+    shot = StringField()
+    location = StringField()
+    result = StringField()
+
+    meta = {'collection': 'shots'}

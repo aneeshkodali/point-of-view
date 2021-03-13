@@ -1,9 +1,9 @@
-from models.shot import ShotModel
+from models.shots import ShotModel
 
 def getShotData(rally_list, player_list, result):
     '''
     Given a rally list (where each element is of form: <stroke> <location> <result if any>)
-    and player list of server/receiver (to determine who hit which shot)
+    and player list of server/receiver models (to determine who hit which shot)
     return list of dictionaries of shot data
     '''
 
@@ -82,8 +82,7 @@ def getShotData(rally_list, player_list, result):
         shot_dict['result'] = result if i == len(rally_list)-1 else 'none'
 
 
-        # append to list
+        # add record
         shot_model = ShotModel(**shot_dict)
-        shots.append(shot_model)
+        shot_model.save()
 
-    return shots
