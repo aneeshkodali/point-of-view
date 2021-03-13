@@ -1,9 +1,9 @@
 from models.shots import ShotModel
 
-def getShotData(rally_list, player_list, result):
+def getShotData(rally_list, point_id, player_list, result):
     '''
     Given a rally list (where each element is of form: <stroke> <location> <result if any>)
-    and player list of server/receiver models (to determine who hit which shot)
+    and player list of server/receiver ids (to determine who hit which shot)
     return list of dictionaries of shot data
     '''
 
@@ -25,6 +25,7 @@ def getShotData(rally_list, player_list, result):
 
         # create/append 1st serve dictionary
         first_serve_dict = {}
+        first_serve_dict['point_id'] = point_id
         
         # shot_number
         first_serve_dict['shot_number'] = 1
@@ -56,6 +57,7 @@ def getShotData(rally_list, player_list, result):
 
         # initialize shot_dict
         shot_dict = {}
+        shot_dict['point_id'] = point_id
 
         # shot_number
         shot_num = i+1

@@ -108,10 +108,8 @@ def getMatchData(link):
         pass
 
     # point-related data
-    try:
-        getPointData(soup, match_model['match_id'], player_id_dict)
-    except:
-        pass
+    getPointData(soup, match_model['match_id'], player_id_dict)
+        
 
     return match_model
 

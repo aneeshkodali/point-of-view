@@ -130,7 +130,7 @@ def getPointData(match_soup, match_id, player_id_dict):
 
                 # get shot data
                 player_id_list = [player_id_dict[server], player_id_dict[receiver]]
-                getShotData(rally_split, player_id_list, result)
+                getShotData(rally_split, point_id, player_id_list, result)
 
 
 
