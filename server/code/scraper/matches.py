@@ -47,7 +47,7 @@ def getMatchData(link):
         tournament_name = suffix[2].replace('_', ' ')
         tournament_link = constructTournamentLink(tournament_name, gender, year)
         tournament_model = helper.getTournamentModel(tournament_link)
-        match_model['tournament'] = tournament_model
+        match_model['tournament_id'] = tournament_model['tournament_id']
     except:
         pass
 
@@ -55,7 +55,7 @@ def getMatchData(link):
     try:
         round_name = suffix[3]
         round_model = helper.getRoundModel(round_name)
-        match_model['match_round'] = round_model
+        match_model['round_id'] = round_model['round_id']
     except:
         pass
 
