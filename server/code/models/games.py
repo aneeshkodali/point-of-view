@@ -1,28 +1,19 @@
-from mongoengine import IntField, StringField, ReferenceField
+# python imports
+from mongoengine import Document, IntField, StringField
 
-from models.base import BaseModel
+# project imports
 from models.default_values import default_uuid_value
-from models.sets import SetModel
+from models.shared.base_mixin import BaseMixin
 
-class GameModel(BaseModel):
+class GameModel(BaseMixin, Document):
     '''
     Games
     '''
 
     game_id = StringField(primary_key=True, default=default_uuid_value)
-    match_set = ReferenceField(SetModel)
+    set_id = StringField(required=True)
     game_in_set = IntField(default=0)
     game_in_match = IntField(default=0)
     score = StringField()
 
     meta = {'collection': 'games'}
-
-    def json(self):
-        return {
-            'game_id': self.game_id,
-            'match_set': self.match_set,
-            'game_in_set': self.game_in_set,
-            'game_in_match': self.game_in_match,
-            'score': self.score
-        }
-

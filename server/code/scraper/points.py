@@ -79,7 +79,7 @@ def getPointData(match_soup, match_id, player_id_dict):
             serve = (server == winner)*1
 
             # create GameModel
-            game_model = GameModel(**{'match_set': set_model, 'game_in_set': game_in_set, 'game_in_match': game_in_match, 'score': game_score})
+            game_model = GameModel(**{'set_id': set_id, 'game_in_set': game_in_set, 'game_in_match': game_in_match, 'score': game_score})
             game_model.save()
 
             # Create GamePlayerModel
