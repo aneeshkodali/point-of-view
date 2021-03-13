@@ -1,8 +1,10 @@
-from mongoengine import IntField, StringField
+# python imports
+from mongoengine import Document, IntField, StringField
 
-from models.base import BaseModel
+# project imports
+from models.shared.base_mixin import BaseMixin
 
-class CountryModel(BaseModel):
+class CountryModel(BaseMixin, Document):
     '''
     Countries
     '''

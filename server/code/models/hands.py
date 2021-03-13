@@ -1,10 +1,12 @@
-from mongoengine import IntField, StringField
+# python imports
+from mongoengine import Document, IntField, StringField
 
-from models.base import BaseModel
+# project imports
+from models.shared.base_mixin import BaseMixin
 
-class HandModel(BaseModel):
+class HandModel(BaseMixin, Document):
     '''
-    Hand that the player plays with
+    Hands
     '''
 
     hand_id = IntField(primary_key=True)

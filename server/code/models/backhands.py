@@ -1,10 +1,12 @@
-from mongoengine import IntField
+# python imports
+from mongoengine import Document, IntField
 
-from models.base import BaseModel
+# project imports
+from models.shared.base_mixin import BaseMixin
 
-class BackhandModel(BaseModel):
+class BackhandModel(BaseMixin, Document):
     '''
-    Number of hands used for backhand
+    Backhands
     '''
 
     backhand_id = IntField(primary_key=True)
