@@ -129,8 +129,8 @@ def getPointData(match_soup, match_id, player_id_dict):
                 PointPlayerModel(**{'point_id': point_id, 'player_id': player_id_dict[loser], 'win': 0, 'serve': serve, 'score': point_score_loser}).save()
 
                 # get shot data
-                player_model_list = [player_model_dict[server], player_model_dict[receiver]]
-                getShotData(rally_split, player_model_list, result)
+                player_id_list = [player_id_dict[server], player_id_dict[receiver]]
+                getShotData(rally_split, player_id_list, result)
 
 
 
