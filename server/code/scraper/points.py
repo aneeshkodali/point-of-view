@@ -84,8 +84,8 @@ def getPointData(match_soup, match_id, player_id_dict):
             game_id = game_model['game_id']
 
             # Create GamePlayerModel
-            GamePlayerModel(**{'game_id': game_id, 'player_id': player_model_dict[winner], 'win': 1, 'serve': serve, 'score': game_score_winner}).save()
-            GamePlayerModel(**{'game_id': game_id, 'player_id': player_model_dict[loser], 'win': 0, 'serve': serve, 'score': game_score_loser}).save()
+            GamePlayerModel(**{'game_id': game_id, 'player_id': player_id_dict[winner], 'win': 1, 'serve': serve, 'score': game_score_winner}).save()
+            GamePlayerModel(**{'game_id': game_id, 'player_id': player_id_dict[loser], 'win': 0, 'serve': serve, 'score': game_score_loser}).save()
 
             # get list of points
             points_in_game = list(game_df['point_in_game'].unique())
@@ -122,10 +122,11 @@ def getPointData(match_soup, match_id, player_id_dict):
                 # create PointModel
                 point_model = PointModel(**{'game_id': game_id, 'point_in_game': point_in_game, 'point_in_set': point_in_set, 'point_in_match': point_in_match, 'number_of_shots': number_of_shots, 'rally_length': rally_length, 'result': result, 'side_id': side_id, 'score': point_score})
                 point_model.save()
+                point_id = point_model['point_id']
 
                 # create PointPlayerModel
-                PointPlayerModel(**{'point': point_model, 'player': player_model_dict[winner], 'win': 1, 'serve': serve, 'score': point_score_winner}).save()
-                PointPlayerModel(**{'point': point_model, 'player': player_model_dict[loser], 'win': 0, 'serve': serve, 'score': point_score_loser}).save()
+                PointPlayerModel(**{'point_id': point_id, 'player_id': player_id_dict[winner], 'win': 1, 'serve': serve, 'score': point_score_winner}).save()
+                PointPlayerModel(**{'point_id': point_id, 'player_id': player_id_dict[loser], 'win': 0, 'serve': serve, 'score': point_score_loser}).save()
 
                 # get shot data
                 player_model_list = [player_model_dict[server], player_model_dict[receiver]]

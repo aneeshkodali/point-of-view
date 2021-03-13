@@ -1,31 +1,22 @@
-from mongoengine import StringField, IntField, ReferenceField
+# python imports
+from mongoengine import Document, StringField, IntField
 
-from models.base import BaseModel
+# project imports
 from models.default_values import default_uuid_value
-from models.points import PointModel
-from models.players import PlayerModel
+from models.shared.base_mixin import BaseMixin
 
-class PointPlayerModel(BaseModel):
+class PointPlayerModel(BaseMixin, Document):
     '''
     Each row is a point /player
     So a point should have 2 rows, one for each player
     '''
 
     point_player_id = StringField(primary_key=True, default=default_uuid_value)
-    point = ReferenceField(PointModel)
-    player = ReferenceField(PlayerModel)
+    point_id = StringField(required=True)
+    player_id = StringField(required=True)
     score = StringField()
     serve = IntField()
     win = IntField()
 
     meta = {'collection': 'point_players'}
 
-    def json(self):
-        return {
-            'point_player_id': self.point_player_id,
-            'point': self.point,
-            'player': self.player,
-            'score': self.score,
-            'serve': self.serve,
-            'win': self.win
-        }

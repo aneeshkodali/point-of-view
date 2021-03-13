@@ -23,14 +23,3 @@ class PointModel(BaseMixin, Document):
 
     meta = {'collection': 'points'}
 
-    def json(self):
-        return {
-            'point_id': self.point_id,
-            'game': self.game,
-            'point_in_game': self.point_in_game,
-            'point_in_set': self.point_in_set,
-            'point_in_match': self.point_in_match,
-            'side': self.side,
-            'score': self.score
-        }
-
