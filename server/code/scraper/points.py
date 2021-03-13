@@ -15,12 +15,12 @@ from models.set_players import SetPlayerModel
 from models.sides import SideModel
 from scraper.shots import getShotData
 
-def getPointData(match_soup, match_id, player_model_dict):
+def getPointData(match_soup, match_id, player_id_dict):
     '''
     Creates/inserts the appropriate data
     '''
     # create list of playe names
-    player_list = [k for k in player_model_dict]
+    player_list = [k for k in player_id_dict]
 
     # get dataframe
     point_df = makePointDF(match_soup, player_list)
@@ -48,10 +48,11 @@ def getPointData(match_soup, match_id, player_model_dict):
         # create SetModel
         set_model = SetModel(**{'set_in_match': set_in_match, 'match_id': match_id, 'score': set_score})
         set_model.save()
+        set_id = set_model['set_id']
 
         # create SetPlayerModel
-        SetPlayerModel(**{'match_set': set_model, 'player': player_model_dict[winner], 'win': 1, 'score': game_score_winner}).save()
-        SetPlayerModel(**{'match_set': set_model, 'player': player_model_dict[loser], 'win': 0, 'score': game_score_loser}).save()  
+        SetPlayerModel(**{'set_id': set_id, 'player_id': player_id_dict[winner], 'win': 1, 'score': game_score_winner}).save()
+        SetPlayerModel(**{'set_id': set_id, 'player_id': player_id_dict[loser], 'win': 0, 'score': game_score_loser}).save()  
 
         # get list of games
         games_in_set = list(set_df['game_in_set'].unique())
