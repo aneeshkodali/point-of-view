@@ -22,7 +22,7 @@ def getPlayerData(link):
     try:
         gender = 'W' if 'wplayer' in link else 'M'
         gender_model = helper.getGenderModel(gender)
-        player_model['gender'] = gender_model
+        player_model['gender_id'] = gender_model['gender_id']
     except:
         pass
 
@@ -63,7 +63,7 @@ def getPlayerData(link):
     try:
         hand = helper.extractVariableFromText(text, 'hand')
         hand_model = helper.getHandModel(hand)
-        player_model['hand'] = hand_model
+        player_model['hand_id'] = hand_model['hand_id']
     except:
         pass
 
@@ -71,7 +71,7 @@ def getPlayerData(link):
     try:
         backhand = helper.extractVariableFromText(text, 'backhand')
         backhand_model = helper.getBackhandModel(backhand)
-        player_model['backhand'] = backhand_model
+        player_model['backhand_id'] = backhand_model['backhand_id']
     except:
         pass
 
@@ -79,7 +79,7 @@ def getPlayerData(link):
     try:
         country = helper.extractVariableFromText(text, 'country')
         country_model = helper.getCountryModel(country)
-        player_model['country'] = country_model
+        player_model['country_id'] = country_model['country_id']
     except:
         pass
 
