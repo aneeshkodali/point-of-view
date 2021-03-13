@@ -3,7 +3,6 @@ from mongoengine import Document
 import datetime
 
 # project imports
-from models.default_values import uuid_value, current_timestamp
 
 class BaseMixin(Document):
     '''
