@@ -1,11 +1,11 @@
 # python imports
-from mongoengine import IntField, StringField
+from mongoengine import Document, IntField, StringField
 
 # project imports
 from models.default_values import default_uuid_value
-from models.shared.base_mixin import BaseModel
+from models.shared.base_mixin import BaseMixin
 
-class SetModel(BaseModel):
+class SetModel(BaseMixin, Document):
     '''
     Sets
     '''
