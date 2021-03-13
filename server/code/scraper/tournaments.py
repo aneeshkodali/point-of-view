@@ -24,7 +24,7 @@ def getTournamentData(link):
     try:
         gender = 'W' if tournament_name.startswith('W_') else 'M'
         gender_model = helper.getGenderModel(gender)
-        tournament_model['gender'] = gender_model
+        tournament_model['gender_id'] = gender_model['gender_id']
     except:
         pass
 
@@ -45,7 +45,7 @@ def getTournamentData(link):
     try:
         tournament_name = helper.extractVariableFromText(soup_text, 'tname')
         tournament_name_model = helper.getTournamentNameModel(tournament_name)
-        tournament_model['tournament_name'] = tournament_name_model
+        tournament_model['tournament_name_id'] = tournament_name_model['tournament_name_id']
     except:
         pass
   
@@ -93,7 +93,7 @@ def getTournamentData(link):
     try:
         surface = soup_text.split('var tsurf=')[1].split(';')[0].replace("'","").replace('"', '').lower()
         surface_model = helper.getSurfaceModel(surface)
-        tournament_model['surface'] = surface_model
+        tournament_model['surface_id'] = surface_model['surface_id']
     except:
         pass
    
@@ -101,7 +101,7 @@ def getTournamentData(link):
     try:
         level = soup_text.split('var tlev=')[1].split(';')[0].replace("'","").replace('"', '')
         level_model = helper.getLevelModel(level)
-        tournament_model['level'] = level_model
+        tournament_model['level_id'] = level_model['level_id']
     except:
         pass
 

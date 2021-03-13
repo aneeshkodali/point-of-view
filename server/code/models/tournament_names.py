@@ -1,9 +1,11 @@
-from mongoengine import StringField
+# python imports
+from mongoengine import Document, StringField
 
-from models.base import BaseModel
+# project imports
 from models.default_values import default_uuid_value
+from models.shared.base_mixin import BaseMixin
 
-class TournamentNameModel(BaseModel):
+class TournamentNameModel(BaseMixin, Document):
     '''
     Tournament Names
     '''
