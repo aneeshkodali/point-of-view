@@ -103,17 +103,21 @@ def getPointData(match_soup, match_model, player_model_dict):
                 point_score_winner = point_score_server if winner == server else point_score_receiver
                 point_score_loser = point_score_server if winner != server else point_score_receiver
                 serve = (server == winner)*1
+                number_of_shots = point['number_of_shots']
+                rally_length = point['rally_length']
+                result = point['result']
 
                 side = getSide(point_score)
                 side_model = getSideModel(side)
 
                 # create PointModel
-                point_model = PointModel(**{'game': game_model, 'point_in_game': point_in_game, 'point_in_set': point_in_set, 'point_in_match': point_in_match, 'side': side_model, 'score': point_score})
+                point_model = PointModel(**{'game': game_model, 'point_in_game': point_in_game, 'point_in_set': point_in_set, 'point_in_match': point_in_match, 'number_of_shots': number_of_shots, 'rally_length': rally_length, 'result': result, 'side': side_model, 'score': point_score})
                 point_model.save()
 
                 # create PointPlayerModel
                 PointPlayerModel(**{'point': point_model, 'player': player_model_dict[winner], 'win': 1, 'serve': serve, 'score': point_score_winner}).save()
                 PointPlayerModel(**{'point': point_model, 'player': player_model_dict[loser], 'win': 0, 'serve': serve, 'score': point_score_loser}).save()
+
 
 
     return
@@ -292,13 +296,20 @@ def makePointDF(match_soup, player_list):
         except:
             pass
 
-        # num_shots
+        # rally list
         try:
             rally = unidecode(point_td[4]).text
             rally_split = rally.split('; ')
-            num_shots = len(rally_split)
-            if num_shots:
-                point_dict['num_shots'] = num_shots
+            if rally_split:
+                point_dict['rally_split'] = rally_split
+        except:
+            pass
+
+        # number_of_shots
+        try:
+            number_of_shots = len(rally_split)
+            if number_of_shots:
+                point_dict['number_of_shots'] = number_of_shots
         except:
             pass
 
@@ -316,9 +327,9 @@ def makePointDF(match_soup, player_list):
         # rally_length
         try:
             if result in results_win:
-                rally_length = num_shots
+                rally_length = number_of_shots
             elif result in results_lose:
-                rally_length = num_shots - 1
+                rally_length = number_of_shots - 1
 
             if rally_length:
                 point_dict['rally_length'] = rally_length
@@ -327,7 +338,7 @@ def makePointDF(match_soup, player_list):
 
         # winner - number of shots is odd and result is in results_win then server
         try:
-            if num_shots % 2 != 0:
+            if number_of_shots % 2 != 0:
                 if result in results_win:
                     winner = server
                 elif result in results_lose:

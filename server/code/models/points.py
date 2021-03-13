@@ -15,6 +15,9 @@ class PointModel(BaseModel):
     point_in_game = IntField(default=0)
     point_in_set = IntField(default=0)
     point_in_match = IntField(default=0)
+    number_of_shots = IntField()
+    rally_length =  IntField()
+    result = StringField()
     side = ReferenceField(SideModel)
     score = StringField()
 
