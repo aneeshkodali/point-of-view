@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
 import server from '../../api/server';
-import { getPlayerData } from '../../helper/functions';
 import About from './About/About';
 import Table from './Data/Table';
 import Loader from '../Loader';
@@ -21,53 +20,11 @@ const Match = props => {
 
     // function to get match data
     const getMatchData = async match_id => {
-       const match_response = await server.get(`/server/match/${match_id}`);
-       const match_data = match_response.data;
-       if (match_data) {
-        
-        // get tournament data
-        const tournament_id = match_data['tournament']['$oid'];
-        const tournament_response = await server.get(`/server/tournament/${tournament_id}`);
-        const tournament_data = tournament_response.data;
-        match_data['tournament'] = tournament_data;
-
-        // get players data
-        const player_one_id = match_data['players'][0]['$oid'];
-        const player_one_response = await server.get(`/server/player/${player_one_id}`);
-        match_data['players'][0] = player_one_response.data;
-
-        const player_two_id = match_data['players'][1]['$oid'];
-        const player_two_response = await server.get(`/server/player/${player_two_id}`);
-        match_data['players'][1] = player_two_response.data;
-
-        // add data to match winner/loser
-        ['winner', 'loser'].forEach(column => {
-            match_data[column] = getPlayerData(match_data[column], match_data['players']);
-        });
-
-        // add player data to points/shots
-        match_data['points'] = match_data['points'].map(point => {
-            // loop through columns in points
-            const point_columns = ['server', 'receiver', 'winner' ,'loser'];
-            point_columns.forEach(point_column => {
-                point[point_column] = getPlayerData(point[point_column], match_data['players']) 
-            });
-            
-            point['shots'] = point['shots'].map(shot_elem => {
-                // loop through columns in shots
-                const shot_columns = ['shot_by'];
-                shot_columns.forEach(shot_column => {
-                    shot_elem[shot_column] = getPlayerData(shot_elem[shot_column], match_data['players']);
-                });
-                return shot_elem;
-            });
-            
-            return point;
-        })
-
+        const match_response = await server.get(`/server/matches/${match_id}`);
+        const match_data = match_response.data.match;
         setMatchData(match_data);
        }
-    }
+    
 
     // get match data on component render
     useEffect(() => {
@@ -76,10 +33,10 @@ const Match = props => {
 
     // state for tabs
     const tabs = ['About', 'Data', 'Points Won', 'Point Map', 'Points to Set', 'Rally Tree'];
-    const [tabSelected, setTabSelected] = useState(tabs[5]);
+    const [tabSelected, setTabSelected] = useState(tabs[0]);
 
     // display loading icon if match data not found
-    if (!(matchData && matchData['tournament'] && matchData['players'] && matchData['points'])) {
+    if (!matchData) {
         return (
             <Loader text={'Loading Match Data...'} />
         );
@@ -106,26 +63,26 @@ const Match = props => {
                 return (
                     <About matchData={matchData} />  
                 );
-            case 'Data':
-                return (
-                    <Table matchData={matchData} />
-                );
-            case 'Points Won':
-                return (
-                    <PointsWon matchData={matchData} />
-                );
-            case 'Point Map':
-                return (
-                    <PointMap matchData={matchData} />
-                );
-            case 'Points to Set':
-                return (
-                    <PointsToSet matchData={matchData} />
-                );
-            case 'Rally Tree':
-                return (
-                    <RallyTree matchData={matchData} />
-                );
+            //case 'Data':
+            //    return (
+            //        <Table matchData={matchData} />
+            //    );
+            //case 'Points Won':
+            //    return (
+            //        <PointsWon matchData={matchData} />
+            //    );
+            //case 'Point Map':
+            //    return (
+            //        <PointMap matchData={matchData} />
+            //    );
+            //case 'Points to Set':
+            //    return (
+            //        <PointsToSet matchData={matchData} />
+            //    );
+            //case 'Rally Tree':
+            //    return (
+            //        <RallyTree matchData={matchData} />
+            //    );
             default:
                 return null;
         }

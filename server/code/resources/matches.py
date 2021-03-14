@@ -54,7 +54,7 @@ class Match(Resource):
         tournament['level_id'] = LevelModel.objects(level_id=tournament['level_id']).first().as_dict()
         tournament['surface_id'] = SurfaceModel.objects(surface_id=tournament['surface_id']).first().as_dict()
         tournament['tournament_name_id'] = TournamentNameModel.objects(tournament_name_id=tournament['tournament_name_id']).first().as_dict()
-        match['tournament'] = tournament
+        match['tournament_id'] = tournament
 
         # get set data
         match_sets = [match_set.as_dict() for match_set in SetModel.objects(match_id=match['match_id']).order_by('set_in_match')]

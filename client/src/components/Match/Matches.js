@@ -19,11 +19,10 @@ const Matches = () => {
 
 
     const matchesRendered = matches.map(match => {
-        const { _id, title } = match
-        const id = _id['$oid']
+        const { match_id, name } = match
         return (
-            <div key={id}>
-                <Link to={`/matches/${id}`}>{title}</Link>
+            <div key={match_id}>
+                <Link to={`/matches/${match_id}`}>{name}</Link>
             </div>
         );
     });

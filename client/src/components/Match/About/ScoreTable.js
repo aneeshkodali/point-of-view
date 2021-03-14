@@ -2,15 +2,16 @@ import React from 'react';
 
 import { getCountryName } from '../../../helper/countries';
 
-const ScoreTable = ({ players, score }) => {
-
+const ScoreTable = ({ matchData }) => {
+    
     // get winner (0) and loser (1)
+    const { players } = matchData
     const winner = players[0];
     const loser = players[1];
 
     // function to get flag icon from country 3 digit name
-    const getFlagIcon = country_three => {
-        const countryName = getCountryName(country_three).toLowerCase();
+    const getFlagIcon = country => {
+        const countryName = getCountryName(country).toLowerCase();
         return <i className={`${countryName} flag`} />;
     }
 
@@ -25,23 +26,20 @@ const ScoreTable = ({ players, score }) => {
     }
 
 
-    // split score - sets separated by ' , scores separated by '-'
-    const scoreSplit = score.split(' ').map(set => set.split('-'));
-
     // initialize table data
     const tableHeaders = [
         <th key={'player'}>Player</th>
     ];
     const winnerData = [
         <td key={'winner'}>
-            {getFlagIcon(winner['country'])}
+            {getFlagIcon(winner['country_id']['country'])}
             {returnAbbreviatedName(winner['full_name'])}
             <i className="ui check icon" />
         </td>
     ];
     const loserData = [
         <td key={'loser'}>
-            {getFlagIcon(loser['country'])}
+            {getFlagIcon(loser['country_id']['country'])}
             {returnAbbreviatedName(loser['full_name'])}
         </td>
     ];
@@ -60,11 +58,12 @@ const ScoreTable = ({ players, score }) => {
     }
 
     // loop through scores and append data accordingly
-    scoreSplit.forEach((set, index) => {
+    const { sets } = matchData
+    sets.forEach((set, index) => {
 
         const setNum = index+1;
-        const setScoreWinner = set[0];
-        const setScoreLoser = set[1];
+        const setScoreWinner = set['players'][0]['score'];
+        const setScoreLoser = set['players'][1]['score'];
 
         const winnerStylingObj = applyScoreStyling(setScoreWinner, setScoreLoser);
         winnerStylingObj['backgroundColor'] = setScoreWinner > setScoreLoser ? 'lightgreen' : '';
@@ -118,6 +117,7 @@ const ScoreTable = ({ players, score }) => {
             </table>
         </div>
     );
+
 }
 
 export default ScoreTable;
