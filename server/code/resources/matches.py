@@ -12,6 +12,8 @@ from models.levels import LevelModel
 from models.match_players import MatchPlayerModel
 from models.matches import MatchModel
 from models.players import PlayerModel
+from models.point_players import PointPlayerModel
+from models.points import PointModel
 from models.rounds import RoundModel
 from models.set_players import SetPlayerModel
 from models.sets import SetModel
@@ -71,12 +73,13 @@ class Match(Resource):
                 set_dict['players'].append(match_set_player_dict)
 
             # get game data
-            games = [game.as_dict() for game in GameModel.objects(set_id=match_set['set_id']).order_by('game_in_set')]
+            games = [game.as_dict() for game in GameModel.objects(set_id=match_set['set_id']).order_by('game_in_match')]
             game_list = []
             for game in games:
 
                 game_dict = {}
                 game_dict['game_in_set'] = game['game_in_set']
+                game_dict['game_in_match'] = game['game_in_match']
                 game_dict['score'] = game['score']
                 game_dict['players'] = []
 
@@ -88,6 +91,31 @@ class Match(Resource):
                     game_player_dict['win'] = game_player['win']
                     game_dict['players'].append(game_player_dict)
                 
+                # get point data
+                points = [point.as_dict() for point in PointModel.objects(game_id=game['game_id']).order_by('point_in_match')]
+                point_list = []
+                for point in points:
+
+                    point_dict = {}
+                    point_dict['point_in_game'] = point['point_in_game']
+                    point_dict['point_in_set'] = point['point_in_set']
+                    point_dict['point_in_match'] = point['point_in_match']
+                    point_dict['score'] = point['score']
+                    point_dict['players'] = []
+
+                    point_players = [point_player.as_dict() for point_player in PointPlayerModel.objects(point_id=point['point_id']).order_by('-win')]
+                    for point_player in point_players:
+                        point_player_dict = {}
+                        point_player_dict['player'] = [player['full_name'] for player in players if player['player_id'] == point_player['player_id']][0]
+                        point_player_dict['score'] = point_player['score']
+                        point_player_dict['serve'] = point_player['serve']
+                        point_player_dict['win'] = point_player['win']
+                        point_dict['players'].append(point_player_dict)
+
+                    point_list.append(point_dict)
+
+                game_dict['points'] = point_list
+
                 game_list.append(game_dict)
             
             set_dict['games'] = game_list

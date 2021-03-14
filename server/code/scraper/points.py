@@ -76,7 +76,6 @@ def getPointData(match_soup, match_id, player_id_dict):
             game_score_receiver = last_point_in_game['game_score_receiver']
             game_score_winner = game_score_server if winner == server else game_score_receiver
             game_score_loser = game_score_server if winner != server else game_score_receiver
-            serve = (server == winner)*1
 
             # create GameModel
             game_model = GameModel(**{'set_id': set_id, 'game_in_set': game_in_set, 'game_in_match': game_in_match, 'score': game_score})
@@ -84,8 +83,8 @@ def getPointData(match_soup, match_id, player_id_dict):
             game_id = game_model['game_id']
 
             # Create GamePlayerModel
-            GamePlayerModel(**{'game_id': game_id, 'player_id': player_id_dict[winner], 'win': 1, 'serve': serve, 'score': game_score_winner}).save()
-            GamePlayerModel(**{'game_id': game_id, 'player_id': player_id_dict[loser], 'win': 0, 'serve': serve, 'score': game_score_loser}).save()
+            GamePlayerModel(**{'game_id': game_id, 'player_id': player_id_dict[winner], 'win': 1, 'serve': (server==winner)*1, 'score': game_score_winner}).save()
+            GamePlayerModel(**{'game_id': game_id, 'player_id': player_id_dict[loser], 'win': 0, 'serve': (server==loser)*1, 'score': game_score_loser}).save()
 
             # get list of points
             points_in_game = list(game_df['point_in_game'].unique())
@@ -125,8 +124,8 @@ def getPointData(match_soup, match_id, player_id_dict):
                 point_id = point_model['point_id']
 
                 # create PointPlayerModel
-                PointPlayerModel(**{'point_id': point_id, 'player_id': player_id_dict[winner], 'win': 1, 'serve': serve, 'score': point_score_winner}).save()
-                PointPlayerModel(**{'point_id': point_id, 'player_id': player_id_dict[loser], 'win': 0, 'serve': serve, 'score': point_score_loser}).save()
+                PointPlayerModel(**{'point_id': point_id, 'player_id': player_id_dict[winner], 'win': 1, 'serve': (server==winner)*1, 'score': point_score_winner}).save()
+                PointPlayerModel(**{'point_id': point_id, 'player_id': player_id_dict[loser], 'win': 0, 'serve': (server==loser)*1, 'score': point_score_loser}).save()
 
                 # get shot data
                 player_id_list = [player_id_dict[server], player_id_dict[receiver]]
