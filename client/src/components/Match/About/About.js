@@ -35,9 +35,9 @@ const About = ({ matchData }) => {
 
     const matchInfo = (
         <div>
-              {tournament_id['tournament_name_id']['tournament_name']},
-            , {round_id['round_name']}
-            , {date}
+            <div><span style={{fontWeight:"bold"}}>Tournament</span>: {tournament_id['tournament_name_id']['tournament_name']}</div>
+            <div><span style={{fontWeight:"bold"}}>Round</span>: {round_id['round_name']}</div>
+            <div><span style={{fontWeight:"bold"}}>Date</span>: {date}</div>
         </div>
     );
 
