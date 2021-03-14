@@ -17,6 +17,7 @@ from models.points import PointModel
 from models.rounds import RoundModel
 from models.set_players import SetPlayerModel
 from models.sets import SetModel
+from models.shots import ShotModel
 from models.sides import SideModel
 from models.surfaces import SurfaceModel
 from models.tournament_names import TournamentNameModel
@@ -76,6 +77,7 @@ class Match(Resource):
             # get game data
             games = [game.as_dict() for game in GameModel.objects(set_id=match_set['set_id']).order_by('game_in_match')]
             game_list = []
+            
             for game in games:
 
                 game_dict = {}
@@ -95,6 +97,7 @@ class Match(Resource):
                 # get point data
                 points = [point.as_dict() for point in PointModel.objects(game_id=game['game_id']).order_by('point_in_match')]
                 point_list = []
+                
                 for point in points:
 
                     point_dict = {}
@@ -116,6 +119,16 @@ class Match(Resource):
                         point_player_dict['serve'] = point_player['serve']
                         point_player_dict['win'] = point_player['win']
                         point_dict['players'].append(point_player_dict)
+
+                    # get shot data
+                    shots = [shot.as_dict() for shot in ShotModel.objects(point_id=point['point_id']).order_by('shot_number_w_serve')]
+                    shot_list = []
+                    
+                    for shot in shots:
+                        shot['shot_by'] = [player['full_name'] for player in players if player['player_id'] == shot['shot_by']][0]
+                        shot_list.append(shot)
+                    
+                    point_dict['shots'] = shot_list
 
                     point_list.append(point_dict)
 

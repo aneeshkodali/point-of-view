@@ -48,6 +48,10 @@ def getShotData(rally_list, point_id, player_list, result):
         # result
         first_serve_dict['result'] = 'fault'
 
+        # save
+        first_serve_model = ShotModel(**first_serve_dict)
+        first_serve_model.save()
+
         # append to list
         shots.append(first_serve_dict)
 
@@ -82,6 +86,8 @@ def getShotData(rally_list, point_id, player_list, result):
 
         # result
         shot_dict['result'] = result if i == len(rally_list)-1 else 'none'
+
+        shots.append(shot_dict)
 
 
         # add record
