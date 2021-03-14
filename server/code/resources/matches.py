@@ -17,6 +17,7 @@ from models.points import PointModel
 from models.rounds import RoundModel
 from models.set_players import SetPlayerModel
 from models.sets import SetModel
+from models.sides import SideModel
 from models.surfaces import SurfaceModel
 from models.tournament_names import TournamentNameModel
 from models.tournaments import TournamentModel
@@ -100,7 +101,11 @@ class Match(Resource):
                     point_dict['point_in_game'] = point['point_in_game']
                     point_dict['point_in_set'] = point['point_in_set']
                     point_dict['point_in_match'] = point['point_in_match']
+                    point_dict['side_id'] = SideModel.objects(side_id=point['side_id']).first().as_dict()
                     point_dict['score'] = point['score']
+                    point_dict['number_of_shots'] = point['number_of_shots']
+                    point_dict['rally_length'] = point['rally_length']
+                    point_dict['result'] = point['result'] 
                     point_dict['players'] = []
 
                     point_players = [point_player.as_dict() for point_player in PointPlayerModel.objects(point_id=point['point_id']).order_by('-win')]
