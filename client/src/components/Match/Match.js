@@ -36,7 +36,7 @@ const Match = props => {
     const [tabSelected, setTabSelected] = useState(tabs[0]);
 
     // display loading icon if match data not found
-    if (!matchData) {
+    if (Object.keys(matchData).length === 0) {
         return (
             <Loader text={'Loading Match Data...'} />
         );
