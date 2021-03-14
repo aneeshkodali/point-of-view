@@ -4,6 +4,8 @@ from flask_restful import Resource
 # project imports
 from models.backhands import BackhandModel
 from models.countries import CountryModel
+from models.game_players import GamePlayerModel
+from models.games import GameModel
 from models.genders import GenderModel
 from models.hands import HandModel
 from models.levels import LevelModel
@@ -11,6 +13,8 @@ from models.match_players import MatchPlayerModel
 from models.matches import MatchModel
 from models.players import PlayerModel
 from models.rounds import RoundModel
+from models.set_players import SetPlayerModel
+from models.sets import SetModel
 from models.surfaces import SurfaceModel
 from models.tournament_names import TournamentNameModel
 from models.tournaments import TournamentModel
@@ -24,7 +28,7 @@ class Match(Resource):
         match = match_model.as_dict()
 
         # get player data
-        match_players = [match_player.as_dict() for match_player in MatchPlayerModel.objects(match_id=match['match_id'])]
+        match_players = [match_player.as_dict() for match_player in MatchPlayerModel.objects(match_id=match['match_id']).order_by('-win')]
         players = []
         for match_player in match_players:
             player = PlayerModel.objects(player_id=match_player['player_id']).first().as_dict()
@@ -47,6 +51,49 @@ class Match(Resource):
         tournament['surface_id'] = SurfaceModel.objects(surface_id=tournament['surface_id']).first().as_dict()
         tournament['tournament_name_id'] = TournamentNameModel.objects(tournament_name_id=tournament['tournament_name_id']).first().as_dict()
         match['tournament'] = tournament
+
+        # get set data
+        match_sets = [match_set.as_dict() for match_set in SetModel.objects(match_id=match['match_id']).order_by('set_in_match')]
+        set_list = []            
+        for match_set in match_sets:
+
+            set_dict = {}
+            set_dict['set_in_match'] = match_set['set_in_match']
+            set_dict['score'] = match_set['score']
+            set_dict['players'] = []
+
+            match_set_players = [set_player.as_dict() for set_player in SetPlayerModel.objects(set_id=match_set['set_id']).order_by('-win')]
+            for match_set_player in match_set_players:
+                match_set_player_dict = {}
+                match_set_player_dict['player'] = [player['full_name'] for player in players if player['player_id'] == match_set_player['player_id']][0]
+                match_set_player_dict['score'] = match_set_player['score']
+                match_set_player_dict['win'] = match_set_player['win']
+                set_dict['players'].append(match_set_player_dict)
+
+            # get game data
+            games = [game.as_dict() for game in GameModel.objects(set_id=match_set['set_id']).order_by('game_in_set')]
+            game_list = []
+            for game in games:
+
+                game_dict = {}
+                game_dict['game_in_set'] = game['game_in_set']
+                game_dict['score'] = game['score']
+                game_dict['players'] = []
+
+                game_players = [game_player.as_dict() for game_player in GamePlayerModel.objects(game_id=game['game_id']).order_by('-win')]
+                for game_player in game_players:
+                    game_player_dict = {}
+                    game_player_dict['player'] = [player['full_name'] for player in players if player['player_id'] == game_player['player_id']][0]
+                    game_player_dict['score'] = game_player['score']
+                    game_player_dict['win'] = game_player['win']
+                    game_dict['players'].append(game_player_dict)
+                
+                game_list.append(game_dict)
+            
+            set_dict['games'] = game_list
+
+            set_list.append(set_dict)
+        match['sets'] = set_list
 
 
         return {'match': match}
