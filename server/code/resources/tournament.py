@@ -1,95 +1,95 @@
-from flask_restful import Resource, reqparse
-from models.tournament import TournamentModel
-from scraper.tournament import constructTournamentLink, getTournamentData
+#from flask_restful import Resource, reqparse
+#from models.tournament import TournamentModel
+#from scraper.tournament import constructTournamentLink, getTournamentData
 
-class Tournament(Resource):
-
-    
-    # GET - get info about one tournament
-    def get(self):
-
-        # create parser
-        parser = reqparse.RequestParser()
-        parser.add_argument('name',
-                            type=str,
-                            required=True,
-                            help='Must provide tournament name'
-                            )
-        parser.add_argument('gender',
-                            type=str,
-                            required=True,
-                            help='Must provide tournament gender'
-                            )
-
-        # get data from request body
-        data = parser.parse_args()
-        name = data['name']
-        gender = data['gender']
-
-        tournament = TournamentModel.find_by_name_and_gender(name, gender)
-        # if tournament exists, return it, else return 'not found' error
-        if tournament:
-            return tournament.json()
-        return {'message': f"Tournament '{name}' for gender '{gender}' not found"}, 404
-
-    # POST - create new tournament
-    def post(self):
-        
-        # create parser
-        parser = reqparse.RequestParser()
-        parser.add_argument('name',
-                            type=str,
-                            required=True,
-                            help='Must provide tournament name'
-                            )
-        parser.add_argument('gender',
-                            type=str,
-                            required=True,
-                            help='Must provide tournament gender'
-                            )
-        parser.add_argument('year',
-                    type=str,
-                    required=True,
-                    help='Must provide a year'
-                    )
-
-        # get data from request body
-        data = Tournament.parser.parse_args()
-        name = data['name']
-        gender = data['gender']
-        
-        # if tournament exists, return 'bad request' error
-        if TournamentModel.find_by_name_and_gender(name, gender):
-            return {'message': f"Tournament '{name}' for gender '{gender}' already exists"}, 400
+#class Tournament(Resource):
 
     
-        # create Tournament object
-        tournament_link = constructTournamentLink(**data)
-        tournament_data = getTournamentData(tournament_link)
-        tournament_model = TournamentModel(**tournament_data)
+#    # GET - get info about one tournament
+#    def get(self):
 
-        # insert into db, return 'server' error
-        try:
-            tournament_model.save()
-        except Exception as e:
-            return {
-                    'message': 'An error occurred inserting the tournament',
-                    'error': str(e)
-                    }, 500
+#        # create parser
+#        parser = reqparse.RequestParser()
+#        parser.add_argument('name',
+#                            type=str,
+#                            required=True,
+#                            help='Must provide tournament name'
+#                            )
+#        parser.add_argument('gender',
+#                            type=str,
+#                            required=True,
+#                            help='Must provide tournament gender'
+#                            )
+
+#        # get data from request body
+#        data = parser.parse_args()
+#        name = data['name']
+#        gender = data['gender']
+
+#        tournament = TournamentModel.find_by_name_and_gender(name, gender)
+#        # if tournament exists, return it, else return 'not found' error
+#        if tournament:
+#            return tournament.json()
+#        return {'message': f"Tournament '{name}' for gender '{gender}' not found"}, 404
+
+#    # POST - create new tournament
+#    def post(self):
         
-        return tournament_model.json(), 201
+#        # create parser
+#        parser = reqparse.RequestParser()
+#        parser.add_argument('name',
+#                            type=str,
+#                            required=True,
+#                            help='Must provide tournament name'
+#                            )
+#        parser.add_argument('gender',
+#                            type=str,
+#                            required=True,
+#                            help='Must provide tournament gender'
+#                            )
+#        parser.add_argument('year',
+#                    type=str,
+#                    required=True,
+#                    help='Must provide a year'
+#                    )
 
-class TournamentID(Resource):
+#        # get data from request body
+#        data = Tournament.parser.parse_args()
+#        name = data['name']
+#        gender = data['gender']
+        
+#        # if tournament exists, return 'bad request' error
+#        if TournamentModel.find_by_name_and_gender(name, gender):
+#            return {'message': f"Tournament '{name}' for gender '{gender}' already exists"}, 400
 
-    # GET method
-    def get(self, id):
-        tournament = TournamentModel.find_by_id(id)
-        if tournament:
-            return tournament.json()
-        return {'message': 'Tournament not found'}, 404
+    
+#        # create Tournament object
+#        tournament_link = constructTournamentLink(**data)
+#        tournament_data = getTournamentData(tournament_link)
+#        tournament_model = TournamentModel(**tournament_data)
 
-class Tournaments(Resource):
+#        # insert into db, return 'server' error
+#        try:
+#            tournament_model.save()
+#        except Exception as e:
+#            return {
+#                    'message': 'An error occurred inserting the tournament',
+#                    'error': str(e)
+#                    }, 500
+        
+#        return tournament_model.json(), 201
 
-    # GET method
-    def get(self):
-        return {'tournaments': json.loads(TournamentModel.objects().fields(title=1).to_json())}
+#class TournamentID(Resource):
+
+#    # GET method
+#    def get(self, id):
+#        tournament = TournamentModel.find_by_id(id)
+#        if tournament:
+#            return tournament.json()
+#        return {'message': 'Tournament not found'}, 404
+
+#class Tournaments(Resource):
+
+#    # GET method
+#    def get(self):
+#        return {'tournaments': json.loads(TournamentModel.objects().fields(title=1).to_json())}

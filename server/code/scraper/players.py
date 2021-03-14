@@ -3,19 +3,28 @@ from bs4 import BeautifulSoup
 import ast
 import datetime
 
-from scraper.helper import extractVariableFromText
+from models.players import PlayerModel
+import scraper.helper as helper
 
 def getPlayerData(link):
 
     '''
-    Takes in a player link and returns a dictionary of player data
+    Takes in a player link and returns a PlayerModel(dictionary of player data)
     '''
 
-    # initialize dictionary
-    player_dict = {}
+    # initialize model
+    player_model = PlayerModel()
 
-    player_dict['link'] = link
-    player_dict['gender'] = 'W' if 'wplayer' in link else 'M'
+    # link
+    player_model['link'] = link
+
+    # gender
+    try:
+        gender = 'W' if 'wplayer' in link else 'M'
+        gender_model = helper.getGenderModel(gender)
+        player_model['gender_id'] = gender_model['gender_id']
+    except:
+        pass
 
     # create BeautifulSoup object
     page = requests.get(link)
@@ -24,54 +33,67 @@ def getPlayerData(link):
     # data is in the '4th' <script> tag
     text = str(soup.select('script')[3])
 
-    #### GET VARIABLE DATA
-
-    # easier to create list of dictionaries comprising of <column_name>:<variable_to_look_for_in_text> pairs
-    column_variables = [
-                        {'column_name': 'full_name', 'variable_name': 'fullname'},
-                        {'column_name': 'last_name', 'variable_name': 'lastname'},
-                        {'column_name': 'height', 'variable_name': 'ht'},
-                        {'column_name': 'hand', 'variable_name': 'hand'},
-                        {'column_name': 'backhand', 'variable_name': 'backhand'},
-                        {'column_name': 'country', 'variable_name': 'country'},
-                        ]
-    # loop through key, value pairs
-    for column_variable in column_variables:
-        column = column_variable['column_name']
-        variable = column_variable['variable_name']
-
-        # if value exists AND value not equal to empty string, add it to dictionary
-        try:
-            column_value = extractVariableFromText(text, variable)
-            if column_value:
-                player_dict[column] = column_value
-
-        except:
-            pass
-
-    # date of birth
+    # full_name
     try:
-        date_of_birth = extractVariableFromText(text, 'dob')
+        full_name = helper.extractVariableFromText(text, 'fullname')
+        if full_name:
+            player_model['full_name'] = full_name
+    except:
+        pass
+
+    # height
+    try:
+        height = helper.extractVariableFromText(text, 'ht')
+        if height:
+            player_model['height'] = height
+    except:
+        pass
+
+    try:
+        date_of_birth = helper.extractVariableFromText(text, 'dob')
         if date_of_birth:
             year = int(date_of_birth[:4])
             month = int(date_of_birth[4:6])
             day = int(date_of_birth[6:8])
-            player_dict['date_of_birth'] = datetime.datetime(year, month, day)
+            player_model['date_of_birth'] = datetime.datetime(year, month, day)
+    except:
+        pass
+
+    # hand
+    try:
+        hand = helper.extractVariableFromText(text, 'hand')
+        hand_model = helper.getHandModel(hand)
+        player_model['hand_id'] = hand_model['hand_id']
+    except:
+        pass
+
+    # backhand
+    try:
+        backhand = helper.extractVariableFromText(text, 'backhand')
+        backhand_model = helper.getBackhandModel(backhand)
+        player_model['backhand_id'] = backhand_model['backhand_id']
+    except:
+        pass
+
+    # country
+    try:
+        country = helper.extractVariableFromText(text, 'country')
+        country_model = helper.getCountryModel(country)
+        player_model['country_id'] = country_model['country_id']
     except:
         pass
 
     # image url
-    # this is outside of loop because it's special: have to check if full_name in dictionary
     try:
-        photog = extractVariableFromText(text, 'photog')
-        full_name = player_dict['full_name']
+        photog = helper.extractVariableFromText(text, 'photog')
+        full_name = player_model['full_name']
         if photog and full_name:
-            player_dict['image_url'] = f"http://www.tennisabstract.com/photos/{full_name.lower().replace(' ', '_')}-{photog}.jpg"
+            player_model['image_url'] = f"http://www.tennisabstract.com/photos/{full_name.lower().replace(' ', '_')}-{photog}.jpg"
     except:
         pass
     
 
-    return player_dict
+    return player_model
 
 
 def getPlayerList(link='http://www.minorleaguesplits.com/tennisabstract/cgi-bin/jsplayers/mwplayerlist.js'):

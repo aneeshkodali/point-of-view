@@ -1,5 +1,5 @@
 from flask_restful import Resource, reqparse
-from models.player import PlayerModel
+from models.players import PlayerModel
 from scraper.player import constructPlayerLink, getPlayerData
 
 class Player(Resource):
@@ -24,7 +24,7 @@ class Player(Resource):
         name = data['name']
 
         # if player exists, return 'bad request' error
-        if PlayerModel.find_by_name(name):
+        if PlayerModel.find_by_full_name(name):
             return {'message': f"Player '{name}' already exists"}, 400
 
     
