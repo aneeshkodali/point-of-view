@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 
-import { createArrayOneToN } from '../../../helper/functions';
 
 const Set = (sets, useAll) => {
     // state for set selected
-    const setArray = createArrayOneToN(sets);
-    const setNums = useAll ? ['All'].concat(setArray) : setArray;
+    const setNums = useAll ? ['All'].concat(sets) : sets;
     const [setNumSelected, setSetNumSelected] = useState(setNums[0]);
 
     // radio options for set selected

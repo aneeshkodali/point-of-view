@@ -4,10 +4,10 @@ import server from '../../api/server';
 import About from './About/About';
 import Table from './Data/Table';
 import Loader from '../Loader';
-import PointsWon from './Charts/PointsWon';
-import PointMap from './Charts/PointMap';
-import PointsToSet from './Charts/PointsToSet';
-import RallyTree from './Charts/RallyTree';
+//import PointsWon from './Charts/PointsWon';
+//import PointMap from './Charts/PointMap';
+//import PointsToSet from './Charts/PointsToSet';
+//import RallyTree from './Charts/RallyTree';
 
 const Match = props => {
 
@@ -63,10 +63,10 @@ const Match = props => {
                 return (
                     <About matchData={matchData} />  
                 );
-            //case 'Data':
-            //    return (
-            //        <Table matchData={matchData} />
-            //    );
+            case 'Data':
+                return (
+                    <Table matchData={matchData} />
+                );
             //case 'Points Won':
             //    return (
             //        <PointsWon matchData={matchData} />

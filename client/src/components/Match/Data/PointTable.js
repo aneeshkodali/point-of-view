@@ -6,22 +6,35 @@ const PointTable = ({ points, pointSelected, selectPoint }) => {
 
     // display points
     const pointsRendered = points.map(point => {
-        const { point_number, set_score, game_score, point_score, side, server, rally_length, result, winner, shots } = point;
+        const { point_in_match, game_in_match, set_in_match, side_id, score, rally_length, result, server, winner, shots } = point;
 
         // highlight row if point is pointSelected
-        const rowHighlighting = point_number === pointSelected['point_number'] ? 'lightgreen' : '';
+        const rowStyling = point => {
+            let backgroundColor;
+            if (point['point_in_match'] === pointSelected['point_in_match']) {
+                backgroundColor = 'lightgreen';
+            } else {
+                backgroundColor = point['game_in_match'] % 2 === 0 ? 'lightgray' : '';
+            }
+
+            return {
+                'cursor': 'pointer',
+                'backgroundColor': backgroundColor
+            }
+        }
+        
 
         return (
-            <tr key={point_number} onClick={() => selectPoint(point, pointSelected)} style={{'cursor': 'pointer', 'backgroundColor': rowHighlighting}}>
-                <td>{point_number}</td>
-                <td>{set_score}</td>
-                <td>{game_score}</td>
-                <td>{point_score}</td>
-                <td>{side}</td>
-                <td>{server.full_name}</td>
+            <tr key={point_in_match} onClick={() => selectPoint(point, pointSelected)} style={rowStyling(point)}>
+                <td>{set_in_match}</td>
+                <td>{game_in_match}</td>
+                <td>{point_in_match}</td>
+                <td>{score}</td>
+                <td>{side_id['side']}</td>
+                <td>{server}</td>
                 <td>{rally_length}</td>
                 <td>{result}</td>
-                <td>{winner['full_name']}</td>
+                <td>{winner}</td>
             </tr>
         );
     });
@@ -30,14 +43,14 @@ const PointTable = ({ points, pointSelected, selectPoint }) => {
     return (
         <div>
             <h1 className="ui header">Point Table</h1>
-            Point # Selected: <b>{pointSelected.point_number}</b>
+            Point # Selected: <b>{pointSelected['point_in_match']}</b>
             <table className="ui celled table">
                 <thead>
                     <tr>
-                        <th>Point Number</th>
-                        <th>Set Score</th>
-                        <th>Game Score</th>
-                        <th>Point Score</th>
+                        <th>Set</th>
+                        <th>Game</th>
+                        <th>Point</th>
+                        <th>Score</th>
                         <th>Side</th>
                         <th>Server</th>
                         <th>Rally Length</th>
