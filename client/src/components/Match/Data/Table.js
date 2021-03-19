@@ -14,6 +14,16 @@ const Table = ({ matchData }) => {
     // potentially filter sets based on setSelected
     sets = setNumSelected === 'All' ? sets : sets.filter(set => set['set_in_match'] === setNumSelected)
 
+     // function to determine score text to display (based on set selected)
+     const scoreText = () => {
+        if (setNumSelected === 'All') {
+            return `${matchData['players'][0]['full_name']} d. ${matchData['players'][1]['full_name']} ${matchData['score']}`
+        } else {
+            return `${sets[0]['players'][0]['player']} d. ${sets[0]['players'][1]['player']} ${sets[0]['score']}`
+        }
+    }
+
+
     // get points
     const points = [];
     sets.forEach(set => {
@@ -49,6 +59,7 @@ const Table = ({ matchData }) => {
         }
     }
 
+   
 
     return (
         <div>
@@ -57,6 +68,9 @@ const Table = ({ matchData }) => {
                     <label>Set</label>
                     {setNumOptions}
                 </div>
+            </div>
+            <div>
+                {scoreText()}
             </div>
             <div>
                 <div>
