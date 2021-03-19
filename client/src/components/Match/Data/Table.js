@@ -58,7 +58,35 @@ const Table = ({ matchData }) => {
                     {setNumOptions}
                 </div>
             </div>
-            Click on a point (row) and see details about that point's rally.
+            <div>
+                <div>
+                    Click on a point (row) and see details about that point's rally in the Shot Table.
+                </div>
+                <div>
+                    The coloring of certain groups of points helps distinguish one game from another.
+                </div>
+            </div>
+            <div>
+                <strong>Note: </strong>Rally Length in the Point Table denotes either (number of shots denotes how many times the ball was touched by a player):
+                <ol>
+                    <li>
+                        number of shots if the point ended via ace, service winner, or winner
+                    </li>
+                    <li>
+                        number of shots - 1 if the point ended via double fault, forced error, or unforced error
+                    </li>
+                </ol>
+            </div>
+            <div>
+                The Shot Table denotes how many times the ball was touched by a player. For example, if a player double faults (meaning a Rally Length of 0), there will be two shots in the Shot Table (one for each serve attempt).
+            </div>
+            <div>
+                <strong>Note: </strong>The Shot Number w/Serve denotes how many times a player touches a ball. The Shot Number is similar, except, in the event that a player misses a first serve attempt and must hit a second serve, it groups both serves as Shot Number with value of 1. So
+                <ul>
+                    <li>if a player makes a first serve, Shot Number and Shot Number w/Serve will be identical</li>
+                    <li>if a player misses a first serve, Shot Number and Shot Number w/Serve will differ by 1 after the first serve</li>
+                </ul>
+            </div>
             <div className="ui grid">
                 <div className="eight wide column">
                     <PointTable points={points} pointSelected={pointSelected} selectPoint={selectPoint} />
