@@ -16,6 +16,7 @@ class MatchModel(BaseMixin, Document):
     round_id = IntField(required=True)
     score = StringField(default="")
     sets = IntField(default=0)
+    suffix = StringField()
     link = URLField(unique=True, nullable=False)
 
     meta = {'collection': 'matches'}

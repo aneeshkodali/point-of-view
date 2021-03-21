@@ -69,7 +69,7 @@ class Match(Resource):
             match_set_players = [set_player.as_dict() for set_player in SetPlayerModel.objects(set_id=match_set['set_id']).order_by('-win')]
             for match_set_player in match_set_players:
                 match_set_player_dict = {}
-                match_set_player_dict['player'] = [player['full_name'] for player in players if player['player_id'] == match_set_player['player_id']][0]
+                match_set_player_dict['full_name'] = [player['full_name'] for player in players if player['player_id'] == match_set_player['player_id']][0]
                 match_set_player_dict['score'] = match_set_player['score']
                 match_set_player_dict['win'] = match_set_player['win']
                 set_dict['players'].append(match_set_player_dict)
@@ -89,7 +89,7 @@ class Match(Resource):
                 game_players = [game_player.as_dict() for game_player in GamePlayerModel.objects(game_id=game['game_id']).order_by('-win')]
                 for game_player in game_players:
                     game_player_dict = {}
-                    game_player_dict['player'] = [player['full_name'] for player in players if player['player_id'] == game_player['player_id']][0]
+                    game_player_dict['full_name'] = [player['full_name'] for player in players if player['player_id'] == game_player['player_id']][0]
                     game_player_dict['score'] = game_player['score']
                     game_player_dict['win'] = game_player['win']
                     game_dict['players'].append(game_player_dict)
@@ -114,7 +114,7 @@ class Match(Resource):
                     point_players = [point_player.as_dict() for point_player in PointPlayerModel.objects(point_id=point['point_id']).order_by('-win')]
                     for point_player in point_players:
                         point_player_dict = {}
-                        point_player_dict['player'] = [player['full_name'] for player in players if player['player_id'] == point_player['player_id']][0]
+                        point_player_dict['full_name'] = [player['full_name'] for player in players if player['player_id'] == point_player['player_id']][0]
                         point_player_dict['score'] = point_player['score']
                         point_player_dict['serve'] = point_player['serve']
                         point_player_dict['win'] = point_player['win']
