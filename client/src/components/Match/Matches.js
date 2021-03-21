@@ -19,10 +19,10 @@ const Matches = () => {
 
 
     const matchesRendered = matches.map(match => {
-        const { match_id, name } = match
+        const { match_id, name, suffix } = match
         return (
             <div key={match_id}>
-                <Link to={`/matches/${match_id}`}>{name}</Link>
+                <Link to={`/matches/${suffix}`}>{name}</Link>
             </div>
         );
     });

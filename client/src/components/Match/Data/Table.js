@@ -19,7 +19,7 @@ const Table = ({ matchData }) => {
         if (setNumSelected === 'All') {
             return `${matchData['players'][0]['full_name']} d. ${matchData['players'][1]['full_name']} ${matchData['score']}`
         } else {
-            return `${sets[0]['players'][0]['player']} d. ${sets[0]['players'][1]['player']} ${sets[0]['score']}`
+            return `${sets[0]['players'][0]['full_name']} d. ${sets[0]['players'][1]['full_name']} ${sets[0]['score']}`
         }
     }
 
@@ -31,8 +31,8 @@ const Table = ({ matchData }) => {
         games.forEach(game => {
             const point_list = game['points']
             point_list.forEach(point => {
-                point['winner'] = point['players'].filter(player => player['win'] === 1)[0]['player']
-                point['server'] = point['players'].filter(player => player['serve'] === 1)[0]['player']
+                point['winner'] = point['players'].filter(player => player['win'] === 1)[0]['full_name']
+                point['server'] = point['players'].filter(player => player['serve'] === 1)[0]['full_name']
                 point['game_in_match'] = game['game_in_match']
                 point['set_in_match'] = set['set_in_match']
                 points.push(point)

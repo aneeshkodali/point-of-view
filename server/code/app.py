@@ -34,7 +34,7 @@ api = Api(app)
 def index():
     return 'Hello World'
 
-api.add_resource(Match, '/server/matches/<string:match_id>')
+api.add_resource(Match, '/server/matches/<string:suffix>')
 api.add_resource(Matches, '/server/matches')
 
 #### RUN APP

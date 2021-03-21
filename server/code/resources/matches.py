@@ -25,10 +25,10 @@ from models.tournaments import TournamentModel
 
 class Match(Resource):
 
-    def get(self, match_id):
+    def get(self, suffix):
 
         # query for match
-        match_model = MatchModel.objects(match_id=match_id).first()
+        match_model = MatchModel.objects(suffix=suffix).first()
         match = match_model.as_dict()
 
         # get player data
@@ -150,4 +150,4 @@ class Matches(Resource):
 
     # GET method
     def get(self):
-        return {'matches': [{k:match[k] for k in ['match_id', 'name']} for match in MatchModel.objects()]}
+        return {'matches': [{k:match[k] for k in ['match_id', 'name', 'suffix']} for match in MatchModel.objects()]}

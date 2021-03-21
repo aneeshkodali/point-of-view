@@ -11,16 +11,16 @@ import Loader from '../Loader';
 
 const Match = props => {
 
-    // get match id
-    const match_id = props.match.params.id;
+    // get match suffix
+    const suffix = props.match.params.suffix;
 
     // state for match data
     const [matchData, setMatchData] = useState({});
 
 
     // function to get match data
-    const getMatchData = async match_id => {
-        const match_response = await server.get(`/server/matches/${match_id}`);
+    const getMatchData = async suffix => {
+        const match_response = await server.get(`/server/matches/${suffix}`);
         const match_data = match_response.data.match;
         setMatchData(match_data);
        }
@@ -28,7 +28,7 @@ const Match = props => {
 
     // get match data on component render
     useEffect(() => {
-        getMatchData(match_id);
+        getMatchData(suffix);
     }, []);
 
     // state for tabs
