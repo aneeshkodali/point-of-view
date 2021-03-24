@@ -18,7 +18,7 @@ class PlayerModel(BaseMixin, Document):
     hand_id = IntField(required=True)
     backhand_id = IntField(required=True)
     country_id = IntField(required=True)
-    image_url = URLField(default="")
+    image_url = StringField(default="")
     link = URLField(unique=True, nullable=False)
     
 
