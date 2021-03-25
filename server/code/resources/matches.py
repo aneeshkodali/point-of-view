@@ -40,6 +40,7 @@ class Match(Resource):
             player['country_id'] = CountryModel.objects(country_id=player['country_id']).first().as_dict()
             player['gender_id'] = GenderModel.objects(gender_id=player['gender_id']).first().as_dict()
             player['hand_id'] = HandModel.objects(hand_id=player['hand_id']).first().as_dict()
+            player['score'] = match_player['score']
             player['win'] = match_player['win']
             players.append(player)
         match['players'] = players
@@ -63,7 +64,6 @@ class Match(Resource):
 
             set_dict = {}
             set_dict['set_in_match'] = match_set['set_in_match']
-            set_dict['score'] = match_set['score']
             set_dict['players'] = []
 
             match_set_players = [set_player.as_dict() for set_player in SetPlayerModel.objects(set_id=match_set['set_id']).order_by('-win')]
@@ -83,7 +83,6 @@ class Match(Resource):
                 game_dict = {}
                 game_dict['game_in_set'] = game['game_in_set']
                 game_dict['game_in_match'] = game['game_in_match']
-                game_dict['score'] = game['score']
                 game_dict['players'] = []
 
                 game_players = [game_player.as_dict() for game_player in GamePlayerModel.objects(game_id=game['game_id']).order_by('-win')]
@@ -105,7 +104,6 @@ class Match(Resource):
                     point_dict['point_in_set'] = point['point_in_set']
                     point_dict['point_in_match'] = point['point_in_match']
                     point_dict['side_id'] = SideModel.objects(side_id=point['side_id']).first().as_dict()
-                    point_dict['score'] = point['score']
                     point_dict['number_of_shots'] = point['number_of_shots']
                     point_dict['rally_length'] = point['rally_length']
                     point_dict['result'] = point['result'] 

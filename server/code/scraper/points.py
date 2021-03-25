@@ -43,10 +43,9 @@ def getPointData(match_soup, match_id, player_id_dict):
         set_score_receiver = int(last_point_in_set['set_score_receiver'])
         set_score_winner = set_score_server if winner == server else set_score_receiver
         set_score_loser = set_score_server if winner != server else set_score_receiver
-        set_score = f"{set_score_winner}-{set_score_loser}"
 
         # create SetModel
-        set_model = SetModel(**{'set_in_match': set_in_match, 'match_id': match_id, 'score': set_score})
+        set_model = SetModel(**{'set_in_match': set_in_match, 'match_id': match_id})
         set_model.save()
         set_id = set_model['set_id']
 
@@ -71,14 +70,13 @@ def getPointData(match_soup, match_id, player_id_dict):
             game_in_match = last_point_in_game['game_in_match']
             winner = last_point_in_game['winner']
             loser = last_point_in_game['loser']
-            game_score = last_point_in_game['game_score']
             game_score_server = last_point_in_game['game_score_server']
             game_score_receiver = last_point_in_game['game_score_receiver']
             game_score_winner = game_score_server if winner == server else game_score_receiver
             game_score_loser = game_score_server if winner != server else game_score_receiver
 
             # create GameModel
-            game_model = GameModel(**{'set_id': set_id, 'game_in_set': game_in_set, 'game_in_match': game_in_match, 'score': game_score})
+            game_model = GameModel(**{'set_id': set_id, 'game_in_set': game_in_set, 'game_in_match': game_in_match})
             game_model.save()
             game_id = game_model['game_id']
 
@@ -119,7 +117,7 @@ def getPointData(match_soup, match_id, player_id_dict):
                 side_id = getSideModel(side)['side_id']
 
                 # create PointModel
-                point_model = PointModel(**{'game_id': game_id, 'point_in_game': point_in_game, 'point_in_set': point_in_set, 'point_in_match': point_in_match, 'number_of_shots': number_of_shots, 'rally_length': rally_length, 'result': result, 'side_id': side_id, 'score': point_score})
+                point_model = PointModel(**{'game_id': game_id, 'point_in_game': point_in_game, 'point_in_set': point_in_set, 'point_in_match': point_in_match, 'number_of_shots': number_of_shots, 'rally_length': rally_length, 'result': result, 'side_id': side_id})
                 point_model.save()
                 point_id = point_model['point_id']
 

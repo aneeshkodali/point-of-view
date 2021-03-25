@@ -98,14 +98,14 @@ def getMatchData(link):
         winner_id = player_one_id if winner_name == player_one_name else player_two_id
         loser_id = player_one_id if winner_name != player_one_name else player_two_id
         
-        score = result.split(f"{loser_name} ")[1]
-        sets = len(score.split(' '))
+        score_winner = result.split(f"{loser_name} ")[1]
+        sets = len(score_winner.split(' '))
 
         if result:
-            match_model['score'] = score
+            score_loser = ' '.join([f"{x.split('-')[1]}-{x.split('-')[0]}" for x in score_winner.split(' ')])
             match_model['sets'] = sets
-            MatchPlayerModel(**{'match_id': match_model['match_id'], 'player_id': winner_id, 'win': 1}).save()
-            MatchPlayerModel(**{'match_id': match_model['match_id'], 'player_id': loser_id, 'win': 0}).save()
+            MatchPlayerModel(**{'match_id': match_model['match_id'], 'player_id': winner_id, 'score': score_winner, 'win': 1}).save()
+            MatchPlayerModel(**{'match_id': match_model['match_id'], 'player_id': loser_id, 'score': score_loser, 'win': 0}).save()
 
     except:
         pass

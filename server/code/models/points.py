@@ -19,7 +19,6 @@ class PointModel(BaseMixin, Document):
     rally_length =  IntField()
     result = StringField()
     side_id = IntField(required=True)
-    score = StringField()
 
     meta = {'collection': 'points'}
 
