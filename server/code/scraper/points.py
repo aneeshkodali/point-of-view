@@ -39,11 +39,11 @@ def getPointData(match_soup, match_id, player_id_dict):
         server = last_point_in_set['server']
         winner = last_point_in_set['winner']
         loser = last_point_in_set['loser']
-        game_score_server = int(last_point_in_set['game_score_server'])
-        game_score_receiver = int(last_point_in_set['game_score_receiver'])
-        game_score_winner = game_score_server+1 if winner == server else game_score_receiver+1
-        game_score_loser = game_score_server if winner != server else game_score_receiver
-        set_score = f"{game_score_winner}-{game_score_loser}"
+        set_score_server = int(last_point_in_set['set_score_server'])
+        set_score_receiver = int(last_point_in_set['set_score_receiver'])
+        set_score_winner = set_score_server if winner == server else set_score_receiver
+        set_score_loser = set_score_server if winner != server else set_score_receiver
+        set_score = f"{set_score_winner}-{set_score_loser}"
 
         # create SetModel
         set_model = SetModel(**{'set_in_match': set_in_match, 'match_id': match_id, 'score': set_score})
@@ -51,8 +51,8 @@ def getPointData(match_soup, match_id, player_id_dict):
         set_id = set_model['set_id']
 
         # create SetPlayerModel
-        SetPlayerModel(**{'set_id': set_id, 'player_id': player_id_dict[winner], 'win': 1, 'score': game_score_winner}).save()
-        SetPlayerModel(**{'set_id': set_id, 'player_id': player_id_dict[loser], 'win': 0, 'score': game_score_loser}).save()  
+        SetPlayerModel(**{'set_id': set_id, 'player_id': player_id_dict[winner], 'win': 1, 'score': set_score_winner}).save()
+        SetPlayerModel(**{'set_id': set_id, 'player_id': player_id_dict[loser], 'win': 0, 'score': set_score_loser}).save()  
 
         # get list of games
         games_in_set = list(set_df['game_in_set'].unique())
