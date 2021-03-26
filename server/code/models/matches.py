@@ -14,8 +14,8 @@ class MatchModel(BaseMixin, Document):
     date = DateField(default=default_date_value)
     tournament_id = StringField(required=True)
     round_id = IntField(required=True)
-    score = StringField(default="")
     sets = IntField(default=0)
+    suffix = StringField(unique=True, nullable=False)
     link = URLField(unique=True, nullable=False)
 
     meta = {'collection': 'matches'}

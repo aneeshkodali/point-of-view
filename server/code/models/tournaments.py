@@ -13,13 +13,13 @@ class TournamentModel(BaseMixin, Document):
     tournament_id = StringField(primary_key=True, default=default_uuid_value)
     tournament_name_id = StringField(required=True, default=default_tournament_name_id_value)
     year = IntField(default=default_year_value)
-    gender_id = IntField(required=True)
+    gender_id = IntField(required=True, default=0)
     date = DateField(default=default_date_value)
     size = IntField(default=0)
     points = IntField(default=0)
     sets = IntField(default=0)
-    surface_id = IntField(required=True)
-    level_id = IntField(required=True)
+    surface_id = IntField(required=True, default=0)
+    level_id = IntField(required=True, default=0)
     link = URLField(unique=True, nullable=False)
 
     meta = {'collection': 'tournaments'}

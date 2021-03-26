@@ -14,11 +14,11 @@ class PlayerModel(BaseMixin, Document):
     full_name = StringField(default="")
     date_of_birth = DateField(default=default_date_value)
     height = IntField(default=0)
-    gender_id = IntField(required=True)
-    hand_id = IntField(required=True)
-    backhand_id = IntField(required=True)
-    country_id = IntField(required=True)
-    image_url = URLField(default="")
+    gender_id = IntField(required=True, default=0)
+    hand_id = IntField(required=True, default=0)
+    backhand_id = IntField(required=True, default=0)
+    country_id = IntField(required=True, default=0)
+    image_url = StringField(default="")
     link = URLField(unique=True, nullable=False)
     
 

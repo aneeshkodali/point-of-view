@@ -11,7 +11,7 @@ const ShotTable = ({ shots }) => {
             <tr key={shot_number_w_serve}>
                 <td>{shot_number}</td>
                 <td>{shot_number_w_serve}</td>
-                <td>{shot_by.full_name}</td>
+                <td>{shot_by}</td>
                 <td>{shot}</td>
                 <td>{location}</td>
                 <td>{result}</td>

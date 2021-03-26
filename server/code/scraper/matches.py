@@ -23,7 +23,10 @@ def getMatchData(link):
 
     # parse link for data
     # after the stem, link is of the form <date>-<gender>-<tournament>-<round>-<player1>-<player2>.html
-    suffix = link.split(url_stem)[1].split('-')
+    match_suffix = link.split(url_stem)[1].replace('.html','')
+    match_model['suffix'] = match_suffix
+
+    suffix = match_suffix.split('-')
 
     # date
     try:
@@ -83,7 +86,7 @@ def getMatchData(link):
         player_one_id = helper.getPlayerModel(player_one_link)['player_id']
         player_id_dict[player_one_name] = player_one_id
 
-        player_two_name = suffix[5].replace('_', ' ').replace('.html','')
+        player_two_name = suffix[5].replace('_', ' ')
         player_two_link = constructPlayerLink(player_two_name, gender)
         player_two_id = helper.getPlayerModel(player_two_link)['player_id']
         player_id_dict[player_two_name] = player_two_id
@@ -95,14 +98,14 @@ def getMatchData(link):
         winner_id = player_one_id if winner_name == player_one_name else player_two_id
         loser_id = player_one_id if winner_name != player_one_name else player_two_id
         
-        score = result.split(f"{loser_name} ")[1]
-        sets = len(score.split(' '))
+        score_winner = result.split(f"{loser_name} ")[1]
+        sets = len(score_winner.split(' '))
 
         if result:
-            match_model['score'] = score
+            score_loser = ' '.join([f"{x.split('-')[1]}-{x.split('-')[0]}" for x in score_winner.split(' ')])
             match_model['sets'] = sets
-            MatchPlayerModel(**{'match_id': match_model['match_id'], 'player_id': winner_id, 'win': 1}).save()
-            MatchPlayerModel(**{'match_id': match_model['match_id'], 'player_id': loser_id, 'win': 0}).save()
+            MatchPlayerModel(**{'match_id': match_model['match_id'], 'player_id': winner_id, 'score': score_winner, 'win': 1}).save()
+            MatchPlayerModel(**{'match_id': match_model['match_id'], 'player_id': loser_id, 'score': score_loser, 'win': 0}).save()
 
     except:
         pass

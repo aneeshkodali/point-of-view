@@ -1,22 +1,20 @@
 import React from 'react';
 
-import { convertDate, convertHeight } from '../../../helper/functions';
+import { convertHeight } from '../../../helper/functions';
 import ScoreTable from './ScoreTable';
 
 const About = ({ matchData }) => {
 
     // get variables from match data
-    const { title, gender, match_date, match_round, score, tournament, players, winner, loser } = matchData;
-
+    const { name, gender_id, date, round_id, score, tournament_id, players } = matchData;
 
     // function to create player card
     const createPlayerCard = player => {
-        const id = player['_id']['$oid'];
-        const { full_name, image_url, country, backhand, date_of_birth, hand, height } = player;
+        const { player_id, full_name, image_url, country_id, backhand_id, date_of_birth, hand_id, height } = player;
         return (
-            <div key={id} className="ui card">
+            <div key={player_id} className="ui card">
                 <div className="content">
-                    <div className="center aligned header">{full_name} ({country})</div>
+                    <div className="center aligned header">{full_name} ({country_id['country']})</div>
                 </div>
                 <div>
                     <img className="ui centered image" src={image_url} alt={full_name} />
@@ -24,11 +22,11 @@ const About = ({ matchData }) => {
                 <div className="content">
                     <div className="description">
                         <span className="right floated">Height: {convertHeight(height)}</span>
-                        Born: {convertDate(date_of_birth)}
+                        Born: {date_of_birth}
                     </div>
                     <div className="description">
-                        <span className="right floated">Backhand: {backhand}</span>
-                        Plays: {hand}
+                        <span className="right floated">Backhand: {backhand_id['backhand']}</span>
+                        Plays: {hand_id['hand']}
                     </div>
                 </div>
             </div>
@@ -37,10 +35,12 @@ const About = ({ matchData }) => {
 
     const matchInfo = (
         <div>
-            {tournament['name']}, {match_round}
-            , {convertDate(match_date)}
+            <div><span style={{fontWeight:"bold"}}>Tournament</span>: {tournament_id['tournament_name_id']['tournament_name']}</div>
+            <div><span style={{fontWeight:"bold"}}>Round</span>: {round_id['round_name']}</div>
+            <div><span style={{fontWeight:"bold"}}>Date</span>: {date}</div>
         </div>
     );
+
    
     return (
         <div>
@@ -48,7 +48,7 @@ const About = ({ matchData }) => {
                     <div className="column">{createPlayerCard(players[0])}</div>
                     <div className="column">
                         {matchInfo}
-                        <ScoreTable players={[winner, loser]} score={score} />
+                        <ScoreTable matchData={matchData} />
                     </div>
                     <div className="column">{createPlayerCard(players[1])}</div>
             </div>

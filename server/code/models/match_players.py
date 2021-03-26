@@ -13,6 +13,7 @@ class MatchPlayerModel(BaseMixin, Document):
     match_player_id = StringField(primary_key=True, default=default_uuid_value)
     match_id = StringField(required=True)
     player_id = StringField(required=True)
+    score = StringField()
     win = IntField()
 
     meta = {'collection': 'match_players'}

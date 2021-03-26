@@ -14,6 +14,5 @@ class GameModel(BaseMixin, Document):
     set_id = StringField(required=True)
     game_in_set = IntField(default=0)
     game_in_match = IntField(default=0)
-    score = StringField()
 
     meta = {'collection': 'games'}
