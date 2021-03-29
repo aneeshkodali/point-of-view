@@ -17,9 +17,16 @@ const Table = ({ matchData }) => {
      // function to determine score text to display (based on set selected)
      const scoreText = () => {
         if (setNumSelected === 'All') {
-            return `${matchData['players'][0]['full_name']} d. ${matchData['players'][1]['full_name']} ${matchData['score']}`
+
+            const { players } = matchData;
+            return `${players[0]['full_name']} d. ${players[1]['full_name']} ${players[0]['score']}`;
+
         } else {
-            return `${sets[0]['players'][0]['full_name']} d. ${sets[0]['players'][1]['full_name']} ${sets[0]['score']}`
+
+            const setSelected = sets[0];
+            const { players } = setSelected['games'][setSelected['games'].length-1];
+            
+            return `${players[0]['full_name']} d. ${players[1]['full_name']} ${players[0]['score']+1}-${players[1]['score']}`
         }
     }
 
