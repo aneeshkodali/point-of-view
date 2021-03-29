@@ -61,9 +61,11 @@ const ScoreTable = ({ matchData }) => {
     const { sets } = matchData
     sets.forEach((set, index) => {
 
+        const { players } = set['games'][set['games'].length-1];
+
         const setNum = index+1;
-        const setScoreWinner = set['players'][0]['score'];
-        const setScoreLoser = set['players'][1]['score'];
+        const setScoreWinner = players[0]['score']+1;
+        const setScoreLoser = players[1]['score'];
 
         const winnerStylingObj = applyScoreStyling(setScoreWinner, setScoreLoser);
         winnerStylingObj['backgroundColor'] = setScoreWinner > setScoreLoser ? 'lightgreen' : '';
