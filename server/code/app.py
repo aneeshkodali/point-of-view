@@ -9,6 +9,7 @@ from mongoengine.queryset.visitor import Q
 
 ## project imports
 from resources.matches import Match, Matches
+from resources.players import Players
 
 
 #### APP SETUP
@@ -36,6 +37,7 @@ def index():
 
 api.add_resource(Match, '/server/matches/<string:suffix>')
 api.add_resource(Matches, '/server/matches')
+api.add_resource(Players, '/server/players')
 
 #### RUN APP
 if __name__ == "__main__":
