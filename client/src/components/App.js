@@ -3,8 +3,9 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom'
 
 import Header from './Header';
 import Home from './Home';
-import Matches from './Match/Matches';
 import Match from './Match/Match';
+import Matches from './Match/Matches';
+import Player from './Player/Player';
 import Players from './Player/Players'
 
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
                     <Route path='/matches' exact component={Matches} />
                     <Route path='/matches/:suffix' component={Match} />
                     <Route path='/players' exact component={Players} />
+                    <Route path='/players/:player_name' component={Player} />
                 </Switch>
             </BrowserRouter>
         </div>
