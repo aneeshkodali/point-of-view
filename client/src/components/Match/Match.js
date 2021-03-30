@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 
 import server from '../../api/server';
 import About from './About/About';
-import Table from './Data/Table';
+import Game from './Game';
 import Loader from '../Loader';
+import Table from './Data/Table';
 //import PointsWon from './Charts/PointsWon';
 //import PointMap from './Charts/PointMap';
 //import PointsToSet from './Charts/PointsToSet';
@@ -32,7 +33,8 @@ const Match = props => {
     }, []);
 
     // state for tabs
-    const tabs = ['About', 'Data', 'Points Won', 'Point Map', 'Points to Set', 'Rally Tree'];
+    //const tabs = ['About', 'Data', 'Points Won', 'Point Map', 'Points to Set', 'Rally Tree'];
+    const tabs = ['About', 'Game', 'Point', 'Shot'];
     const [tabSelected, setTabSelected] = useState(tabs[0]);
 
     // display loading icon if match data not found
@@ -66,6 +68,10 @@ const Match = props => {
             case 'Data':
                 return (
                     <Table matchData={matchData} />
+                );
+            case 'Game':
+                return (
+                    <Game data={matchData} />
                 );
             //case 'Points Won':
             //    return (
