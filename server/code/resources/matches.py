@@ -164,4 +164,5 @@ class Matches(Resource):
 
     # GET method
     def get(self):
-        return {'matches': [{k:match[k] for k in ['match_id', 'name', 'suffix']} for match in MatchModel.objects()]}
+        column_list = ['name', 'suffix']
+        return {'matches': [{k:match[k] for k in column_list} for match in MatchModel.objects()]}
