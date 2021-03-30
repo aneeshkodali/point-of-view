@@ -6,15 +6,15 @@ import ScoreTable from './ScoreTable';
 const About = ({ matchData }) => {
 
     // get variables from match data
-    const { name, gender_id, date, round_id, score, tournament_id, players } = matchData;
+    const { name, gender, date, round, score, tournament, players } = matchData;
 
     // function to create player card
     const createPlayerCard = player => {
-        const { player_id, full_name, image_url, country_id, backhand_id, date_of_birth, hand_id, height } = player;
+        const { player_id, full_name, image_url, country, backhand, date_of_birth, hand, height } = player;
         return (
             <div key={player_id} className="ui card">
                 <div className="content">
-                    <div className="center aligned header">{full_name} ({country_id['country']})</div>
+                    <div className="center aligned header">{full_name} ({country})</div>
                 </div>
                 <div>
                     <img className="ui centered image" src={image_url} alt={full_name} />
@@ -25,8 +25,8 @@ const About = ({ matchData }) => {
                         Born: {date_of_birth}
                     </div>
                     <div className="description">
-                        <span className="right floated">Backhand: {backhand_id['backhand']}</span>
-                        Plays: {hand_id['hand']}
+                        <span className="right floated">Backhand: {backhand}</span>
+                        Plays: {hand}
                     </div>
                 </div>
             </div>
@@ -35,8 +35,8 @@ const About = ({ matchData }) => {
 
     const matchInfo = (
         <div>
-            <div><span style={{fontWeight:"bold"}}>Tournament</span>: {tournament_id['tournament_name_id']['tournament_name']}</div>
-            <div><span style={{fontWeight:"bold"}}>Round</span>: {round_id['round_name']}</div>
+            <div><span style={{fontWeight:"bold"}}>Tournament</span>: {tournament['tournament_name']}</div>
+            <div><span style={{fontWeight:"bold"}}>Round</span>: {round}</div>
             <div><span style={{fontWeight:"bold"}}>Date</span>: {date}</div>
         </div>
     );
