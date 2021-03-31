@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import server from '../../api/server';
 import About from './About/About';
-import Game from './Game';
+import Game from '../Game/Game';
 import Loader from '../Loader';
 import Table from './Data/Table';
 import './Match.css';
