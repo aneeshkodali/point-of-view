@@ -5,6 +5,7 @@ import About from './About/About';
 import Game from './Game';
 import Loader from '../Loader';
 import Table from './Data/Table';
+import './Match.css';
 //import PointsWon from './Charts/PointsWon';
 //import PointMap from './Charts/PointMap';
 //import PointsToSet from './Charts/PointsToSet';
@@ -16,14 +17,14 @@ const Match = props => {
     const suffix = props.match.params.suffix;
 
     // state for match data
-    const [matchData, setMatchData] = useState({});
+    const [data, setData] = useState({});
 
 
     // function to get match data
     const getMatchData = async suffix => {
         const match_response = await server.get(`/server/matches/${suffix}`);
         const match_data = match_response.data.match;
-        setMatchData(match_data);
+        setData(match_data);
        }
     
 
@@ -38,7 +39,7 @@ const Match = props => {
     const [tabSelected, setTabSelected] = useState(tabs[0]);
 
     // display loading icon if match data not found
-    if (Object.keys(matchData).length === 0) {
+    if (Object.keys(data).length === 0) {
         return (
             <Loader text={'Loading Match Data...'} />
         );
@@ -63,31 +64,31 @@ const Match = props => {
         switch (tab) {
             case 'About':
                 return (
-                    <About matchData={matchData} />  
+                    <About data={data} />  
                 );
             case 'Data':
                 return (
-                    <Table matchData={matchData} />
+                    <Table data={data} />
                 );
             case 'Game':
                 return (
-                    <Game data={matchData} />
+                    <Game data={data} />
                 );
             //case 'Points Won':
             //    return (
-            //        <PointsWon matchData={matchData} />
+            //        <PointsWon data={data} />
             //    );
             //case 'Point Map':
             //    return (
-            //        <PointMap matchData={matchData} />
+            //        <PointMap data={data} />
             //    );
             //case 'Points to Set':
             //    return (
-            //        <PointsToSet matchData={matchData} />
+            //        <PointsToSet data={data} />
             //    );
             //case 'Rally Tree':
             //    return (
-            //        <RallyTree matchData={matchData} />
+            //        <RallyTree data={data} />
             //    );
             default:
                 return null;
@@ -99,7 +100,9 @@ const Match = props => {
            <div className="ui top attached tabular menu">
                 {tabsRendered}
             </div>
-            {tabComponentRendered(tabSelected)}
+            <div className='tab-data'>
+                {tabComponentRendered(tabSelected)}
+            </div>
         </div>
    );
 

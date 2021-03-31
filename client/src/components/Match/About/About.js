@@ -2,11 +2,12 @@ import React from 'react';
 
 import { convertHeight } from '../../../helper/functions';
 import ScoreTable from './ScoreTable';
+import './About.css'
 
-const About = ({ matchData }) => {
+const About = ({ data }) => {
 
     // get variables from match data
-    const { name, gender, date, round, score, tournament, players } = matchData;
+    const { name, gender, date, round, score, tournament, players } = data;
 
     // function to create player card
     const createPlayerCard = player => {
@@ -33,24 +34,23 @@ const About = ({ matchData }) => {
         );
     }
 
-    const matchInfo = (
-        <div>
-            <div><span style={{fontWeight:"bold"}}>Tournament</span>: {tournament['tournament_name']}</div>
-            <div><span style={{fontWeight:"bold"}}>Round</span>: {round}</div>
-            <div><span style={{fontWeight:"bold"}}>Date</span>: {date}</div>
-        </div>
-    );
+    // get first player in match name
+    const firstPlayerName = name.split(': ')[1].split(' vs')[0];
+    const firstPlayer = players.filter(player => player['full_name'] === firstPlayerName)[0]
+    const secondPlayer = players.filter(player => player !== firstPlayer)[0];
 
    
     return (
-        <div>
-            <div className="ui equal width grid">
-                    <div className="column">{createPlayerCard(players[0])}</div>
-                    <div className="column">
-                        {matchInfo}
-                        <ScoreTable matchData={matchData} />
-                    </div>
-                    <div className="column">{createPlayerCard(players[1])}</div>
+        <div className='container'>
+            <div>
+                {createPlayerCard(firstPlayer)}
+            </div>
+            <div>
+                <h3>{name}</h3>
+                <ScoreTable data={data} />
+            </div>
+            <div>
+                {createPlayerCard(secondPlayer)}
             </div>
         </div>
     );

@@ -2,10 +2,10 @@ import React from 'react';
 
 import { getCountryName } from '../../../helper/countries';
 
-const ScoreTable = ({ matchData }) => {
+const ScoreTable = ({ data }) => {
     
     // get winner (0) and loser (1)
-    const { players } = matchData
+    const { players } = data
     const winner = players[0];
     const loser = players[1];
 
@@ -58,7 +58,7 @@ const ScoreTable = ({ matchData }) => {
     }
 
     // loop through scores and append data accordingly
-    const { sets } = matchData
+    const { sets } = data
     sets.forEach((set, index) => {
 
         let setWinner = set['players'][0]['full_name'];

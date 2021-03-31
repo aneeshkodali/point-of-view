@@ -7,7 +7,6 @@ const Game = ({ data }) => {
 
     // create array of player-outcome counts
     const resultCounts = [];
-    const pointsWonCounts = []
     const players = data['players'].map(player => player['full_name']);
     const results = ['ace', 'double fault', 'forced error', 'service winner', 'unforced error', 'winner'];
     players.forEach(player => {
@@ -17,14 +16,12 @@ const Game = ({ data }) => {
             resultObj['result'] = result;
             resultObj['count'] = 0;
             resultCounts.push(resultObj);
-            pointsWonCounts.push(resultObj);
         });
     });
     
     data['sets'].forEach(set => {
         set['games'].forEach(game => {
-            game['points'].forEach(point => {
-
+            game['points'].forEach(point => {               
                 point['shots'].forEach(shot => {
 
                     const { result, shot_by } = shot;
@@ -36,8 +33,7 @@ const Game = ({ data }) => {
         });
     });
 
-    console.log(resultCounts);
-    console.log(pointsWonCounts);
+    console.log('result', resultCounts);
 
 
     return (
