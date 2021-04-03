@@ -17,9 +17,16 @@ const Table = ({ matchData }) => {
      // function to determine score text to display (based on set selected)
      const scoreText = () => {
         if (setNumSelected === 'All') {
-            return `${matchData['players'][0]['full_name']} d. ${matchData['players'][1]['full_name']} ${matchData['score']}`
+
+            const { players } = matchData;
+            return `${players[0]['full_name']} d. ${players[1]['full_name']} ${players[0]['score']}`;
+
         } else {
-            return `${sets[0]['players'][0]['full_name']} d. ${sets[0]['players'][1]['full_name']} ${sets[0]['score']}`
+
+            const setSelected = sets[0];
+            const { players } = setSelected['games'][setSelected['games'].length-1];
+            
+            return `${players[0]['full_name']} d. ${players[1]['full_name']} ${players[0]['score']+1}-${players[1]['score']}`
         }
     }
 
@@ -31,8 +38,29 @@ const Table = ({ matchData }) => {
         games.forEach(game => {
             const point_list = game['points']
             point_list.forEach(point => {
+
+                const server = point['players'].filter(player => player['serve'] === 1)[0]['full_name']
+
+                // get set score
+                const serverSetScore = set['players'].filter(player => player['full_name'] === server)[0]['score']
+                const receiverSetScore = set['players'].filter(player => player['full_name'] !== server)[0]['score']
+                const setScore = `${serverSetScore}-${receiverSetScore}`;
+                point['set_score'] = setScore;
+
+                // get game score
+                const serverGameScore = game['players'].filter(player => player['full_name'] === server)[0]['score']
+                const receiverGameScore = game['players'].filter(player => player['full_name'] !== server)[0]['score']
+                const gameScore = `${serverGameScore}-${receiverGameScore}`;
+                point['game_score'] = gameScore;
+
+                // get point score
+                const serverPointScore = point['players'].filter(player => player['full_name'] === server)[0]['score']
+                const receiverPointScore = point['players'].filter(player => player['full_name'] !== server)[0]['score']
+                const pointScore = `${serverPointScore}-${receiverPointScore}`;
+                point['point_score'] = pointScore;
+
                 point['winner'] = point['players'].filter(player => player['win'] === 1)[0]['full_name']
-                point['server'] = point['players'].filter(player => player['serve'] === 1)[0]['full_name']
+                point['server'] = server
                 point['game_in_match'] = game['game_in_match']
                 point['set_in_match'] = set['set_in_match']
                 points.push(point)

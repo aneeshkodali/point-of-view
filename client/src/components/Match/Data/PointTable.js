@@ -6,7 +6,7 @@ const PointTable = ({ points, pointSelected, selectPoint }) => {
 
     // display points
     const pointsRendered = points.map(point => {
-        const { point_in_match, game_in_match, set_in_match, side_id, score, rally_length, result, server, winner, shots } = point;
+        const { point_in_match, game_in_match, set_in_match, point_score, game_score, set_score, side, rally_length, result, server, winner, shots } = point;
 
         // highlight row if point is pointSelected
         const rowStyling = point => {
@@ -26,11 +26,11 @@ const PointTable = ({ points, pointSelected, selectPoint }) => {
 
         return (
             <tr key={point_in_match} onClick={() => selectPoint(point, pointSelected)} style={rowStyling(point)}>
-                <td>{set_in_match}</td>
-                <td>{game_in_match}</td>
                 <td>{point_in_match}</td>
-                <td>{score}</td>
-                <td>{side_id['side']}</td>
+                <td>{set_score}</td>
+                <td>{game_score}</td>
+                <td>{point_score}</td>
+                <td>{side}</td>
                 <td>{server}</td>
                 <td>{rally_length}</td>
                 <td>{result}</td>
@@ -47,10 +47,10 @@ const PointTable = ({ points, pointSelected, selectPoint }) => {
             <table className="ui celled table">
                 <thead>
                     <tr>
+                        <th>Point #</th>
                         <th>Set</th>
                         <th>Game</th>
                         <th>Point</th>
-                        <th>Score</th>
                         <th>Side</th>
                         <th>Server</th>
                         <th>Rally Length</th>

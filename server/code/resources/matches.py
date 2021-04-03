@@ -36,26 +36,41 @@ class Match(Resource):
         players = []
         for match_player in match_players:
             player = PlayerModel.objects(player_id=match_player['player_id']).first().as_dict()
-            player['backhand_id'] = BackhandModel.objects(backhand_id=player['backhand_id']).first().as_dict()
-            player['country_id'] = CountryModel.objects(country_id=player['country_id']).first().as_dict()
-            player['gender_id'] = GenderModel.objects(gender_id=player['gender_id']).first().as_dict()
-            player['hand_id'] = HandModel.objects(hand_id=player['hand_id']).first().as_dict()
+
+            player['backhand'] = BackhandModel.objects(backhand_id=player['backhand_id']).first().as_dict()['backhand']
+            player.pop('backhand_id', None)
+
+            player['country'] = CountryModel.objects(country_id=player['country_id']).first().as_dict()['country']
+            player.pop('country_id', None)
+
+            player['gender'] = GenderModel.objects(gender_id=player['gender_id']).first().as_dict()['gender']
+            player.pop('gender_id', None)
+
+            player['hand'] = HandModel.objects(hand_id=player['hand_id']).first().as_dict()['hand']
+            player.pop('hand_id', None)
+
             player['score'] = match_player['score']
             player['win'] = match_player['win']
             players.append(player)
         match['players'] = players
 
         # get round data
-        round_dict = RoundModel.objects(round_id=match['round_id']).first().as_dict()
-        match['round_id'] = round_dict
+        round_name = RoundModel.objects(round_id=match['round_id']).first().as_dict()['round_name']
+        match['round'] = round_name
+        match.pop('round_id', None)
 
         # get tournament data
         tournament = TournamentModel.objects(tournament_id=match['tournament_id']).first().as_dict()
-        tournament['gender_id'] = GenderModel.objects(gender_id=tournament['gender_id']).first().as_dict()
-        tournament['level_id'] = LevelModel.objects(level_id=tournament['level_id']).first().as_dict()
-        tournament['surface_id'] = SurfaceModel.objects(surface_id=tournament['surface_id']).first().as_dict()
-        tournament['tournament_name_id'] = TournamentNameModel.objects(tournament_name_id=tournament['tournament_name_id']).first().as_dict()
-        match['tournament_id'] = tournament
+        tournament['gender'] = GenderModel.objects(gender_id=tournament['gender_id']).first().as_dict()['gender']
+        tournament.pop('gender_id', None)
+        tournament['level'] = LevelModel.objects(level_id=tournament['level_id']).first().as_dict()['level']
+        tournament.pop('level_id', None)
+        tournament['surface'] = SurfaceModel.objects(surface_id=tournament['surface_id']).first().as_dict()['surface']
+        tournament.pop('surface_id', None)
+        tournament['tournament_name'] = TournamentNameModel.objects(tournament_name_id=tournament['tournament_name_id']).first().as_dict()['tournament_name']
+        tournament.pop('tournament_name_id', None)
+        match['tournament'] = tournament
+        match.pop('tournament_id', None)
 
         # get set data
         match_sets = [match_set.as_dict() for match_set in SetModel.objects(match_id=match['match_id']).order_by('set_in_match')]
@@ -103,7 +118,8 @@ class Match(Resource):
                     point_dict['point_in_game'] = point['point_in_game']
                     point_dict['point_in_set'] = point['point_in_set']
                     point_dict['point_in_match'] = point['point_in_match']
-                    point_dict['side_id'] = SideModel.objects(side_id=point['side_id']).first().as_dict()
+                    point_dict['side'] = SideModel.objects(side_id=point['side_id']).first().as_dict()['side']
+                    point_dict.pop('side_id', None)
                     point_dict['number_of_shots'] = point['number_of_shots']
                     point_dict['rally_length'] = point['rally_length']
                     point_dict['result'] = point['result'] 
@@ -148,4 +164,5 @@ class Matches(Resource):
 
     # GET method
     def get(self):
-        return {'matches': [{k:match[k] for k in ['match_id', 'name', 'suffix']} for match in MatchModel.objects()]}
+        column_list = ['match_id', 'name', 'suffix']
+        return {'matches': [{k:match[k] for k in column_list} for match in MatchModel.objects()]}

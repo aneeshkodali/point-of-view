@@ -2,10 +2,10 @@ import React from 'react';
 
 import { getCountryName } from '../../../helper/countries';
 
-const ScoreTable = ({ matchData }) => {
+const ScoreTable = ({ data }) => {
     
     // get winner (0) and loser (1)
-    const { players } = matchData
+    const { players } = data
     const winner = players[0];
     const loser = players[1];
 
@@ -32,14 +32,14 @@ const ScoreTable = ({ matchData }) => {
     ];
     const winnerData = [
         <td key={'winner'}>
-            {getFlagIcon(winner['country_id']['country'])}
+            {getFlagIcon(winner['country'])}
             {returnAbbreviatedName(winner['full_name'])}
             <i className="ui check icon" />
         </td>
     ];
     const loserData = [
         <td key={'loser'}>
-            {getFlagIcon(loser['country_id']['country'])}
+            {getFlagIcon(loser['country'])}
             {returnAbbreviatedName(loser['full_name'])}
         </td>
     ];
@@ -58,16 +58,24 @@ const ScoreTable = ({ matchData }) => {
     }
 
     // loop through scores and append data accordingly
-    const { sets } = matchData
+    const { sets } = data
     sets.forEach((set, index) => {
 
-        const setNum = index+1;
-        const setScoreWinner = set['players'][0]['score'];
-        const setScoreLoser = set['players'][1]['score'];
+        let setWinner = set['players'][0]['full_name'];
+        let setLoser = set['players'][1]['full_name'];
 
-        const winnerStylingObj = applyScoreStyling(setScoreWinner, setScoreLoser);
-        winnerStylingObj['backgroundColor'] = setScoreWinner > setScoreLoser ? 'lightgreen' : '';
-        const loserStylingObj = applyScoreStyling(setScoreLoser, setScoreWinner);
+        const { players } = set['games'][set['games'].length-1];
+
+        const setNum = set['set_in_match'];
+        const setScoreWinner = players[0]['score']+1;
+        const setScoreLoser = players[1]['score'];
+
+        const winnerSetScore = winner['full_name'] === setWinner ? setScoreWinner : setScoreLoser;
+        const loserSetScore = winner['full_name'] !== setWinner ? setScoreWinner : setScoreLoser;
+
+        const winnerStylingObj = applyScoreStyling(winnerSetScore, loserSetScore);
+        winnerStylingObj['backgroundColor'] = winnerSetScore > loserSetScore ? 'lightgreen' : '';
+        const loserStylingObj = applyScoreStyling(loserSetScore, winnerSetScore);
 
 
         tableHeaders.push(
@@ -78,7 +86,7 @@ const ScoreTable = ({ matchData }) => {
                 key={setNum} 
                 style={winnerStylingObj}
             >
-                {setScoreWinner}
+                {winnerSetScore}
             </td>
         );
         loserData.push(
@@ -86,7 +94,7 @@ const ScoreTable = ({ matchData }) => {
                 key={setNum} 
                 style={loserStylingObj}
             >
-                {setScoreLoser}
+                {loserSetScore}
             </td>
         )
     });
